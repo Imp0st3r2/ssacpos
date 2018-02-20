@@ -1,5 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	.col-xs-12
+		h1.bold Sight & Sound Audio Connections <br>
+			small.bold Point of Sale
+	.col-xs-12.col-sm-2.col-md-3
+	.col-xs-12.col-sm-8.col-md-6.login-box
+		form(action='/dashboard/' method='GET')
+			.form-group
+				label.control-label.text-shadow(for='#user-name') Name:
+				input.form-control.drop-shadow(type='text' id='user-name' name='user-name' placeholder='Please enter your login name.')
+			.form-group
+				label.control-label.text-shadow(for='#user-pass') Password:
+				input.form-control.drop-shadow(type='text' id='user-pass' name='user-pass' placeholder='Please enter your password.')
+			.form-group
+				.col-xs-12.col-sm-2.col-md-3
+				.col-xs-12.col-sm-8.col-md-6
+					button.btn.greenbtn.drop-shadow(type="submit" value='Login') Login
+				.col-xs-12.col-sm-2.col-md-3
+	.col-xs-12.col-sm-2.col-md-3

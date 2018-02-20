@@ -1,0 +1,38 @@
+<div class="container-fluid">
+	<div class="users-container">
+		<h1>List of Users</h1>
+		<button type="button" ng-click="uvm.addUser();" class="btn btn-success">Add User</button>
+		<div class="top-margin10">
+			<div class="row row-border">
+				<div class="col-xs-3">
+					<p>Name</p>
+				</div>
+				<div class="col-xs-3">
+					<p>Email</p>
+				</div>
+				<div class="col-xs-3">
+					<p>Status</p>
+				</div>
+				<div class="col-xs-3">
+				</div>
+			</div>
+			<div class="row row-border" ng-repeat="user in uvm.users">
+				<div class="col-xs-3">
+					<p>{{user.name}}</p>
+				</div>
+				<div class="col-xs-3">
+					<p>{{user.email}}</p>
+				</div>
+				<div class="col-xs-3">
+					<p>{{user.status}}</p>
+				</div>
+				<div class="col-xs-3">
+					<button class="btn btn-primary" type="button" ng-click="uvm.editUser(user._id);">Edit</button>
+					<button class="btn btn-danger" type="button" ng-click="uvm.deleteUser(user._id,user.name);">Delete</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialogbox">
+		</div>
+	</div>
+</div>

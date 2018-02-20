@@ -1,0 +1,30 @@
+extends layout
+
+block content
+	.container-fluid
+		.row
+			.col-xs-12
+				h1.bold Sight & Sound Audio Connections <br>
+					small.bold Point of Sale
+		.row
+			.col-xs-12.container-fluid.container-box
+				.row
+					.col-xs-12
+						h1.shadow.center-text=header0
+				.row
+					.col-xs-12.col-lg-4
+						each val,key in options
+								a.btn.greenbtn(href=val)=key
+					.col-xs-12.col-lg-8
+						.row
+							.col-xs-12.col-lg-6
+								h2.shadow.center-text=header1
+								each val,key in option1
+									a.btn.greenbtn(href=val)=key
+							.col-xs-12.col-lg-6
+								h2.shadow.center-text=header2
+								each val,key in option2
+									a.btn.greenbtn(href=val)=key
+				.row
+					p
+

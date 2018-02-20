@@ -1,0 +1,96 @@
+extends layout
+
+block content
+	.container-fluid
+		.row
+			.col-xs-12
+				h1.bold Sight & Sound Audio Connections <br>
+					small.bold Point of Sale
+		.row
+			.col-xs-12.container-fluid.container-box
+				.row
+					.col-xs-12
+						h1.shadow.center-text=header0
+				.row
+					.col-xs-12.col-lg-4
+						each val,key in options
+								a.btn.greenbtn(href=val)=key
+					.col-xs-12.col-lg-8
+						.row
+							.col-xs-12
+								h1.shadow.center-text=header1
+							.col-xs-12
+								form.product-text
+									.form-group
+										label(for="product-category") Product Category
+										select#product-category.form-control
+											option Amplifiers
+											option Speakers
+											option Subwoofers
+											option Players
+											option Boxes
+											option Power Cells
+											option CB Radios
+											option Lighting
+											option Accessories
+											option New Category
+									//- .form-group
+									//- 	label(for="new-product-category") New Product Category
+									//- 	input#new-product-category.form-control(placeholder="Enter New Product Category")
+									.form-group
+										label(for="product-brand") Product Brand
+										select#product-brand.form-control
+											option Addictive Audio
+											option Audison
+											option Cobra
+											option Digital Designs
+											option Hertz
+											option JVC
+											option Kenwood
+											option Kinetik
+											option Knecht Enclosures
+											option Memphis
+											option Pioneer
+											option Rockford
+											option RTBoxes
+											option New Brand
+									//- .form-group
+									//- 	label(for="new-product-brand") New Product Brand
+									//- 	input#new-product-brand.form-control(placeholder="Enter New Product Brand")
+									.form-group
+										label(for="amp-model") Amp Model
+										input#amp-model.form-control(type="text" placeholder="Enter Amp Model i.e. 50.1D" value="50.1D")
+									.form-group
+										label(for="amp-channels") Amp Channels
+										input#amp-channels.form-control(type="text" placeholder="Enter Amp Channels i.e. 1" value="1")
+									.form-group
+										label(for="amp-distortion") Amp Distortion (enter percentage as decimal)
+										input#amp-distortion.form-control(type="text" placeholder="Enter Amp Distortion i.e. 0.5" value="0.5")
+									.form-group
+										label(for="amp-snratio") Amp S/N Ratio (enter dB)
+										input#amp-snratio.form-control(type="text" placeholder="Enter Amp S/N Ratio i.e. 95" value="95")
+									.form-group
+										label(for="amp-frequency-response") Amp Frequency Response (enter Hz range)
+										input#amp-frequency-response.form-control(type="text" placeholder="Enter Amp Frequency Response i.e. 10-100" value="N/A")
+									.row
+										.col-xs-12.col-md-4
+											.form-group
+												label(for="amp-dimensions-width") Amp Width (enter in)
+												input#amp-dimensions-width.form-control(type="text" placeholder="Enter Amp Width i.e. 8.5" value="8.5")
+										.col-xs-12.col-md-4
+											.form-group
+												label(for="amp-dimensions-height") Amp Height (enter in)
+												input#amp-dimensions-height.form-control(type="text" placeholder="Enter Amp Height i.e. 2.38" value="2.38")
+										.col-xs-12.col-md-4
+											.form-group
+												label(for="amp-dimensions-length") Amp Length (enter in)
+												input#amp-dimensions-length.form-control(type="text" placeholder="Enter Amp Length i.e. 12.75" value="12.75")
+									.form-group
+										label(for="amp-output-power") Amp Output Power (enter values comma separated)
+										textarea#amp-output-power.form-control(placeholder="Enter Amp Output Power, i.e 700x1@4ohms,1000x1@2ohms,1000x1@1ohm") 250x1@4ohms,435x1@2ohms,695x1@1ohm
+									.form-group
+										label(for="product-quantity") Stock On Hand
+										input#product-quantity.form-control(type="text" placeholder="Enter Quantity in Stock i.e 3" value="3")
+				.row
+					p
+

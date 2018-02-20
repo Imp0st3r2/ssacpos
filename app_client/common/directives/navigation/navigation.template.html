@@ -1,0 +1,28 @@
+<div class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<div class="navbar-brand" ng-click="navvm.goRoot()">
+				<img class="banner-logo" src="/images/logo.jpg" alt="SSAC Logo">
+			</div>
+			<button type='button' class='navbar-toggle' data-toggle='collapse' data-target='#navbar-main'>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+		</div>
+		<div id="navbar-main" class="navbar-collapse collapse">
+			<ul ng-hide="navvm.Guest" class="nav navbar-nav">
+				<li ng-repeat="link in navvm.navlinks"><a href="{{ link.link }}">{{ link.name }}</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li ng-show="navvm.isLoggedIn">
+					<a ng-hide="navvm.Guest"  href="" class="dropdown-toggle" data-toggle="dropdown">{{ navvm.currentUser.status }} {{ navvm.currentUser.name }} <span class="caret"></span></a>
+					<ul class="dropdown-menu nav navbar-nav">
+						<li><a href="" ng-click="navvm.logout()">Logout</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

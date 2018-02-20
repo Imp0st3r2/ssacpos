@@ -1,0 +1,32 @@
+<div class="container-fluid">
+	<div class="users-container">
+		<h1>Edit User</h1>
+		<div class="col-xs-6">
+			<form class="form">
+				<div role="alert" ng-show="uvm.formError" class="alert alert-danger">{{ uvm.formError }}</div>
+				<div class="form-group">
+					<label for="user-name">Enter User Name: </label>
+					<input class="form-control" type="text" id="user-name" name="user-name" placeholder="Enter user name here." ng-model="uvm.currentUser.name" value="uvm.currentUser.name">
+				</div>
+				<div class="form-group">
+					<label for="user-email">Enter User Email: </label>
+					<input class="form-control" type="text" id="user-email" name="user-email" placeholder="Enter user email here." ng-model="uvm.currentUser.email" value="uvm.currentUser.email">
+				</div>
+				<div class="form-group">
+					<label form="user-status">Select User Status:</label>
+					<select class="form-control" id="user-status" name="user-status" ng-model="uvm.currentUser.status" value="uvm.currentUser.status">
+						<option value="Administrator">Administrator</option>
+						<option value="Employee">Employee</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<button type="button" class="btn btn-primary" ng-click="uvm.resetPassword();">Reset Password</button>
+				</div>
+				<button type="button" class="btn btn-success" ng-click="uvm.submitUser();">Update</button>
+				<button type="button" class="btn btn-danger" ng-click="uvm.showList();">Cancel</button>
+			</form>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>

@@ -1,0 +1,41 @@
+<div class="container-fluid">
+	<div class="users-container">
+		<h1>Create User</h1>
+		<div class="col-xs-6">
+			<form class="form">
+				<div role="alert" ng-show="uvm.formError" class="alert alert-danger">{{ uvm.formError }}</div>
+				<div class="form-group">
+					<label for="user-name">Enter User Name: </label>
+					<input class="form-control" type="text" id="user-name" name="user-name" placeholder="Enter user name here." ng-model="uvm.newUser.name">
+				</div>
+				<div class="form-group">
+					<label for="user-email">Enter User Email: </label>
+					<input class="form-control" type="text" id="user-email" name="user-email" placeholder="Enter user email here." ng-model="uvm.newUser.email">
+				</div>
+				<div class="form-group">
+					<label for="user-email-conf">Confirm User Email: </label>
+					<input class="form-control" type="text" id="user-email-conf" name="user-email-conf" placeholder="Confirm user email here." ng-model="uvm.newUser.confemail">
+				</div>
+				<div class="form-group">
+					<label for="user-pass">Enter User Password: </label>
+					<input class="form-control" type="password" id="user-pass" name="user-pass" placeholder="Enter user password here." ng-model="uvm.newUser.password">
+				</div>
+				<div class="form-group">
+					<label for="user-pass-conf">Confirm User Password: </label>
+					<input class="form-control" type="password" id="user-pass-conf" name="user-pass-conf" placeholder="Confirm user password here." ng-model="uvm.newUser.confpassword">
+				</div>
+				<div class="form-group">
+					<label form="user-status">Select User Status:</label>
+					<select class="form-control" id="user-status" name="user-status" ng-model="uvm.newUser.status">
+						<option value="Administrator">Administrator</option>
+						<option value="Employee">Employee</option>
+					</select>
+				</div>
+				<button type="button" class="btn btn-success" ng-click="uvm.submitUser();">Create</button>
+				<button type="button" class="btn btn-danger" ng-click="uvm.showList();">Cancel</button>
+			</form>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>

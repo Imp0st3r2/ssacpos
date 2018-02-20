@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<div class="users-container">
+		<h1>Change User Password</h1>
+		<div class="col-xs-6">
+			<form class="form">
+				<div role="alert" ng-show="uvm.formError" class="alert alert-danger">{{ uvm.formError }}</div>
+				<div class="form-group">
+					<label for="user-pass">Enter New Password: </label>
+					<input class="form-control" type="password" id="user-pass" name="user-pass" placeholder="Enter user password here." ng-model="uvm.currentUser.password">
+				</div>
+				<div class="form-group">
+					<label for="user-confpass">Confirm New Password: </label>
+					<input class="form-control" type="password" id="user-confpass" name="user-confpass" placeholder="Re-enter user password here." ng-model="uvm.currentUser.confpassword">
+				</div>
+				<button type="button" class="btn btn-success" ng-click="uvm.submitPassword();">Submit</button>
+				<button type="button" class="btn btn-danger" ng-click="uvm.showList();">Cancel</button>
+			</form>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>

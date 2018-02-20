@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	.row
+		.col-lg-6
+			h1.bold Sight & Sound Audio Connections <br>
+				small.bold Point of Sale
+	.row
+		.col-xs-12.col-md-4
+		.col-xs-12.col-md-4.login-box
+			each val,key in options
+				.row
+					a.btn.greenbtn(href=val)=key
+		.col-xs-12.col-md-4
