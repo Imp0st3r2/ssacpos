@@ -225,6 +225,27 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 					break;
 				default:
 					console.log("Case: "+category+" needs configuration.");
+					vm.attr.brand = true;
+					vm.attr.category = true;
+					vm.attr.model = true;
+					vm.attr.price = true;
+					vm.attr.quantity = true;
+					vm.attr.channels = true;
+					vm.attr.distortion = true;
+					vm.attr.snratio = true;
+					vm.attr.frequencyresponse = true;
+					vm.attr.outputpower = true;
+					vm.attr.dimensions = true;
+					vm.attr.size = true;
+					vm.attr.sensitivity = true;
+					vm.attr.configuration = true;
+					vm.attr.wattage = true;
+					vm.attr.mountingdepth = true;
+					vm.attr.preouts = true;
+					vm.attr.weight = true;
+					vm.attr.amphours = true;
+					vm.attr.voltage = true;
+					vm.attr.description = true;
 			};
 		};
 		$("input[type=checkbox]").on('click',function(){

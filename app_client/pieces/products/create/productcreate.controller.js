@@ -152,14 +152,14 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 			switch(category){
 				case "amps":
 					vm.attr.quantity = true;
-					vm.attr.size = false;
-					vm.attr.configuration = false;
 					vm.attr.channels = true;
 					vm.attr.distortion = true;
 					vm.attr.snratio = true;
 					vm.attr.frequencyresponse = true;
 					vm.attr.dimensions = true;
 					vm.attr.outputpower = true;
+					vm.attr.size = false;
+					vm.attr.configuration = false;
 					break;
 				case "speakers":
 					vm.attr.quantity = true;
@@ -180,6 +180,8 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 				case "cbradios":
 					vm.attr.quantity = true;
 					vm.attr.dimensions = true;
+					vm.attr.size = false;
+					vm.attr.configuration = false;
 					break;
 				case "cdplayers":
 					vm.attr.quantity = true;
@@ -190,20 +192,20 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 				case "dvdplayers":
 					vm.attr.quantity = true;
 					vm.attr.preouts = true;
-					vm.attr.size = false;
 					vm.attr.configuration = true;
+					vm.attr.size = false;
 					break;
 				case "navunits":
 					vm.attr.quantity = true;
 					vm.attr.preouts = true;
-					vm.attr.size = false;
 					vm.attr.configuration = true;
+					vm.attr.size = false;
 					break;
 				case "powercells":
 					vm.attr.quantity = true;
 					vm.attr.weight = true;
 					vm.attr.amphours = true;
-					vm.attr.outputpower = true;
+					vm.attr.wattage = true;
 					vm.attr.dimensions = true;
 					vm.attr.voltage = true;
 					vm.attr.size = false;
@@ -219,16 +221,19 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 					vm.attr.quantity = true;
 					vm.attr.configuration = true;
 					vm.attr.dimensions = true;
+					vm.attr.size = false;
 					break;
 				case "hgbulbs":
 					vm.attr.quantity = true;
 					vm.attr.configuration = true;
 					vm.attr.dimensions = true;
+					vm.attr.size = false;
 					break;
 				case "ledbulbs":
 					vm.attr.quantity = true;
 					vm.attr.configuration = true;
 					vm.attr.dimensions = true;
+					vm.attr.size = false;
 					break;
 				default:
 					console.log("Case: "+category+" needs configuration.");
