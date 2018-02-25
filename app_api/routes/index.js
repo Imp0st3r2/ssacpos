@@ -10,7 +10,7 @@ var auth = jwt({
 // var ctrlName = require('../controllers/controllername')
 var ctrlUsers = require('../controllers/users');
 var ctrlAuth = require('../controllers/authentication');
-
+var ctrlProducts = require('../controllers/products');
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
 
@@ -25,5 +25,13 @@ router.get('/users/:userid', ctrlUsers.usersReadOne);
 router.put('/users/:userid', ctrlUsers.usersUpdateOne);
 router.delete('/users/:userid', ctrlUsers.usersDeleteOne);
 router.post('/users/resetpassword',ctrlUsers.usersChangePass);
+
+//Products
+router.get('/products', ctrlProducts.productsList);
+router.get('/products/:productid', ctrlProducts.productsReadOne);
+router.post('/products', ctrlProducts.productsCreate);
+router.put('/products/:productid', ctrlProducts.productsUpdateOne);
+router.delete('/products/:productid', ctrlProducts.productsDeleteOne);
+
 
 module.exports = router;

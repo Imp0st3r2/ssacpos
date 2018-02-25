@@ -104,7 +104,12 @@ footer {
 .posbtn-container{
 	width:100%;
 }
-
+#additional-attributes {
+	width:100%;
+	padding-left:15px;
+	font-size:.8em;
+	display:none;
+}
 .posbtn {
 	width:100%;
 	padding:15px;
@@ -113,6 +118,22 @@ footer {
 	border:1px solid #333;
 }
 .posbtn:hover{
+	color:#fff;
+}
+.product-categories {
+	display:none;
+}
+.posbtn-mini {
+	width:100%;
+	padding-top:5px;
+	padding-bottom:5px;
+	padding-left:15px;
+	padding-right:15px;
+	background-color:#222;
+	color:#777;
+	border:1px solid #333;
+}
+.posbtn-mini:hover{
 	color:#fff;
 }
 .tiny {
@@ -127,8 +148,34 @@ footer {
 }
 .users-container {
 	width:100%;
+	height:100%;
 	font-size:1em;
 	word-wrap:break-word;
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+.products-container {
+	width:100%;
+	height:100%;
+	font-size:1em;
+	word-wrap:break-word;
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+.productrow:hover {
+	background-color:#fff;
+	cursor:pointer;
+}
+.productrow > div > div > p {
+	padding:5px;
+}
+.productattr {
+	padding:5px;
+	padding-top:15px;
+	border-bottom:1px solid #ccc;
+}
+span {
+	display:block;
 }
 .active {
 	color:#000;
@@ -157,7 +204,11 @@ footer {
 	text-align:center;
 	padding:25px;
 }
-
+.modal-body{
+	margin:10px;
+	border-radius:15px;
+	border:2px solid #ccc;
+}
 .btn-full {
 	width:100%;
 }
