@@ -32,7 +32,7 @@
 				<div class="col-xs-2">
 				</div>
 			</div>
-			<div class="row row-border productrow" ng-repeat="product in pvm.products" ng-click="pvm.readOne(product._id);">
+			<div class="row row-border productrow" ng-repeat="product in pvm.products | filter : pvm.searchterm" ng-click="pvm.readOne(product._id);">
 				<div class="col-xs-10" data-toggle="modal" data-target="#productModal">
 					<div class="col-xs-3">
 						<p>{{product.brand}}</p>
