@@ -27,6 +27,9 @@
 		var getProduct = function(){
 			return currentProduct;
 		};
+		var getCategoriesByBrand = function(brand){
+			return $http.get('/api/products/categories/'+brand);
+		};
 		return {
 			getProductList : getProductList,
 			getProductById : getProductById,
@@ -34,7 +37,8 @@
 			editProduct : editProduct,
 			deleteProduct : deleteProduct,
 			setProduct : setProduct,
-			getProduct : getProduct
+			getProduct : getProduct,
+			getCategoriesByBrand : getCategoriesByBrand
 		};
 	}
 }) ();

@@ -11,6 +11,8 @@ var auth = jwt({
 var ctrlUsers = require('../controllers/users');
 var ctrlAuth = require('../controllers/authentication');
 var ctrlProducts = require('../controllers/products');
+var ctrlInvoices = require('../controllers/invoices');
+var ctrlTaxes = require('../controllers/taxes');
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
 
@@ -32,6 +34,18 @@ router.get('/products/:productid', ctrlProducts.productsReadOne);
 router.post('/products', ctrlProducts.productsCreate);
 router.put('/products/:productid', ctrlProducts.productsUpdateOne);
 router.delete('/products/:productid', ctrlProducts.productsDeleteOne);
+router.get('/products/categories/:brand', ctrlProducts.getCategoriesByBrand);
 
+//Invoices
+router.get('/invoices', ctrlInvoices.invoicesList);
+router.get('/invoices/:invoiceid', ctrlInvoices.invoicesReadOne);
+router.post('/invoices', ctrlInvoices.invoicesCreate);
+router.put('/invoices/:invoiceid', ctrlInvoices.invoicesUpdateOne);
+router.delete('/invoices/:invoiceid', ctrlInvoices.invoicesDeleteOne);
+router.post('/invoices/:invoiceid/makepayment', ctrlInvoices.invoicesMakePayment);
+router.post('/invoices/:invoiceid/markedpaid', ctrlInvoices.invoicesMarkedPaid);
+
+//Tax
+router.get('/taxrate', ctrlTaxes.getTaxRate);
 
 module.exports = router;

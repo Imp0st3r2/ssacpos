@@ -119,3 +119,25 @@ module.exports.productsDeleteOne = function(req, res) {
 		});
 	}
 };
+
+module.exports.getCategoriesByBrand = function(req,res){
+	var brand = req.params.brand;
+
+	if (brand){
+		Product
+			.find({"brand":brand})
+			.exec(function(err, products){
+				if(!products){
+					sendJsonResponse(res, 404, { "message" : "no users found"});
+					return;
+				} else if (err) {
+					sendJsonResponse(res, 404, err);
+					return;
+				}
+				sendJsonResponse(res, 200, products);
+			});
+	} else {
+		sendJsonResponse(res, 404, { "message" : "No brand in the request."});
+	}
+
+}

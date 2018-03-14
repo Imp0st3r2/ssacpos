@@ -1,0 +1,149 @@
+<div class="container-fluid" style="background-color:#fff;height:100%">
+	<div class="row" style="padding-top:10px;background-color:#fff;border:1px solid black;">
+		<div class="col-xs-4">
+			<p>
+				<span style="font-size:16px;">Sight & Sound Audio Connections
+				<span style="font-size:14px;">1600 S Gold St<br>Centralia WA, 98531<br>(360) 736-0153</span></span>
+			</p>
+			<p>
+				<span style="font-size:16px;">{{vm.currentInvoice.firstname}} {{vm.currentInvoice.lastname}}
+				<span style="font-size:14px;">{{vm.currentInvoice.address}}<br>{{vm.currentInvoice.city}} {{vm.currentInvoice.state}}, {{vm.currentInvoice.zip}}<br>{{vm.phonenumber}}</span></span>
+			</p>
+			<p>
+				{{vm.currentInvoice.vehicleyear}}, {{vm.currentInvoice.vehiclemake}} {{vm.currentInvoice.vehiclemodel}}<br>
+				License: {{vm.currentInvoice.vehiclelicense}}<br> Vin: {{vm.currentInvoice.vehiclevin}}
+			</p>
+		</div>
+		<div class="col-xs-4">
+			<p ng-if="vm.currentInvoice.paid">
+				<span style="font-size:60px;color:#f00;">PAID
+				<span style="font-size:16px;color:#f00;">{{vm.currentInvoice.datepaid}}</span></span>
+			</p>
+		</div>
+		<div class="col-xs-4">
+			<button id="printbutton" type="button" class="btn btn-primary pull-right" ng-click="vm.printInvoice();">Print Invoice</button>
+		</div>
+	</div>
+	<div class="row" style="padding-top:10px;background-color:#fff;border:1px solid black;">
+		<div class="col-xs-12">
+			<div id="item-group" class="row" style="padding:10px;" ng-if="vm.currentInvoice.items.length > 0">
+				<p><b>Item Charges</b></p>
+				<div>
+					<table class='table'>
+						<thead>
+							<th>Brand</th>
+							<th>Category</th>
+							<th>Model</th>
+							<th>Quantity</th>
+							<th>Unit Price</th>
+							<th>Total Charge</th>
+						</thead>
+						<tbody>
+							<tr ng-if="item != null"  ng-repeat="item in vm.currentInvoice.items">
+								<td>{{item.brand}}</td>
+								<td>{{item.category}}</td>
+								<td>{{item.model}}</td>
+								<td>{{item.quantity}}</td>
+								<td>${{item.unitprice | number: 2}}</td>
+								<td>${{item.totalcharge | number: 2}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div id="labor-group" class="row" style="padding:10px;" ng-if="vm.currentInvoice.labors.length > 0">
+				<p><b>Labor Charges</b></p>
+				<div>
+					<table class='table'>
+						<thead>
+							<th>Time</th>
+							<th>Description</th>
+							<th>Hourly Charge</th>
+							<th>Total Charge</th>
+						</thead>
+						<tbody>
+							<tr ng-if="labor != null" ng-repeat="labor in vm.currentInvoice.labors">
+								<td>{{labor.time}}</td>
+								<td>{{labor.description}}</td>
+								<td>${{labor.hourlycharge | number: 2}}</td>
+								<td>${{labor.totalcharge | number: 2}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<div id="other-group" class="row" style="padding:10px;" ng-if="vm.currentInvoice.others.length > 0">
+				<p><b>Other Charges</b></p>
+				<div>
+					<table class='table'>
+						<thead>
+							<th>Description</th>
+							<th>Total Charge</th>
+						</thead>
+						<tbody>
+							<tr ng-if="other != null"  ng-repeat="other in vm.currentInvoice.others">
+								<td>{{other.description}}</td>
+								<td>${{other.totalcharge | number: 2}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="padding-top:10px;background-color:#fff;border:1px solid black;">
+		<div class="col-xs-4">
+			<p><b>Payments</b></p>
+			<div>
+				<table class='table'>
+					<thead>
+						<th>Date</th>
+						<th>Amount Paid</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="payment in vm.currentInvoice.payments">
+							<td>{{payment.dateofpayment}}</td>
+							<td>${{payment.amountpaid | number : 2}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-xs-4"></div>
+		<div class="col-xs-4 pull-right">
+			<p><b>Totals</b></p>
+			<table class="table">
+				<tbody>
+					<tr>
+						<td>Total Item Charges</td>
+						<td>${{vm.currentInvoice.itemcharges | number: 2}}</td>
+					</tr>
+					<tr>
+						<td>Total Labor Charges</td>
+						<td>${{vm.currentInvoice.laborcharges | number: 2}}</td>
+					</tr>
+					<tr>
+						<td>Total Other Charges</td>
+						<td>${{vm.currentInvoice.othercharges | number: 2}}</td>
+					</tr>
+					<tr>
+						<td>Tax</td>
+						<td>${{vm.currentInvoice.taxdue | number: 2}}</td>
+					</tr>
+					<tr>
+						<td>Total Due</td>
+						<td>${{vm.currentInvoice.totalprice | number: 2}}</td>
+					</tr>
+					<tr>
+						<td style="background-color:#efaaaa;">Total After Payments</td>
+						<td style="background-color:#efaaaa;">${{vm.currentInvoice.totalafterpayments | number: 2}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

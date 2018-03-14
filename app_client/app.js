@@ -14,6 +14,11 @@ function config ($routeProvider, $locationProvider) {
 			controller: 'dashboardCtrl',
 			controllerAs: 'vm'
 		})
+		.when('/invoices/:invoiceid', {
+			templateUrl: '/printinvoices/printinvoice.view.html',
+			controller: 'printInvoiceCtrl',
+			controllerAs: 'vm'
+		})
 		.otherwise({redirectTo: '/'});
 
 	/******REMOVE # FROM URL******/

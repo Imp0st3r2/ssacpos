@@ -7,7 +7,6 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 	<link rel='stylesheet' href='/stylesheets/font-awesome.min.css'>
-	<link rel='stylesheet' href='/stylesheets/style.css'>
 	<link rel="shortcut icon" href="/favicon.ico">
 	<script src='/angular/angular.js'></script>
 	<script src='/angular/angular-route.js'></script>
@@ -17,6 +16,8 @@
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<link rel='stylesheet' href='/stylesheets/style.css'>
+	<script src="/javascripts/moment.js"></script>
 	<base href="/">
 	<title>Point of Sale</title>
 </head>
@@ -32,7 +33,10 @@
 	<script src='/common/services/authentication.service.js'></script>
 	<script src='/common/services/user.service.js'></script>
 	<script src='/common/services/product.service.js'></script>
+	<script src='/common/services/invoice.service.js'></script>
+	<script src='/common/services/tax.service.js'></script>
 	<script src='/dashboard/dashboard.controller.js'></script>
+	<script src='/printinvoices/printinvoice.controller.js'></script>
 	<script src='/pieces/users/list/userlist.directive.js'></script>
 	<script src='/pieces/users/list/userlist.controller.js'></script>
 	<script src='/pieces/users/create/usercreate.directive.js'></script>
@@ -47,5 +51,11 @@
 	<script src='/pieces/products/create/productcreate.controller.js'></script>
 	<script src='/pieces/products/edit/productedit.directive.js'></script>
 	<script src='/pieces/products/edit/productedit.controller.js'></script>
+	<script src='/pieces/invoicing/invoicing.directive.js'></script>
+	<script src='/pieces/invoicing/invoicing.controller.js'></script>
+	<script src='/pieces/invoicing/create/invoicecreate.directive.js'></script>
+	<script src='/pieces/invoicing/create/invoicecreate.controller.js'></script>
+	<script src='/pieces/invoicing/edit/invoiceedit.directive.js'></script>
+	<script src='/pieces/invoicing/edit/invoiceedit.controller.js'></script>
 </body>
 </html>
