@@ -42,3 +42,4 @@ process.once('SIGUSR2', function () {
 require('./users');
 require('./products');
 require('./invoices');
+require('./reports');

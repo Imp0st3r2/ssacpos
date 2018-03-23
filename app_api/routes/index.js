@@ -13,6 +13,7 @@ var ctrlAuth = require('../controllers/authentication');
 var ctrlProducts = require('../controllers/products');
 var ctrlInvoices = require('../controllers/invoices');
 var ctrlTaxes = require('../controllers/taxes');
+var ctrlReports = require('../controllers/reports');
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
 
@@ -44,6 +45,10 @@ router.put('/invoices/:invoiceid', ctrlInvoices.invoicesUpdateOne);
 router.delete('/invoices/:invoiceid', ctrlInvoices.invoicesDeleteOne);
 router.post('/invoices/:invoiceid/makepayment', ctrlInvoices.invoicesMakePayment);
 router.post('/invoices/:invoiceid/markedpaid', ctrlInvoices.invoicesMarkedPaid);
+router.post('/invoices/report', ctrlInvoices.invoicesByDateRange);
+
+//Reports
+router.get('/reports', ctrlReports.reportsList);
 
 //Tax
 router.get('/taxrate', ctrlTaxes.getTaxRate);

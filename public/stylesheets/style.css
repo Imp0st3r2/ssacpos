@@ -54,12 +54,8 @@ footer {
     color: #fff;
 }
 .dropdown-menu {
-	width:100%;
 	color:#fff;
 	background:#000;
-	margin:0;
-	padding:0;
-	border:0;
 }
 .dropdown-menu > li  {
 	width:100%;
