@@ -1,21 +1,14 @@
 (function () {
 	angular
 		.module('ssacpos')
-		.service('invoice', invoice);
+		.service('report', report);
 
-	invoice.$inject = ['$window','$http'];
-	function invoice ($window,$http) {
+	report.$inject = ['$window','$http'];
+	function report ($window,$http) {
 		var currentInvoice = {};
-		var getInvoiceList = function(){
-			return $http.get('/api/invoices');
+		var getReportList = function(){
+			return $http.get('/api/reports');
 		};
-		var getInvoicesByDates = function(startdate,enddate){
-			var report = {
-				startdate : startdate,
-				enddate : enddate
-			}
-			return $http.post('/api/invoices/report', report);
-		}
 		var getInvoiceById = function(invoiceid){
 			return $http.get('/api/invoices/'+invoiceid);
 		};
@@ -41,16 +34,7 @@
 			return $http.post('/api/invoices/'+invoiceid+'/markedpaid');
 		}
 		return {
-			getInvoiceList : getInvoiceList,
-			getInvoiceById : getInvoiceById,
-			createInvoice : createInvoice,
-			editInvoice : editInvoice,
-			deleteInvoice : deleteInvoice,
-			setInvoice : setInvoice,
-			getInvoice : getInvoice,
-			makePayment : makePayment,
-			markedPaid : markedPaid,
-			getInvoicesByDates : getInvoicesByDates
+			getReportList : getReportList
 		};
 	}
 }) ();

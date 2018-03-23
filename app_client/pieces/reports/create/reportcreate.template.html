@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<div class="products-container" style="padding-bottom:25px;">
+		<h1>Create Report</h1>
+		<div class="col-xs-12">
+			<form class="form" id="report-form">
+				<div role="alert" ng-show="rvm.formError" class="alert alert-danger">{{ rvm.formError }}</div>
+				<div class="form-group">
+					<label for="report-startdate">Select a Start Date: </label>
+					<input class="form-control" id="report-startdate" name="report-startdate">
+				</div>
+				<div class="form-group">
+					<label for="report-enddate">Select an End Date: </label>
+					<input class="form-control" id="report-enddate" name="report-enddate">
+				</div>
+			</form>
+			<button type="button" class="btn btn-success" ng-click="rvm.submitReport();">Create</button>
+			<button type="button" class="btn btn-danger" ng-click="rvm.showList();">Cancel</button>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>
