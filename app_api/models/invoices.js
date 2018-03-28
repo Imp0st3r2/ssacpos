@@ -8,23 +8,31 @@ var itemSchema = new mongoose.Schema({brand : String,category : String,model : S
 
 var laborSchema = new mongoose.Schema({time : Number,description : String,hourlycharge : Number,totalcharge : Number});
 
+var accountSchema = new mongoose.Schema({
+	address: {type:String,required:true},
+	city: {type:String, required:true},
+	email : {type:String},
+	firstname: {type: String,required: true},
+	lastname: {type: String,required: true},
+	phone : {type:String,required:true},
+	state: {type:String,required:true},
+	zip : {type:String,required:true},
+	taxexempt : Boolean
+});
+
 var invoiceSchema = new mongoose.Schema({
-	address: String,
-	city: String,
+	account : accountSchema,
 	datecreated : String,
 	datepaid : String,
-	email : String,
-	firstname: {type: String,required: true},
+	invoicenumber : Number,
 	itemcharges : Number,
 	items : [itemSchema],
 	laborcharges : Number,
 	labors : [laborSchema],
-	lastname: {type: String,required: true},
 	othercharges : Number,
 	others : [otherSchema],
 	paid: Boolean,
 	payments : [paymentSchema],
-	phone : String,
 	salesrep : String,
 	state: String,
 	taxrate : Number,
@@ -35,8 +43,7 @@ var invoiceSchema = new mongoose.Schema({
 	vehiclemake : String,
 	vehiclemodel : String,
 	vehiclevin : String,
-	vehicleyear : String,
-	zip : String
+	vehicleyear : String
 });
 
 mongoose.model('Invoice', invoiceSchema, 'invoices');

@@ -14,6 +14,7 @@ var ctrlProducts = require('../controllers/products');
 var ctrlInvoices = require('../controllers/invoices');
 var ctrlTaxes = require('../controllers/taxes');
 var ctrlReports = require('../controllers/reports');
+var ctrlAccounts = require('../controllers/accounts');
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
 
@@ -45,10 +46,17 @@ router.put('/invoices/:invoiceid', ctrlInvoices.invoicesUpdateOne);
 router.delete('/invoices/:invoiceid', ctrlInvoices.invoicesDeleteOne);
 router.post('/invoices/:invoiceid/makepayment', ctrlInvoices.invoicesMakePayment);
 router.post('/invoices/:invoiceid/markedpaid', ctrlInvoices.invoicesMarkedPaid);
-router.post('/invoices/report', ctrlInvoices.invoicesByDateRange);
+// router.post('/invoices/report', ctrlInvoices.invoicesByDateRange);
 
 //Reports
 router.get('/reports', ctrlReports.reportsList);
+
+//Accounts
+router.get('/accounts', ctrlAccounts.accountsList);
+router.get('/accounts/:accountid', ctrlAccounts.accountsReadOne);
+router.post('/accounts', ctrlAccounts.accountsCreate);
+router.put('/accounts/:accountid', ctrlAccounts.accountsUpdateOne);
+router.delete('/accounts/:accountid', ctrlAccounts.accountsDeleteOne);
 
 //Tax
 router.get('/taxrate', ctrlTaxes.getTaxRate);

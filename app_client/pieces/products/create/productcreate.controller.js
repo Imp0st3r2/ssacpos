@@ -69,6 +69,12 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 			builtinamp : false
 		};
 
+		$(document).on('keydown', function(e) {
+    		// console.log("key pressed");
+    		if (e.which == 13) {
+        		e.preventDefault();
+    		}
+		});
 		vm.brands = [];
 		vm.categories = [];
 		console.log(vm.currentProduct);

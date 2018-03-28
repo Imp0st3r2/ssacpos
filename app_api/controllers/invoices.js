@@ -7,64 +7,23 @@ var sendJsonResponse = function(res, status, content) {
 };
 
 module.exports.invoicesList = function(req, res) {
-	Invoice
-		.find()
-		.exec(function(err, invoices){
-			if(!invoices){
-				sendJsonResponse(res, 404, { "message" : "no invoices found"});
-				return;
-			} else if (err) {
-				sendJsonResponse(res, 404, err);
-				return;
-			}
-			sendJsonResponse(res, 200, invoices);
-		});
-};
-module.exports.invoicesByDateRange = function(req,res){
-	var reportDates = req.body;
-	if(reportDates){
+	if (req.params){
 		Invoice
 			.find()
-			.exec(function(err, invoices){
-				if(!invoices){
-					sendJsonResponse(res, 400, { "message" : "no invoices found"})
-				} else if (err){
-					sendJsonResponse(res, 400, err);
-				}else{
-					var splitstartdate = reportDates.startdate.split('-');
-					var startyear = Number(splitstartdate[0]);
-					var startmonth = Number(splitstartdate[1]);
-					var startday = Number(splitstartdate[2]);
-					console.log(startyear);
-					console.log(startmonth);
-					console.log(startday);
-					var splitenddate = reportDates.enddate.split('-');
-					var endyear = Number(splitenddate[0]);
-					var endmonth = Number(splitenddate[1]);
-					var endday = Number(splitenddate[2]);
-					console.log(endyear);
-					console.log(endmonth);
-					console.log(endday);
-					var filteredInvoices = [];
-					for(var i=0;i<invoices.length;i++){
-						var splitinvoicedate = invoices[i].datecreated.split('-');
-						var invoiceyear = Number(splitinvoicedate[0]);
-						var invoicemonth = Number(splitinvoicedate[1]);
-						var invoiceday = Number(splitinvoicedate[2]);
-						console.log(invoiceyear);
-						console.log(invoicemonth);
-						console.log(invoiceday);
-						if(invoiceyear >= startyear && invoiceyear <= endyear && invoicemonth >= startmonth && invoicemonth <= endmonth && invoiceday >= startday && invoiceday <= endday){
-							filteredInvoices.push(invoices[i]);
-						}
-					}
-					sendJsonResponse(res, 200, filteredInvoices);
+			.exec(function(err, products){
+				if(!products){
+					sendJsonResponse(res, 404, { "message" : "no users found"});
+					return;
+				} else if (err) {
+					sendJsonResponse(res, 404, err);
+					return;
 				}
-			})
-	}else{
-		sendJsonResponse(res, 404, {"message" : "No date range in request"});
+				sendJsonResponse(res, 200, products);
+			});
+	} else {
+		sendJsonResponse(res, 404, { "message" : "No userid in request."});
 	}
-}
+};
 module.exports.invoicesCreate = function(req, res) {
 	console.log(req.body);
 	var invoice = new Invoice(req.body);

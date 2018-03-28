@@ -1,0 +1,49 @@
+<div class="container-fluid">
+	<div class="products-container" style="padding-bottom:25px;">
+		<h1>Create Customer Account</h1>
+		<div class="col-xs-12">
+			<form class="form needs-validation" id="account-form">
+				<div role="alert" ng-show="avm.formError" class="alert alert-danger">{{ avm.formError }}</div>
+				<div class="form-group col-xs-6">
+					<label for="account-firstname">First Name: </label>
+					<input type="text" class="form-control" id="account-firstname" name="account-firstname" ng-model="avm.newaccount.firstname" required>
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="account-lastname">Last Name: </label>
+					<input type="text" class="form-control" id="account-lastname" name="account-lastname" ng-model="avm.newaccount.lastname" required>
+				</div>
+				<div class="form-group col-xs-12">
+					<label for="account-address">Address: </label>
+					<input type="text" class="form-control" id="account-address" name="account-address" ng-model="avm.newaccount.address" required>
+				</div>
+				<div class="form-group col-xs-4">
+					<label for="account-city">City: </label>
+					<input type="text" class="form-control" id="account-city" name="account-city" ng-model="avm.newaccount.city" required>
+				</div>
+				<div class="form-group col-xs-4">
+					<label for="account-state">State: </label>
+					<input type="text" class="form-control" id="account-state" name="account-state" ng-model="avm.newaccount.state" required>
+				</div>
+				<div class="form-group col-xs-4">
+					<label for="account-zip">Zip: </label>
+					<input type="text" class="form-control" id="account-zip" name="account-zip" ng-model="avm.newaccount.zip" required>
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="account-email">Email: </label>
+					<input type="text" class="form-control" id="account-email" name="account-email" ng-model="avm.newaccount.email">
+				</div>
+				<div class="form-group col-xs-6">
+					<label for="account-phone">Phone: </label>
+					<input type="text" class="form-control" id="account-phone" name="account-phone" ng-model="avm.newaccount.phone" required>
+				</div>
+				<div class="form-group col-xs-12">
+					<label for="account-taxexempt"><input type="checkbox" style="display:inline-block;height:20px;width:20px;" id="account-taxexempt" name="account-taxexempt" ng-model="avm.newaccount.taxexempt"><b> Tax Exempt</b></label>
+				</div>
+			</form>
+			<button type="button" class="btn btn-success" ng-click="avm.submitAccount();">Create</button>
+			<button type="button" class="btn btn-danger" ng-click="avm.showList();">Cancel</button>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>
