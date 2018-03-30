@@ -12,6 +12,9 @@
 		var getProductById = function(productid){
 			return $http.get('/api/products/'+productid);
 		};
+		var getProductByModel = function(model){
+			return $http.get('/api/products/model/'+model);
+		};
 		var createProduct = function(product){
 			return $http.post('/api/products',product);
 		};
@@ -38,7 +41,8 @@
 			deleteProduct : deleteProduct,
 			setProduct : setProduct,
 			getProduct : getProduct,
-			getCategoriesByBrand : getCategoriesByBrand
+			getCategoriesByBrand : getCategoriesByBrand,
+			getProductByModel : getProductByModel
 		};
 	}
 }) ();

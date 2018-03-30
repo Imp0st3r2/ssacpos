@@ -3,9 +3,9 @@ angular
 	.module('ssacpos')
 	.controller('invoicecreateCtrl', invoicecreateCtrl);
 
-invoicecreateCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'tax'];
+invoicecreateCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'tax','account'];
 
-function invoicecreateCtrl($location, $scope, $compile, authentication, invoice, product, tax) {
+function invoicecreateCtrl($location, $scope, $compile, authentication, invoice, product, tax, account) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	vm.currentUser = authentication.currentUser();
@@ -13,17 +13,25 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 	vm.invoiceLabors = 0;
 	vm.invoiceOthers = 0;
 	vm.currentInvoice = {};
+	vm.accounts = [];
 	if(vm.isLoggedIn){
-		vm.invoices = {};
-		vm.newinvoice = {
-			firstname: "",
-			lastname: "",
-			address: "",
-			state: "",
-			city: "",
+		account.getAccountList().then(function(response){
+			vm.accounts = response.data;
+			console.log(vm.accounts);
+		});
+		vm.newaccount = {
+			firstname : "",
+			lastname : "",
+			address : "",
+			city : "",
+			state : "",
 			zip : "",
 			phone : "",
 			email : "",
+			taxexempt : false
+		}
+		vm.newinvoice = {
+			account : vm.newaccount,
 			vehiclemake : "",
 			vehiclemodel : "",
 			vehicleyear : "",
@@ -54,64 +62,43 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			console.log(response.data);
 			vm.products = response.data;
 			console.log(vm.products);
-			for(product in vm.products){
-				console.log(product);
-				if(vm.brands.indexOf(vm.products[product].brand) === -1){
-					vm.brands.push(vm.products[product].brand);
+			for(p in vm.products){
+				console.log(p);
+				if(vm.models.indexOf(vm.products[p].model) === -1){
+					vm.models.push(vm.products[p].model);
 				}
 			}
-			console.log(vm.brands);
+			console.log(vm.models);
 		});
-		$("#product-brand").on('change',function(){
-			if($("#product-brand").val()==="newbrand"){
-				vm.newbrand = true;
+		var clickcount = 0;
+		$("#invoice-phone").keypress(function(){
+			if($("#invoice-phone").val().length === 0){
+				vm.newaccount.phone = "(" + vm.newaccount.phone;
+				$("#invoice-phone").val(vm.newaccount.phone);
 			}else{
-				vm.newbrand = false;
-			}
-		})
-		$("#product-newcategory").on('change',function(){
-			for(attr in vm.attr){
-				if(attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "size" && attr != "configuration" && attr != "description"){
-					vm.attr[attr] = false;
+				// console.log(phoneCount);
+				if($("#invoice-phone").val().length === 4){
+					console.log(vm.newaccount.phone);
+					vm.newaccount.phone = vm.newaccount.phone + ")";
+					console.log(vm.newaccount.phone);
+					$("#invoice-phone").val(vm.newaccount.phone);
+				}else if($("#invoice-phone").val().length === 8){
+					vm.newaccount.phone = vm.newaccount.phone + "-";
+					$("#invoice-phone").val(vm.newaccount.phone);
 				}
 			}
-			console.log(vm.attr);
-			var cat = $("#product-newcategory").val();
-			cat = cat.toLowerCase().replace(' ','')
-			console.log(cat);
-			vm.configureCategory(cat);
-		})
-		$("#product-category").on('change',function(){
-			for(attr in vm.attr){
-				if(attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "size" && attr != "configuration" && attr != "description"){
-					vm.attr[attr] = false;
+		});
+		$("#invoice-phone").on('keydown',function(e){
+			if(e.which === 9){
+				for(var i=0;i<vm.accounts.length;i++){
+					if(vm.accounts[i].phone === $("#invoice-phone").val()){
+						vm.newaccount = vm.accounts[i];
+						vm.newinvoice.account = vm.newaccount;
+					}
 				}
-			}
-
-			console.log(vm.attr);
-			var cat = $("#product-category").val().toLowerCase().replace(' ','');
-			cat = cat.toLowerCase().replace(' ','')
-			console.log(cat);
-			vm.configureCategory(cat);
-			if($("#product-category").val()==="newcategory"){
-				vm.newcategory = true;
-			}else{
-				vm.newcategory = false;
-			}
-		})
-		$("input[type=checkbox]").on('click',function(){
-			if($(this).prop("checked")){
-				var attributename = $(this).val();
-				console.log(attributename);
-				vm.newproduct[attributename] = true;
-				console.log(vm.newproduct);
-			}else{
-				var attributename = $(this).val();
-				console.log(attributename);
-				vm.newproduct[attributename] = false;
-				console.log(vm.newproduct);
-				// $("#"+attributeProperty).hide();
-			}
+				console.log(vm.newaccount);
+				console.log(vm.newinvoice);
+    		}
 		})
 		$(document).on('keydown', function(e) {
     		// console.log("key pressed");
@@ -119,6 +106,15 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
         		e.preventDefault();
     		}
 		});
+		$("input[type=checkbox]").on('click',function(){
+			if($(this).prop("checked")){
+				vm.newinvoice.taxdue = 0;
+				vm.calcTotalPrice();
+			}else{
+				vm.calculateTax();
+				vm.calcTotalPrice();
+			}
+		})
 		vm.addOther = function(){
 			var appendString = "";
 			if(vm.invoiceOthers===0){
@@ -264,17 +260,17 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 				appendString = appendString + "<div class='top-margin10' style='font-size:.8em'>"
 											+ 	"<div class='row row-border' style='text-align:center;'>"
 											+		"<div class='col-xs-1'></div>"
+											+		"<div class='col-xs-1'>"
+											+			"<p>Quantity</p>"
+											+		"</div>"
+											+		"<div class='col-xs-2'>"
+											+			"<p>Model</p>"
+											+		"</div>"
 											+		"<div class='col-xs-2'>"
 											+			"<p>Brand</p>"
 											+		"</div>"
 											+		"<div class='col-xs-2'>"
 											+			"<p>Category</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Model</p>"
-											+		"</div>"
-											+		"<div class='col-xs-1'>"
-											+			"<p>Quantity</p>"
 											+		"</div>"
 											+		"<div class='col-xs-2'>"
 											+			"<p>Unit Price</p>"
@@ -296,23 +292,21 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 								 +		"<div class='col-xs-1'>"
 								 +			"<button class='btn btn-danger' ng-click='ivm.deleteItem("+vm.invoiceItems+");'>X</button>"
 								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<select class='form-control itembrand' id='item"+vm.invoiceItems+"-brand' name='item"+vm.invoiceItems+"-brand' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].brand' ng-change='ivm.determineCategories("+vm.invoiceItems+");'>"
-								 +				"<option ng-repeat='brand in ivm.brands' value='{{brand}}'>{{brand}}</option>"
-								 +			"</select>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<select class='form-control itemcategory' id='item"+vm.invoiceItems+"-category' name='item"+vm.invoiceItems+"-category' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].category' ng-change='ivm.determineModels("+vm.invoiceItems+");'>"
-								 +				"<option ng-repeat='category in ivm.categories"+vm.invoiceItems+"' value='{{category}}'>{{category}}</option>"
-								 +			"</select>"
+								 +		"<div class='col-xs-1'>"
+								 +			"<input type='number' class='form-control itemquantity' id='item"+vm.invoiceItems+"-quantity' name='item"+vm.invoiceItems+"-quantity' min='0' max='ivm.newinvoice.items["+vm.invoiceItems+"].quantitymax' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].quantity' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'>"
 								 +		"</div>"
 								 +		"<div class='col-xs-2'>"
 								 +			"<select class='form-control itemmodel' id='item"+vm.invoiceItems+"-model' name='item"+vm.invoiceItems+"-model' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].model' ng-change='ivm.determineQuanPrice("+vm.invoiceItems+");'>"
-								 +				"<option ng-repeat='model in ivm.models"+vm.invoiceItems+"' value='{{model}}'>{{model}}</option>"
+								 +				"<option ng-repeat='model in ivm.models' value='{{model}}'>{{model}}</option>"
 								 +			"</select>"
 								 +		"</div>"
-								 +		"<div class='col-xs-1'>"
-								 +			"<input type='number' class='form-control itemquantity' id='item"+vm.invoiceItems+"-quantity' name='item"+vm.invoiceItems+"-quantity' min='0' max='ivm.newinvoice.items["+vm.invoiceItems+"].quantitymax' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].quantity' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'>"
+								 +		"<div class='col-xs-2'>"
+								 +			"<input class='form-control itembrand' id='item"+vm.invoiceItems+"-brand' name='item"+vm.invoiceItems+"-brand' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].brand' ng-change='ivm.determineCategories("+vm.invoiceItems+");'>"
+								 +			"</input>"
+								 +		"</div>"
+								 +		"<div class='col-xs-2'>"
+								 +			"<input class='form-control itemcategory' id='item"+vm.invoiceItems+"-category' name='item"+vm.invoiceItems+"-category' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].category' ng-change='ivm.determineModels("+vm.invoiceItems+");'>"
+								 +			"</input>"
 								 +		"</div>"
 								 +		"<div class='col-xs-2'>"
 								 +			"<input type='number' step='.01' class='form-control itemunitprice' id='item"+vm.invoiceItems+"-unitprice' name='item"+vm.invoiceItems+"-unitprice' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].unitprice' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'>"
@@ -328,26 +322,6 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			compiled($scope);
 			vm.invoiceItems++;
 		}
-		vm.determineCategories = function(itemnumber){
-			console.log(vm['brand'+itemnumber]);
-			vm['categories'+itemnumber] = [];
-			for(var i=0;i<vm.products.length;i++){
-				if(vm.products[i].brand === vm.newinvoice.items[itemnumber].brand && vm['categories'+itemnumber].indexOf(vm.products[i].category) === -1){
-					vm['categories'+itemnumber].push(vm.products[i].category);
-				}
-			}
-			console.log(vm['categories'+itemnumber]);
-		}
-		vm.determineModels = function(itemnumber){
-			console.log(vm['categories'+itemnumber]);
-			vm['models'+itemnumber] = [];
-			for(var i=0;i<vm.products.length;i++){
-				if(vm.products[i].brand === vm.newinvoice.items[itemnumber].brand && vm.products[i].category === vm.newinvoice.items[itemnumber].category && vm['models'+itemnumber].indexOf(vm.products[i].model) === -1){
-					vm['models'+itemnumber].push(vm.products[i].model);
-				}
-			}
-			console.log(vm['models'+itemnumber]);
-		}
 		vm.determineQuanPrice = function(itemnumber){
 			console.log(vm.newinvoice.items[itemnumber].model);
 			vm.newinvoice.items[itemnumber].quantity = 0;
@@ -356,6 +330,8 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			for(var i=0;i<vm.products.length;i++){
 				console.log(vm.products[i]);
 				if(vm.products[i].model === vm.newinvoice.items[itemnumber].model){
+					vm.newinvoice.items[itemnumber].brand = vm.products[i].brand;
+					vm.newinvoice.items[itemnumber].category = vm.products[i].category;
 					vm.newinvoice.items[itemnumber].quantitymax = vm.products[i].quantity;
 					vm.newinvoice.items[itemnumber].unitprice = vm.products[i].price;
 				}
@@ -378,7 +354,11 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 				}
 			}
 			vm.newinvoice.itemcharges = Number(totalPrice.toFixed(2));
-			vm.calculateTax();
+			console.log(vm.newinvoice);
+			console.log(vm.newaccount);
+			if(vm.newaccount.taxexempt != true){
+				vm.calculateTax();
+			}
 			vm.calcTotalPrice();
 		}
 		vm.deleteItem = function(itemnumber){
@@ -395,7 +375,9 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 				}
 			}
 			vm.newinvoice.itemcharges = Number(totalPrice.toFixed(2));
-			vm.calculateTax();
+			if(vm.newaccount.taxexempt != true){
+				vm.calculateTax();
+			}
 			vm.calcTotalPrice();
 		}
 		vm.calculateTax = function(){
@@ -422,25 +404,55 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		}
 		vm.submitInvoice = function(){
 			console.log(vm.newinvoice);
-			invoice.createInvoice(vm.newinvoice).then(function(response){
-				console.log(response);
-				$(".dialogbox").empty();
-				var appendString = "<div class='row'>"
-								 +  "<div class='col-xs-12'>"
-								 + 	 "<p>"+response.data+"</p>"
-								 +	"</div>"
-								 + "</div>"
-								 + "<div class='row'>"
-								 +	"<div class='col-xs-3'></div>"
-								 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
-								 +	"<div class='col-xs-3'></div>"; 
-				var el = angular.element(appendString)
-				$(".dialogbox").append(el);
-				compiled = $compile(el);
-				compiled($scope);
-				console.log(response);
-				$(".dialogbox").show();
-			})
+			if(!vm.newaccount._id){
+				account.createAccount(vm.newaccount).then(function(response){
+					console.log(response);
+					vm.newaccount = response.data;
+					vm.finishSubmission();
+				})
+			}else{
+				vm.finishSubmission();
+			}
+			
+		}
+		vm.finishSubmission = function(){
+			var itemcount = vm.newinvoice.items.length;
+			for(item in vm.newinvoice.items){
+				console.log(vm.newinvoice.items[item].quantity)
+				product.getProductByModel(vm.newinvoice.items[item].model).then(function(response){
+					console.log(response.data);
+					var requestedproduct = response.data[0];
+					requestedproduct.quantity = requestedproduct.quantity - vm.newinvoice.items[item].quantity;
+
+					product.editProduct(requestedproduct).then(function(response){
+						console.log(response);
+						itemcount--;
+						if(itemcount<=0){
+							invoice.createInvoice(vm.newinvoice).then(function(response){
+								console.log(response);
+								$(".dialogbox").empty();
+								var appendString = "<div class='row'>"
+												 +  "<div class='col-xs-12'>"
+												 + 	 "<p>"+response.data+"</p>"
+												 +	"</div>"
+												 + "</div>"
+												 + "<div class='row'>"
+												 +	"<div class='col-xs-3'></div>"
+												 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
+												 +	"<div class='col-xs-3'></div>"; 
+								var el = angular.element(appendString)
+								$(".dialogbox").append(el);
+								compiled = $compile(el);
+								compiled($scope);
+								console.log(response);
+								$(".dialogbox").show();
+							},function(err){
+								console.log(err);
+							})
+						}
+					})
+				})
+			}
 		}
 		vm.showList = function(){
 			$(".dialogbox").hide();

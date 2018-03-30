@@ -12,10 +12,15 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 	invoice.getInvoiceList().then(function(response){
 		vm.invoices = response.data;
 		for(var i = 0;i<vm.invoices.length;i++){
-			if(vm.invoices[i].paid === true){
-				vm.closedinvoices.push(vm.invoices[i]);
+			var tempinvoice = vm.invoices[i];
+			var idate = tempinvoice.datecreated.split('T');
+			idate = idate[0].split('-');
+			idate = idate[1] + "-" + idate[2] + "-" + idate[0];
+			tempinvoice.datecreated = idate;
+			if(tempinvoice.paid === true){
+				vm.closedinvoices.push(tempinvoice);
 			}else{
-				vm.openinvoices.push(vm.invoices[i]);
+				vm.openinvoices.push(tempinvoice);
 			}
 		}
 		console.log("***OPEN INVOICES***");

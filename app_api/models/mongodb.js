@@ -44,3 +44,4 @@ require('./products');
 require('./invoices');
 require('./reports');
 require('./accounts');
+require('./counters');

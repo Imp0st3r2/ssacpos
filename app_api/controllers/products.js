@@ -54,6 +54,24 @@ module.exports.productsReadOne = function(req, res) {
 		sendJsonResponse(res, 404, { "message" : "No productid in request."});
 	}
 };
+module.exports.productsByModel = function(req, res) {
+	if (req.params && req.params.modelname){
+		Product
+			.find({model:req.params.modelname})
+			.exec(function(err, product){
+				if(!product){
+					sendJsonResponse(res, 404, { "message" : "model not found"});
+					return;
+				} else if (err) {
+					sendJsonResponse(res, 404, err);
+					return;
+				}
+				sendJsonResponse(res, 200, product);
+			});
+	} else {
+		sendJsonResponse(res, 404, { "message" : "No model in request."});
+	}
+};
 module.exports.productsUpdateOne = function(req, res) {
 	if(!req.params.productid){
 		sendJsonResponse(res, 404, {

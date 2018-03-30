@@ -33,6 +33,7 @@ router.post('/users/resetpassword',ctrlUsers.usersChangePass);
 //Products
 router.get('/products', ctrlProducts.productsList);
 router.get('/products/:productid', ctrlProducts.productsReadOne);
+router.get('/products/model/:modelname', ctrlProducts.productsByModel);
 router.post('/products', ctrlProducts.productsCreate);
 router.put('/products/:productid', ctrlProducts.productsUpdateOne);
 router.delete('/products/:productid', ctrlProducts.productsDeleteOne);

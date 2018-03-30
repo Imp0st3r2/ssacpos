@@ -22,7 +22,7 @@ var accountSchema = new mongoose.Schema({
 
 var invoiceSchema = new mongoose.Schema({
 	account : accountSchema,
-	datecreated : String,
+	datecreated : {type:Date,default:Date.now},
 	datepaid : String,
 	invoicenumber : Number,
 	itemcharges : Number,

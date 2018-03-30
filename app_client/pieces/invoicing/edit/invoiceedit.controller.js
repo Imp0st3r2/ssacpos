@@ -18,14 +18,7 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 	if(vm.isLoggedIn){
 		vm.invoices = [];
 		vm.newinvoice = {
-			firstname: "",
-			lastname: "",
-			address: "",
-			state: "",
-			city: "",
-			zip : "",
-			phone : "",
-			email : "",
+			account : {},
 			vehiclemake : "",
 			vehiclemodel : "",
 			vehicleyear : "",
@@ -65,10 +58,10 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 				console.log(response.data);
 				vm.products = response.data;
 				console.log(vm.products);
-				for(product in vm.products){
-					console.log(product);
-					if(vm.brands.indexOf(vm.products[product].brand) === -1){
-						vm.brands.push(vm.products[product].brand);
+				for(p in vm.products){
+					console.log(p);
+					if(vm.models.indexOf(vm.products[p].model) === -1){
+						vm.models.push(vm.products[p].model);
 					}
 				}
 				console.log(vm.brands);
@@ -81,23 +74,21 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 										 +		"<div class='col-xs-1'>"
 										 +			"<button class='btn btn-danger' ng-click='ivm.deleteItem("+vm.itemCount+");'>X</button>"
 										 +		"</div>"
-										 +		"<div class='col-xs-2'>"
-										 +			"<select class='form-control itembrand' id='item"+vm.itemCount+"-brand' name='item"+vm.itemCount+"-brand' ng-model='ivm.newinvoice.items["+vm.itemCount+"].brand' ng-change='ivm.determineCategories("+vm.itemCount+");'>"
-										 +				"<option ng-repeat='brand in ivm.brands' value='{{brand}}'>{{brand}}</option>"
-										 +			"</select>"
-										 +		"</div>"
-										 +		"<div class='col-xs-2'>"
-										 +			"<select class='form-control itemcategory' id='item"+vm.itemCount+"-category' name='item"+vm.itemCount+"-category' ng-model='ivm.newinvoice.items["+vm.itemCount+"].category' ng-change='ivm.determineModels("+vm.itemCount+");'>"
-										 +				"<option ng-repeat='category in ivm.categories"+vm.itemCount+"' value='{{category}}'>{{category}}</option>"
-										 +			"</select>"
+										 +		"<div class='col-xs-1'>"
+										 +			"<input type='number' class='form-control itemquantity' id='item"+vm.itemCount+"-quantity' name='item"+vm.itemCount+"-quantity' min='0' max='ivm.newinvoice.items["+vm.itemCount+"].quantitymax' ng-model='ivm.newinvoice.items["+vm.itemCount+"].quantity' ng-change='ivm.determineTotalPrice("+vm.itemCount+");'>"
 										 +		"</div>"
 										 +		"<div class='col-xs-2'>"
 										 +			"<select class='form-control itemmodel' id='item"+vm.itemCount+"-model' name='item"+vm.itemCount+"-model' ng-model='ivm.newinvoice.items["+vm.itemCount+"].model' ng-change='ivm.determineQuanPrice("+vm.itemCount+");'>"
 										 +				"<option ng-repeat='model in ivm.models"+vm.itemCount+"' value='{{model}}'>{{model}}</option>"
 										 +			"</select>"
 										 +		"</div>"
-										 +		"<div class='col-xs-1'>"
-										 +			"<input type='number' class='form-control itemquantity' id='item"+vm.itemCount+"-quantity' name='item"+vm.itemCount+"-quantity' min='0' max='ivm.newinvoice.items["+vm.itemCount+"].quantitymax' ng-model='ivm.newinvoice.items["+vm.itemCount+"].quantity' ng-change='ivm.determineTotalPrice("+vm.itemCount+");'>"
+										 +		"<div class='col-xs-2'>"
+										 +			"<input class='form-control itembrand' id='item"+vm.itemCount+"-brand' name='item"+vm.itemCount+"-brand' ng-model='ivm.newinvoice.items["+vm.itemCount+"].brand' ng-change='ivm.determineCategories("+vm.itemCount+");'>"
+										 +			"</input>"
+										 +		"</div>"
+										 +		"<div class='col-xs-2'>"
+										 +			"<input class='form-control itemcategory' id='item"+vm.itemCount+"-category' name='item"+vm.itemCount+"-category' ng-model='ivm.newinvoice.items["+vm.itemCount+"].category' ng-change='ivm.determineModels("+vm.itemCount+");'>"
+										 +			"</input>"
 										 +		"</div>"
 										 +		"<div class='col-xs-2'>"
 										 +			"<input type='number' step='.01' class='form-control itemunitprice' id='item"+vm.itemCount+"-unitprice' name='item"+vm.itemCount+"-unitprice' ng-model='ivm.newinvoice.items["+vm.itemCount+"].unitprice' ng-change='ivm.determineTotalPrice("+vm.itemCount+");'>"
@@ -181,7 +172,34 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 		console.log(vm.invoiceItems);
 		console.log(vm.invoiceLabors);
 		console.log(vm.invoiceOthers);
-		
+		$("input[type=checkbox]").on('click',function(){
+			if($(this).prop("checked")){
+				vm.newinvoice.taxdue = 0;
+				vm.calcTotalPrice();
+			}else{
+				vm.calculateTax();
+				vm.calcTotalPrice();
+			}
+		})
+		vm.calculateTax = function(){
+			vm.newinvoice.taxdue = vm.newinvoice.itemcharges * vm.newinvoice.taxrate;
+			console.log(vm.newinvoice.taxdue);
+			vm.newinvoice.taxdue = Number(vm.newinvoice.taxdue.toFixed(2));
+			vm.newinvoice.itemtotalwtax = vm.newinvoice.itemcharges + vm.newinvoice.taxdue;
+			console.log(vm.newinvoice.itemtotalwtax);
+			vm.newinvoice.itemtotalwtax = Number(vm.newinvoice.itemtotalwtax.toFixed(2));
+		}
+		vm.calcTotalPrice = function(){
+			vm.newinvoice.totalprice = vm.newinvoice.itemcharges + vm.newinvoice.laborcharges + vm.newinvoice.othercharges + vm.newinvoice.taxdue;
+			vm.newinvoice.totalprice = Number(vm.newinvoice.totalprice.toFixed(2));
+			var paymenttotal = 0;
+			if(vm.newinvoice.payments){
+				for(var i=0;i<vm.newinvoice.payments;i++){
+					paymenttotal += vm.newinvoice.payments[i].amountpaid;
+				}
+			}
+			vm.newinvoice.totalafterpayments = vm.newinvoice.totalprice - paymenttotal;
+		}
 		vm.submitInvoice = function(){
 			console.log(vm.newinvoice);
 			invoice.editInvoice(vm.newinvoice).then(function(response){

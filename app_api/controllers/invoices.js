@@ -1,5 +1,6 @@
 var mongoose = require('mongoose').set('debug', true);
 var Invoice = mongoose.model('Invoice');
+var Counter = mongoose.model('Counter');
 var moment = require('moment');
 var sendJsonResponse = function(res, status, content) {
 	res.status(status);
@@ -26,17 +27,36 @@ module.exports.invoicesList = function(req, res) {
 };
 module.exports.invoicesCreate = function(req, res) {
 	console.log(req.body);
-	var invoice = new Invoice(req.body);
-	invoice.datecreated = moment().format('YYYY-MM-DD').toString();
-	invoice.save(function(err) {
-		if (err) {
-			console.log(err);
-			sendJsonResponse(res, 404, err);
-		} else {
-			sendJsonResponse(res, 200, "Invoice successfully created");
+	var newinvoice = new Invoice(req.body);
+	Invoice.findOne({},{},{sort:{'datecreated': -1}}, function(err, invoice){
+		if(err){
+			console.log("error: " + err);
+		}else{
+			if(invoice === null){
+				newinvoice.invoicenumber = 1;
+			}else{
+				console.log(invoice)
+				newinvoice.invoicenumber = invoice.invoicenumber + 1;
+			}
+			newinvoice.save(function(err) {
+				if (err) {
+					console.log(err);
+					sendJsonResponse(res, 404, err);
+				} else {
+					sendJsonResponse(res, 200, "Invoice successfully created");
+				}
+			});
 		}
-	});
+	})
 };
+function getNextSequenceValue(sequenceName){
+	var sequenceDocument = Counter.findAndModify({
+		query:{_id:sequenceName},
+		update: {$inc:{sequence_value:1}},
+		new:true
+	});
+	return sequenceDocument.sequence_value;
+}
 module.exports.invoicesReadOne = function(req, res) {
 	if (req.params && req.params.invoiceid){
 		Invoice
