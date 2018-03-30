@@ -18,10 +18,6 @@ function printInvoiceCtrl ($routeParams, $location, $scope, $compile, authentica
 		invoice.getInvoiceById(vm.currentInvoice._id).then(function(response){
 			vm.currentInvoice = response.data;
 			console.log(vm.currentInvoice);
-			vm.areacode = "(" + vm.currentInvoice.phone.substring(0,3) + ")";
-			vm.citycode = vm.currentInvoice.phone.substring(3,6);
-			vm.phonenumber = vm.areacode + " " + vm.citycode + "-" + vm.currentInvoice.phone.substring(6,vm.currentInvoice.phone.length);
-			console.log(vm.phonenumber);
 		})
 		vm.printInvoice = function(){
 			$("#printbutton").hide();
