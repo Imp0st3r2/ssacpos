@@ -6,6 +6,8 @@ var auth = jwt({
 	secret: process.env.JWT_SECRET,
 	userProperty: 'payload'
 });
+
+
 /******ADD CONTROLLERS HERE******/
 // var ctrlName = require('../controllers/controllername')
 var ctrlUsers = require('../controllers/users');
@@ -15,6 +17,8 @@ var ctrlInvoices = require('../controllers/invoices');
 var ctrlTaxes = require('../controllers/taxes');
 var ctrlReports = require('../controllers/reports');
 var ctrlAccounts = require('../controllers/accounts');
+
+
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
 

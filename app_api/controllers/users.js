@@ -38,6 +38,7 @@ module.exports.usersCreate = function(req, res) {
 	if(req.body.status){
 		user.status = req.body.status;
 	}
+	console.log(user);
 	user.save(function(err) {
 		if (err) {
 			sendJsonResponse(res, 404, err);

@@ -1,44 +1,68 @@
 <div class="container-fluid">
 	<div class="products-container">
-        <h1>Current Year's Invoices</h1>
+        <h1>Current Invoices</h1>
+		<form>
+			<div class="input-group add-on">
+				<input type="text" class="form-control" placeholder="Search..." id="product-search" ng-model="pvm.searchterm">
+			</div>
+		</form><br>
 		<button type="button" ng-click="ivm.addInvoice();" class="btn btn-success">Create Invoice</button>
-		<div class="row">
-			<div class="col-xs-6">
-				<h2>Open Invoices</h2>
-				<div id="openinvoices">
-					<div class="list-group" ng-repeat="oinvoice in ivm.openinvoices">
-						<div class="col-xs-8">
-							<a href="#" data-poll-id="{{oinvoice._id}}" class="list-group-item" data-toggle="modal" data-target="#invoiceModal" ng-click="ivm.readOne(oinvoice._id);">
-							{{oinvoice.datecreated}} - {{oinvoice.account.firstname}} {{oinvoice.account.lastname}} - {{oinvoice.vehicleyear}}, {{oinvoice.vehiclemake}} {{oinvoice.vehiclemodel}} 
-							</a>
-						</div>
-						<div class="col-xs-4">
-							<button class="btn btn-primary" type="button" ng-click="ivm.editInvoice(oinvoice._id);">Edit</button>
-							<button class="btn btn-danger" type="button" ng-click="ivm.deleteInvoice(oinvoice._id);">Delete</button>
-						</div>
+		<div class="top-margin10">
+			<div class="row row-border">
+				<div class="col-xs-10">
+					<div class="col-xs-2">
+						<p>Creation Date</p>
+					</div>
+					<div class="col-xs-3">
+						<p>Name</p>
+					</div>
+					<div class="col-xs-3">
+						<p>Vehicle</p>
+					</div>
+					<div class="col-xs-2">
+						<p>Tax Status</p>
+					</div>
+					<div class="col-xs-1">
+						<p>Bill Status</p>
+					</div>
+					<div class="col-xs-1">
+						<p>Invoice Number</p>
 					</div>
 				</div>
-			</div>
-			<div class="col-xs-6">
-				<h2>Paid Invoices</h2>
-				<div id="closedinvoices">
-					<div class="list-group" ng-repeat="cinvoice in ivm.closedinvoices">
-						<div class="col-xs-8">
-							<a href="#" data-poll-id="{{cinvoice._id}}" class="list-group-item" data-toggle="modal" data-target="#invoiceModal" ng-click="ivm.readOne(cinvoice._id);">
-							{{cinvoice.datecreated}} - {{cinvoice.account.firstname}} {{cinvoice.account.lastname}} - {{cinvoice.vehicleyear}}, {{cinvoice.vehiclemake}} {{cinvoice.vehicle}} 
-							</a>
-						</div>
-						<div class="col-xs-4">
-							<button class="btn btn-primary" type="button" ng-click="ivm.editInvoice(cinvoice._id);">Edit</button>
-							<button class="btn btn-danger" type="button" ng-click="ivm.deleteInvoice(cinvoice._id);">Delete</button>
-						</div>
-					</div>
+				<div class="col-xs-2">
 				</div>
 			</div>
-		</div>	
+			<div class="row row-border productrow" ng-repeat="invoice in ivm.invoices | filter : pvm.searchterm" ng-click="ivm.readOne(invoice._id);">
+				<div class="col-xs-10" data-toggle="modal" data-target="#invoiceModal">
+					<div class="col-xs-2">
+						<p>{{invoice.datecreated}}</p>
+					</div>
+					<div class="col-xs-3">
+						<p>{{invoice.account.firstname}} {{invoice.account.lastname}}</p>
+					</div>
+					<div class="col-xs-3">
+						<p>{{invoice.vehicleyear}}, {{invoice.vehiclemake}} {{invoice.vehiclemodel}}</p>
+					</div>
+					<div class="col-xs-2">
+						<p ng-if="invoice.account.taxexempt">Exempt</p>
+						<p ng-if="!invoice.account.taxexempt">Taxable</p>
+					</div>
+					<div class="col-xs-1">
+						<p ng-if="invoice.paid" style="color:#0a0;">Paid</p>
+						<p ng-if="!invoice.paid" style="color:#a00;">Unpaid</p>
+					</div>
+					<div class="col-xs-1">
+						<p>{{invoice.invoicenumber}}</p>
+					</div>
+				</div>
+				<div class="col-xs-2">
+					<button class="btn btn-primary" type="button" ng-click="ivm.editInvoice(invoice._id);">Edit</button>
+					<button class="btn btn-danger" type="button" ng-click="ivm.deleteInvoice(invoice._id);">Delete</button>
+				</div>
+			</div>
+		</div>
 		<div class="dialogbox">
 		</div>
-
 	</div>
 </div>
 
@@ -46,7 +70,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="invoiceModal">Invoice for {{ivm.clickedInvoice.account.firstname}} {{ivm.clickedInvoice.account.lastname}}, {{ivm.clickedInvoice.datecreated}} <span ng-if="ivm.clickedInvoice.paid" style="color:#F00;"> PAID </span> <span class="pull-right">Invoice {{ivm.clickedInvoice.invoicenumber}}</span></h4>
+        <h4 class="modal-title" id="invoiceModal"><span>{{ivm.clickedInvoice.account.firstname}} {{ivm.clickedInvoice.account.lastname}}, {{ivm.clickedInvoice.datecreated}} <span ng-if="ivm.clickedInvoice.paid" style="display:inline-block;color:#F00;"> PAID </span><span ng-if="ivm.clickedInvoice.account.taxexempt" style="display:inline-block;color:#0a0;"> Tax Exempt </span> </span><span class="pull-right" style="display:inline-block;">Invoice {{ivm.clickedInvoice.invoicenumber}}</span></h4>
       </div>
       <div class="modal-body">
       	<form class="form" id="invoice-form">

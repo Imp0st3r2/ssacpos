@@ -7,27 +7,25 @@ invoicingCtrl.$inject = ['$window','$location','$scope','$compile','invoice'];
 
 function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 	var vm = this;
-	vm.closedinvoices = [];
-	vm.openinvoices = [];
-	invoice.getInvoiceList().then(function(response){
-		vm.invoices = response.data;
-		for(var i = 0;i<vm.invoices.length;i++){
-			var tempinvoice = vm.invoices[i];
-			var idate = tempinvoice.datecreated.split('T');
-			idate = idate[0].split('-');
-			idate = idate[1] + "-" + idate[2] + "-" + idate[0];
-			tempinvoice.datecreated = idate;
-			if(tempinvoice.paid === true){
-				vm.closedinvoices.push(tempinvoice);
-			}else{
-				vm.openinvoices.push(tempinvoice);
+	vm.getInvoices = function(){
+		invoice.getInvoiceList().then(function(response){
+			vm.invoices = response.data;
+			vm.invoices.sort(function(a,b){
+				var c = new Date(a.datecreated);
+				var d = new Date(b.datecreated);
+				return d-c;
+			})
+			for(var i = 0;i<vm.invoices.length;i++){
+				var tempinvoice = vm.invoices[i];
+				var idate = tempinvoice.datecreated.split('T');
+				idate = idate[0].split('-');
+				idate = idate[1] + "-" + idate[2] + "-" + idate[0];
+				tempinvoice.datecreated = idate;
+				// vm.invoices[i].datecreated = tempinvoice.datecreated;
 			}
-		}
-		console.log("***OPEN INVOICES***");
-		console.log(vm.openinvoices);
-		console.log("***CLOSED INVOICES***");
-		console.log(vm.closedinvoices);
-	});
+		});
+	}
+	vm.getInvoices();
 	vm.addInvoice = function() {
 		$(".data-container").empty();
 		var stringToAppend = "<div class='col-xs-12 piece'><invoicecreate></invoicecreate></div>";
@@ -108,17 +106,7 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 			$(".dialogbox").hide();
 			vm.closedinvoices = [];
 			vm.openinvoices = [];
-			invoice.getInvoiceList().then(function(response){
-				vm.invoices = response.data;
-				for(var i = 0;i<vm.invoices.length;i++){
-					if(vm.invoices[i].paid === true){
-						vm.closedinvoices.push(vm.invoices[i]);
-					}else{
-						vm.openinvoices.push(vm.invoices[i]);
-					}
-				}
-				console.log(response);
-			})
+			vm.getInvoices();
 		})
 	}
 	vm.cancel = function(){
@@ -141,9 +129,7 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 				console.log("marking paid");
 				invoice.markedPaid(vm.clickedInvoice._id).then(function(response){
 					vm.clickedInvoice = response.data;
-					var index = vm.openinvoices.findIndex(function(x){return x._id === vm.clickedInvoice._id});
-					vm.closedinvoices.push(vm.openinvoices[index]);
-					vm.openinvoices.splice(index,1);
+					vm.getInvoices();
 				})
 			}
 		})
@@ -152,7 +138,6 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 		// })
 		console.log(vm.clickedInvoice);
 	}
-
 	vm.printInvoice = function(){
 		$window.open("/invoices/"+vm.clickedInvoice._id,"_blank");
 	}

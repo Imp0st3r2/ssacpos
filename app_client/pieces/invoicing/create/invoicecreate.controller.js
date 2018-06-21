@@ -286,6 +286,7 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 				unitprice : 0,
 				totalcharge : 0
 			};
+			console.log(vm.newinvoice.items);
 			// console.log(vm.newinvoice.items[1].quantity);
 			appendString 	 +=	"<div class='row row-border productrow' id='item"+vm.invoiceItems+"'>"
 								 +	"<div class='col-xs-12'  style='font-size:.6em'>"
@@ -324,8 +325,6 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		}
 		vm.determineQuanPrice = function(itemnumber){
 			console.log(vm.newinvoice.items[itemnumber].model);
-			vm.newinvoice.items[itemnumber].quantity = 0;
-			vm.newinvoice.items[itemnumber].quantitymax = 0;
 			vm.newinvoice.items[itemnumber].unitprice = 0;
 			for(var i=0;i<vm.products.length;i++){
 				console.log(vm.products[i]);
@@ -336,8 +335,8 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 					vm.newinvoice.items[itemnumber].unitprice = vm.products[i].price;
 				}
 			}
-			console.log(vm.newinvoice.items[itemnumber].unitprice);
-			console.log(vm.newinvoice.items[itemnumber].quantity);
+			console.log(vm.newinvoice.items[itemnumber]);
+			vm.determineTotalPrice(itemnumber);
 		}
 		vm.determineTotalPrice = function(itemnumber){
 			console.log(vm['quantity'+itemnumber]);
@@ -408,6 +407,7 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 				account.createAccount(vm.newaccount).then(function(response){
 					console.log(response);
 					vm.newaccount = response.data;
+					vm.newinvoice.account = vm.newaccount;
 					vm.finishSubmission();
 				})
 			}else{
@@ -428,6 +428,7 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 						console.log(response);
 						itemcount--;
 						if(itemcount<=0){
+							console.log(vm.newinvoice)
 							invoice.createInvoice(vm.newinvoice).then(function(response){
 								console.log(response);
 								$(".dialogbox").empty();
@@ -444,7 +445,6 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 								$(".dialogbox").append(el);
 								compiled = $compile(el);
 								compiled($scope);
-								console.log(response);
 								$(".dialogbox").show();
 							},function(err){
 								console.log(err);

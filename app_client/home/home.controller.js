@@ -27,7 +27,7 @@ function homepageCtrl ($location, authentication) {
 			.then(function(){
 				$location.path('/dashboard');
 			},function(err){
-				vm.formError = err.data.message;
+				vm.formError = err;
 			});
 	}
 	vm.logout = function() {
