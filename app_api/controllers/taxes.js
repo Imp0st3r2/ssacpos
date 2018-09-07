@@ -1,4 +1,4 @@
-var waTaxRateLink = "http://webgis.dor.wa.gov/webapi/AddressRates.aspx?output=text&addr=&city=Centralia&zip=98531";
+var waTaxRateLink = "http://webgis.dor.wa.gov/webapi/AddressRates.aspx?output=text&addr=1600 S Gold&city=Centralia&zip=98531";
 var request = require('request');
 var sendJsonResponse = function(res, status, content) {
 	res.status(status);

@@ -5,10 +5,19 @@
 		<div class="col-xs-12 col-sm-2 ctrl-container">
 			<div class="posbtn-container">
 				<button type="button" class="posbtn" ng-click="vm.insertPiece('invoicing');">Invoicing</button>
-				<button type="button" class="posbtn" ng-click="vm.insertPiece('reports');">Reports</button>
+				<button type="button" class="posbtn" data-button="reports" ng-click="vm.insertPiece('reports');">Reports</button>
+					<div id="report-minibtns">
+						<button type="button" class="posbtn-mini" ng-click="vm.insertPiece('sppreports');">Salesperson Profitability</button>
+						<button type="button" class="posbtn-mini" ng-click="vm.insertPiece('ipreports');">Installer Profitability</button>
+						<button type="button" class="posbtn-mini" ng-click="bm.insertPiece('bsreports');">Business Summary</button>
+						<button type="button" class="posbtn-mini" ng-click="vm.insertPiece('dsreports');">Drawer Summary</button>
+						<button type="button" class="posbtn-mini" ng-click="vm.insertPiece('tpreports');">Transaction Profitability</button>
+						<button type="button" class="posbtn-mini" ng-click="vm.insertPiece('streports');">Sales Tax</button>
+					</div>
 				<button type="button" class="posbtn" ng-click="vm.insertPiece('products');">Products</button>
 				<button type="button" class="posbtn" ng-click="vm.insertPiece('accounts');">Customer Accounts</button>
 				<button type="button" class="posbtn" ng-click="vm.insertPiece('userlist');">Users</button>
+				<button type="button" class="posbtn" ng-click="vm.insertPiece('spiffs');">Spiffs</button>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-10 data-container">
@@ -16,4 +25,3 @@
 		</div>
 	</div>
 </div>
-<footer-generic></footer-generic>

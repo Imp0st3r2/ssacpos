@@ -80,43 +80,45 @@ module.exports.productsUpdateOne = function(req, res) {
 		return;
 	}
 	var product = {
-					brand : req.body.brand,
-					category : req.body.category,
-					model : req.body.model,
-					price : req.body.price,
-					quantity : req.body.quantity,
-					channels: req.body.channels,
-					distortion : req.body.distortion,
-					snratio : req.body.snratio,
-					frequencyresponse : req.body.frequencyresponse,
-					outputpower : req.body.outputpower,
-					dimensionsh : req.body.dimensionsh,
-					dimensionsw : req.body.dimensionsw,
-					dimensionsl : req.body.dimensionsl,
-					size : req.body.size,
-					sensitivity : req.body.sensitivity,
-					configuration : req.body.configuration,
-					peakwatts : req.body.peakwatts,
-					rmswatts : req.body.rmswatts,
-					mountingdepth : req.body.mountingdepth,
-					preouts : req.body.preouts,
-					weight : req.body.weight,
-					amperehours : req.body.amperehours,
-					voltage : req.body.voltage,
-					description: req.body.description,
-					bluetooth : req.body.bluetooth,
-					usb : req.body.usb,
-					cdrrw : req.body.cdrrw,
-					mp3 : req.body.mp3,
-					wma : req.body.wma,
-					wave : req.body.wave,
-					builtinamp : req.body.builtinamp,
-					_id : req.body._id
-				};
-		Product.findOneAndUpdate({'_id':req.body._id}, product, function(err, doc){
-		    if (err) sendJsonResponse(res,500, { error: err });
-		    sendJsonResponse(res,200,doc);
-		});
+		upc : req.body.upc,
+		brand : req.body.brand,
+		category : req.body.category,
+		model : req.body.model,
+		price : req.body.price,
+		spiff : req.body.spiff,
+		quantity : req.body.quantity,
+		channels: req.body.channels,
+		distortion : req.body.distortion,
+		snratio : req.body.snratio,
+		frequencyresponse : req.body.frequencyresponse,
+		outputpower : req.body.outputpower,
+		dimensionsh : req.body.dimensionsh,
+		dimensionsw : req.body.dimensionsw,
+		dimensionsl : req.body.dimensionsl,
+		size : req.body.size,
+		sensitivity : req.body.sensitivity,
+		configuration : req.body.configuration,
+		peakwatts : req.body.peakwatts,
+		rmswatts : req.body.rmswatts,
+		mountingdepth : req.body.mountingdepth,
+		preouts : req.body.preouts,
+		weight : req.body.weight,
+		amperehours : req.body.amperehours,
+		voltage : req.body.voltage,
+		description: req.body.description,
+		bluetooth : req.body.bluetooth,
+		usb : req.body.usb,
+		cdrrw : req.body.cdrrw,
+		mp3 : req.body.mp3,
+		wma : req.body.wma,
+		wave : req.body.wave,
+		builtinamp : req.body.builtinamp,
+		_id : req.body._id
+	};
+	Product.findOneAndUpdate({'_id':req.body._id}, product, function(err, doc){
+	    if (err) sendJsonResponse(res,500, { error: err });
+	    sendJsonResponse(res,200,doc);
+	});
 };
 module.exports.productsDeleteOne = function(req, res) {
 	if (req.params.productid) {

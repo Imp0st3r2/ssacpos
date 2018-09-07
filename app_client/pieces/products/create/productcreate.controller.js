@@ -11,6 +11,8 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 	if(vm.isLoggedIn){
 		vm.products = {};
 		vm.attr = {
+			spiff : true,
+			upc : true,
 			brand : true,
 			category : true,
 			model : true,
@@ -34,6 +36,8 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 			description : true
 		}
 		vm.newproduct = {
+			spiff : 0,
+			upc : "",
 			brand : "",
 			newbrand : "",
 			category : "",
@@ -112,7 +116,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 		})
 		$("#product-newcategory").on('change',function(){
 			for(attr in vm.attr){
-				if(attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "size" && attr != "configuration" && attr != "description"){
+				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
 					vm.attr[attr] = false;
 				}
 			}
@@ -124,7 +128,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 		})
 		$("#product-category").on('change',function(){
 			for(attr in vm.attr){
-				if(attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "size" && attr != "configuration" && attr != "description"){
+				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
 					vm.attr[attr] = false;
 				}
 			}
@@ -243,10 +247,12 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 					break;
 				default:
 					console.log("Case: "+category+" needs configuration.");
+					vm.attr.upc = true;
 					vm.attr.brand = true;
 					vm.attr.category = true;
 					vm.attr.model = true;
 					vm.attr.price = true;
+					vm.attr.spiff = true;
 					vm.attr.quantity = true;
 					vm.attr.channels = true;
 					vm.attr.distortion = true;

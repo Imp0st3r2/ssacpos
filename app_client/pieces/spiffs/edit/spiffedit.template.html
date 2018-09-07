@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<div class="users-container">
+		<h1>Edit Spiff</h1>
+		<div class="col-xs-6">
+			<form class="form">
+				<div role="alert" ng-show="svm.formError" class="alert alert-danger">{{ svm.formError }}</div>
+				<div class="form-group">
+					<label for="spiff-name">Enter Spiff Name: </label>
+					<input class="form-control" type="text" id="spiff-name" name="spiff-name" placeholder="Enter spiff name here." ng-model="svm.currentSpiff.name" value="svm.currentSpiff.name">
+				</div>
+				<div class="form-group">
+					<label for="spiff-amount">Enter Spiff Amount: </label>
+					<input class="form-control" type="text" id="spiff-amount" name="spiff-amount" placeholder="Enter spiff amount here." ng-model="svm.currentSpiff.amount" value="svm.currentSpiff.amount">
+				</div>
+				<button type="button" class="btn btn-success" ng-click="svm.submitSpiff();">Update</button>
+				<button type="button" class="btn btn-danger" ng-click="svm.showList();">Cancel</button>
+			</form>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>

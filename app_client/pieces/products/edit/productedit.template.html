@@ -3,164 +3,179 @@
 		<h1>Edit Product</h1>
 		<div class="col-xs-12">
 			<form class="form" id="product-form">
-				<div role="alert" ng-show="uvm.formError" class="alert alert-danger">{{ uvm.formError }}</div>
-				<div class="form-group" ng-show="pevm.attr.brand">
-					<label for="product-brand">Select a Brand: </label>
-					<select class="form-control" id="product-brand" name="product-brand" ng-model="pevm.newproduct.brand">
-						<option ng-repeat="brand in pevm.brands" value="{{brand}}">{{brand}}</option>
-						<option value="newbrand">New Brand</option>
-					</select>
-				</div>
-				<div  class="form-group" ng-show="pevm.newbrand">
-					<label for="product-newbrand">Enter New Brand: </label>
-					<input class="form-control" type="text" id="product-newbrand" name="product-newbrand" placeholder="Enter new product brand." ng-model="pevm.newproduct.newbrand">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.category">
-					<label for="product-category">Select a Category: </label>
-					<select class="form-control" id="product-category" name="product-category" ng-model="pevm.newproduct.category">
-						<option ng-repeat="category in pevm.categories" value="{{category}}">{{category}}</option>
-						<option value="newcategory">New Category</option>
-					</select>
-				</div>
-				<div  class="form-group" ng-show="pevm.newcategory">
-					<label for="product-newcategory">Enter New Category: </label>
-					<input class="form-control" type="text" id="product-newcategory" name="product-newcategory" placeholder="Enter new product category." ng-model="pevm.newproduct.newcategory">
-				</div>
-				<div  class="form-group" ng-show="pevm.attr.model">
-					<label for="product-model">Enter Model: </label>
-					<input class="form-control" type="text" id="product-model" name="product-model" placeholder="Enter new product model." ng-model="pevm.newproduct.model">
-				</div>
-				<div  class="form-group" ng-show="pevm.attr.quantity">
-					<label for="product-quantity">Enter Quantity: </label>
-					<input class="form-control" type="number" id="product-quantity" name="product-quantity" placeholder="Enter product quantity." ng-model="pevm.newproduct.quantity">
-				</div>
-				<div  class="form-group" ng-show="pevm.attr.price">
-					<label for="product-price">Enter Price: </label>
-					<input class="form-control" type="number" id="product-price" name="product-price" placeholder="Enter new product price." ng-model="pevm.newproduct.price">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.size">
-					<label for="product-size">Enter Size: </label>
-					<input type="text" class="form-control" id="product-size" name="product-size" placeholder="Enter product size." ng-model="pevm.newproduct.size">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.configuration">
-					<label for="product-configuration">Enter Configuration: </label>
-					<input type="text" class="form-control" id="product-configuration" name="product-configuration" placeholder="Enter product configuration." ng-model="pevm.newproduct.configuration">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.dimensions">
-					<label for="product-dimensions">Enter Dimensions: </label>
-					<div id="product-dimensions">
-						<div class="col-xs-4">
-							<label for="product-dimensionsh">H (in.)</label>
-							<input type="number" step="0.01" class="form-control" id="product-dimensionsh" name="product-dimensionsh" placeholder="Enter product height dimensions." ng-model="pevm.newproduct.dimensionsh">
-						</div>
-						<div class="col-xs-4">
-							<label for="product-dimensionsw">W (in.)</label>
-							<input type="number" step="0.01" class="form-control" id="product-dimensionsw" name="product-dimensionsw" placeholder="Enter product width dimensions." ng-model="pevm.newproduct.dimensionsw">
-						</div>
-						<div class="col-xs-4">
-							<label for="product-dimensionsl">L (in.)</label>
-							<input type="number" step="0.01" class="form-control" id="product-dimensionsl" name="product-dimensionsl" placeholder="Enter product length dimensions." ng-model="pevm.newproduct.dimensionsl">
-						</div>
+				<div class="row shadow">
+					<div role="alert" ng-show="uvm.formError" class="alert alert-danger">{{ uvm.formError }}</div>
+					<div class="form-group" ng-show="pevm.attr.upc">
+						<label for="product-upc">Enter UPC: </label>
+						<input class="form-control" type="text" id="product-upc" name="product-upc" placeholder="Enter the product upc." ng-model="pevm.newproduct.upc">
 					</div>
-					<div style="clear:both;"></div>
+					<div class="form-group" ng-show="pevm.attr.brand">
+						<label for="product-brand">Select a Brand: </label>
+						<select class="form-control" id="product-brand" name="product-brand" ng-model="pevm.newproduct.brand">
+							<option ng-repeat="brand in pevm.brands" value="{{brand}}">{{brand}}</option>
+							<option value="newbrand">New Brand</option>
+						</select>
+					</div>
+					<div  class="form-group" ng-show="pevm.newbrand">
+						<label for="product-newbrand">Enter New Brand: </label>
+						<input class="form-control" type="text" id="product-newbrand" name="product-newbrand" placeholder="Enter new product brand." ng-model="pevm.newproduct.newbrand">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.category">
+						<label for="product-category">Select a Category: </label>
+						<select class="form-control" id="product-category" name="product-category" ng-model="pevm.newproduct.category">
+							<option ng-repeat="category in pevm.categories" value="{{category}}">{{category}}</option>
+							<option value="newcategory">New Category</option>
+						</select>
+					</div>
+					<div  class="form-group" ng-show="pevm.newcategory">
+						<label for="product-newcategory">Enter New Category: </label>
+						<input class="form-control" type="text" id="product-newcategory" name="product-newcategory" placeholder="Enter new product category." ng-model="pevm.newproduct.newcategory">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.model">
+						<label for="product-model">Enter Model: </label>
+						<input class="form-control" type="text" id="product-model" name="product-model" placeholder="Enter new product model." ng-model="pevm.newproduct.model">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.quantity">
+						<label for="product-quantity">Enter Quantity: </label>
+						<input class="form-control" type="number" id="product-quantity" name="product-quantity" placeholder="Enter product quantity." ng-model="pevm.newproduct.quantity">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.price">
+						<label for="product-price">Enter Price: </label>
+						<input class="form-control" type="number" id="product-price" name="product-price" placeholder="Enter new product price." ng-model="pevm.newproduct.price">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.spiff">
+						<label for="product-spiff">Enter Spiff: </label>
+						<input class="form-control" type="number" id="product-spiff" name="product-spiff" placeholder="Enter new product spiff." ng-model="pevm.newproduct.spiff">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.size">
+						<label for="product-size">Enter Size: </label>
+						<input type="text" class="form-control" id="product-size" name="product-size" placeholder="Enter product size." ng-model="pevm.newproduct.size">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.configuration">
+						<label for="product-configuration">Enter Configuration: </label>
+						<input type="text" class="form-control" id="product-configuration" name="product-configuration" placeholder="Enter product configuration." ng-model="pevm.newproduct.configuration">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.dimensions">
+						<label for="product-dimensions">Enter Dimensions: </label>
+						<div id="product-dimensions">
+							<div class="col-xs-4">
+								<label for="product-dimensionsh">H (in.)</label>
+								<input type="number" step="0.01" class="form-control" id="product-dimensionsh" name="product-dimensionsh" placeholder="Enter product height dimensions." ng-model="pevm.newproduct.dimensionsh">
+							</div>
+							<div class="col-xs-4">
+								<label for="product-dimensionsw">W (in.)</label>
+								<input type="number" step="0.01" class="form-control" id="product-dimensionsw" name="product-dimensionsw" placeholder="Enter product width dimensions." ng-model="pevm.newproduct.dimensionsw">
+							</div>
+							<div class="col-xs-4">
+								<label for="product-dimensionsl">L (in.)</label>
+								<input type="number" step="0.01" class="form-control" id="product-dimensionsl" name="product-dimensionsl" placeholder="Enter product length dimensions." ng-model="pevm.newproduct.dimensionsl">
+							</div>
+						</div>
+						<div style="clear:both;"></div>
+					</div>
+					<div class="form-group" ng-show="pevm.attr.mountingdepth">
+						<label for="product-mountingdepth">Enter Mounting Depth: </label>
+						<input type="number" step=".1" class="form-control" id="product-mountingdepth" name="product-mountingdepth" placeholder="Enter product mounting depth." ng-model="pevm.newproduct.mountingdepth">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.wattage">
+						<label for="product-wattage">Enter Wattage: </label>
+						<div id="product-wattage">
+							<div class="col-xs-6">
+								<label for="product-wattagepak">Peak</label>
+								<input type="number" class="form-control" id="product-wattagepeak" name="product-wattagepeak" placeholder="Enter product peak wattage." ng-model="pevm.newproduct.peakwatts">
+							</div>
+							<div class="col-xs-6">
+								<label for="product-wattagerms">RMS</label>
+								<input type="number" class="form-control" id="product-wattagerms" name="product-wattagerms" placeholder="Enter product RMS wattage." ng-model="pevm.newproduct.rmswatts">
+							</div>
+						</div>
+						<div style="clear:both;"></div>
+					</div>
+					<div class="form-group" ng-show="pevm.attr.channels">
+						<label for="product-channels">Enter Channels: </label>
+						<input type="number" class="form-control" id="product-channels" name="product-channels" placeholder="Enter product channels." ng-model="pevm.newproduct.channels">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.distortion">
+						<label for="product-distortion">Enter Distortion: </label>
+						<input type="number" step=".01" class="form-control" id="product-distortion" name="product-distortion" placeholder="Enter product distortion." ng-model="pevm.newproduct.distortion">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.snratio">
+						<label for="product-snratio">Enter S/N Ratio: </label>
+						<input type="number" class="form-control" id="product-snratio" name="product-snratio" placeholder="Enter product s/n ratio." ng-model="pevm.newproduct.snratio">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.frequencyresponse">
+						<label for="product-frequencyresponse">Enter Frequency Response: </label>
+						<input type="number" class="form-control" id="product-frequencyresponse" name="product-frequencyresponse" placeholder="Enter product frequency response." ng-model="pevm.newproduct.frequencyresponse">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.outputpower">
+						<label for="product-outputpower">Enter Output Power: </label>
+						<input type="number" class="form-control" id="product-outputpower" name="product-outputpower" placeholder="Enter product output power." ng-model="pevm.newproduct.outputpower">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.sensitivity">
+						<label for="product-sensitivity">Enter Sensitivity: </label>
+						<input type="number" step=".1" class="form-control" id="product-sensitivity" name="product-sensitivity" placeholder="Enter product sensitivity." ng-model="pevm.newproduct.sensitivity">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.preouts">
+						<label for="product-preouts">Enter Pre-Outs: </label>
+						<input type="number" class="form-control" id="product-preouts" name="product-preouts" placeholder="Enter product preouts." ng-model="pevm.newproduct.preouts">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.amphours">
+						<label for="product-amphours">Enter Ampere Hours: </label>
+						<input type="number" class="form-control" id="product-amphours" name="product-amphours" placeholder="Enter product amp hours." ng-model="pevm.newproduct.amphours">
+					</div>
+					<div class="form-group" ng-show="pevm.attr.weight">
+						<label for="product-weight">Enter Weight: </label>
+						<input type="number" class="form-control" id="product-weight" name="product-weight" placeholder="Enter product weight." ng-model="pevm.newproduct.weight">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.voltage">
+						<label for="product-voltage">Enter Voltage: </label>
+						<input type="number" class="form-control" id="product-voltage" name="product-voltage" placeholder="Enter product voltage." ng-model="pevm.newproduct.voltage">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.description">
+						<label for="product-description">Enter Description: </label>
+						<textarea class="form-control" rows="5" type="text" id="product-description" name="product-description" placeholder="Enter product description." ng-model="pevm.newproduct.description"></textarea>
+					</div>
 				</div>
-				<div class="form-group" ng-show="pevm.attr.mountingdepth">
-					<label for="product-mountingdepth">Enter Mounting Depth: </label>
-					<input type="number" step=".1" class="form-control" id="product-mountingdepth" name="product-mountingdepth" placeholder="Enter product mounting depth." ng-model="pevm.newproduct.mountingdepth">
+				<div class="row indented">
+					<div class="form-group">
+						<button type="button" class="btn btn-primary" ng-click="pevm.toggleAttributes()">Select Additional Attributes</button>
+					</div>
 				</div>
-				<div class="form-group" ng-show="pevm.attr.wattage">
-					<label for="product-wattage">Enter Wattage: </label>
-					<div id="product-wattage">
+				<div class="row shadow">
+					<div class="form-group" id="additional-attributes">
 						<div class="col-xs-6">
-							<label for="product-wattagepak">Peak</label>
-							<input type="number" class="form-control" id="product-wattagepeak" name="product-wattagepeak" placeholder="Enter product peak wattage." ng-model="pevm.newproduct.peakwatts">
+							<label class="checkbox">
+								<input type="checkbox" value="bluetooth">Bluetooth
+							</label>
+							<label class="checkbox">
+								<input type="checkbox" value="usb">USB
+							</label>
+							<label class="checkbox">
+								<input type="checkbox" value="cdrrw">CD R/RW
+							</label>
+							<label class="checkbox">
+								<input type="checkbox" value="mp3">MP3
+							</label>
 						</div>
 						<div class="col-xs-6">
-							<label for="product-wattagerms">RMS</label>
-							<input type="number" class="form-control" id="product-wattagerms" name="product-wattagerms" placeholder="Enter product RMS wattage." ng-model="pevm.newproduct.rmswatts">
+							<label class="checkbox">
+								<input type="checkbox" value="wma">WMA
+							</label>
+							<label class="checkbox">
+								<input type="checkbox" value="wav">WAV
+							</label>
+							<label class="checkbox">
+								<input type="checkbox" value="builtinamp">Built-in Amp
+							</label>
 						</div>
+						<div style="clear:both;"></div>
 					</div>
-					<div style="clear:both;"></div>
 				</div>
-				<div class="form-group" ng-show="pevm.attr.channels">
-					<label for="product-channels">Enter Channels: </label>
-					<input type="number" class="form-control" id="product-channels" name="product-channels" placeholder="Enter product channels." ng-model="pevm.newproduct.channels">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.distortion">
-					<label for="product-distortion">Enter Distortion: </label>
-					<input type="number" step=".01" class="form-control" id="product-distortion" name="product-distortion" placeholder="Enter product distortion." ng-model="pevm.newproduct.distortion">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.snratio">
-					<label for="product-snratio">Enter S/N Ratio: </label>
-					<input type="number" class="form-control" id="product-snratio" name="product-snratio" placeholder="Enter product s/n ratio." ng-model="pevm.newproduct.snratio">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.frequencyresponse">
-					<label for="product-frequencyresponse">Enter Frequency Response: </label>
-					<input type="number" class="form-control" id="product-frequencyresponse" name="product-frequencyresponse" placeholder="Enter product frequency response." ng-model="pevm.newproduct.frequencyresponse">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.outputpower">
-					<label for="product-outputpower">Enter Output Power: </label>
-					<input type="number" class="form-control" id="product-outputpower" name="product-outputpower" placeholder="Enter product output power." ng-model="pevm.newproduct.outputpower">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.sensitivity">
-					<label for="product-sensitivity">Enter Sensitivity: </label>
-					<input type="number" step=".1" class="form-control" id="product-sensitivity" name="product-sensitivity" placeholder="Enter product sensitivity." ng-model="pevm.newproduct.sensitivity">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.preouts">
-					<label for="product-preouts">Enter Pre-Outs: </label>
-					<input type="number" class="form-control" id="product-preouts" name="product-preouts" placeholder="Enter product preouts." ng-model="pevm.newproduct.preouts">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.amphours">
-					<label for="product-amphours">Enter Ampere Hours: </label>
-					<input type="number" class="form-control" id="product-amphours" name="product-amphours" placeholder="Enter product amp hours." ng-model="pevm.newproduct.amphours">
-				</div>
-				<div class="form-group" ng-show="pevm.attr.weight">
-					<label for="product-weight">Enter Weight: </label>
-					<input type="number" class="form-control" id="product-weight" name="product-weight" placeholder="Enter product weight." ng-model="pevm.newproduct.weight">
-				</div>
-				<div  class="form-group" ng-show="pevm.attr.voltage">
-					<label for="product-voltage">Enter Voltage: </label>
-					<input type="number" class="form-control" id="product-voltage" name="product-voltage" placeholder="Enter product voltage." ng-model="pevm.newproduct.voltage">
-				</div>
-				<div  class="form-group" ng-show="pevm.attr.description">
-					<label for="product-description">Enter Description: </label>
-					<textarea class="form-control" rows="5" type="text" id="product-description" name="product-description" placeholder="Enter product description." ng-model="pevm.newproduct.description"></textarea>
-				</div>
-				<div class="form-group">
-					<button type="button" class="btn btn-primary" ng-click="pevm.toggleAttributes()">Select Additional Attributes</button>
-				</div>
-				<div class="form-group" id="additional-attributes">
-					<div class="col-xs-6">
-						<label class="checkbox">
-							<input type="checkbox" value="bluetooth">Bluetooth
-						</label>
-						<label class="checkbox">
-							<input type="checkbox" value="usb">USB
-						</label>
-						<label class="checkbox">
-							<input type="checkbox" value="cdrrw">CD R/RW
-						</label>
-						<label class="checkbox">
-							<input type="checkbox" value="mp3">MP3
-						</label>
-					</div>
-					<div class="col-xs-6">
-						<label class="checkbox">
-							<input type="checkbox" value="wma">WMA
-						</label>
-						<label class="checkbox">
-							<input type="checkbox" value="wav">WAV
-						</label>
-						<label class="checkbox">
-							<input type="checkbox" value="builtinamp">Built-in Amp
-						</label>
-					</div>
-					<div style="clear:both;"></div>
-				</div>
-
 			</form>
-			<button type="button" class="btn btn-success" ng-click="pevm.submitProduct();">Update</button>
-			<button type="button" class="btn btn-danger" ng-click="pevm.showList();">Cancel</button>
+			<div class="row indented">
+				<button type="button" class="btn btn-success" ng-click="pevm.submitProduct();">Update</button>
+				<button type="button" class="btn btn-danger" ng-click="pevm.showList();">Cancel</button>
+			</div>
 		</div>
 	</div>
 	<div class="dialogbox">

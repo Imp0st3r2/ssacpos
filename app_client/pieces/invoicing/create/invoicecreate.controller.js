@@ -3,15 +3,16 @@ angular
 	.module('ssacpos')
 	.controller('invoicecreateCtrl', invoicecreateCtrl);
 
-invoicecreateCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'tax','account'];
+invoicecreateCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'tax', 'account', 'spiff'];
 
-function invoicecreateCtrl($location, $scope, $compile, authentication, invoice, product, tax, account) {
+function invoicecreateCtrl($location, $scope, $compile, authentication, invoice, product, tax, account, spiff) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	vm.currentUser = authentication.currentUser();
 	vm.invoiceItems = 0;
 	vm.invoiceLabors = 0;
 	vm.invoiceOthers = 0;
+	vm.invoiceSpiffs = 0;
 	vm.currentInvoice = {};
 	vm.accounts = [];
 	if(vm.isLoggedIn){
@@ -41,6 +42,8 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			items : [],
 			labors : [],
 			others : [],
+			spiffs : [],
+			spifftotal : 0,
 			laborcharges : 0,
 			itemcharges : 0,
 			taxrate : 0,
@@ -57,6 +60,7 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		vm.models = [];
 		tax.getTaxRate().then(function(response){
 			vm.newinvoice.taxrate = Number(response.data);
+			console.log(vm.newinvoice.taxrate);
 		})
 		product.getProductList().then(function(response){
 			console.log(response.data);
@@ -70,6 +74,10 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			}
 			console.log(vm.models);
 		});
+		spiff.getSpiffs().then(function(response){
+			vm.spiffs = response.data;
+			console.log(vm.spiffs);
+		})
 		var clickcount = 0;
 		$("#invoice-phone").keypress(function(){
 			if($("#invoice-phone").val().length === 0){
@@ -115,35 +123,96 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 				vm.calcTotalPrice();
 			}
 		})
+		vm.addSpiff = function(){
+			var appendString = "";
+			vm.newinvoice.spiffs[vm.invoiceSpiffs] = {
+				name : "",
+				amount : 0
+			};
+			appendString = appendString + "<div class='top-margin10 col-xs-12' style='font-size:.8em' id='spiff"+vm.invoiceSpiffs+"'>"
+										+ 	"<div class='row' style='text-align:center;'>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Delete</p>"
+							 			+			"<button class='btn btn-danger' ng-click='ivm.deleteSpiff("+vm.invoiceSpiffs+");'>X</button>"
+							 			+		"</div>"
+										+		"<div class='col-xs-12 col-md-9'>"
+										+			"<p>Name</p>"
+										+			"<select class='form-control spiffname' id='spiff"+vm.invoiceSpiffs+"-name' name='spiff"+vm.invoiceSpiffs+"-name' ng-model='ivm.newinvoice.spiffs["+vm.invoiceSpiffs+"].name' ng-change='ivm.totalSpiffs("+vm.invoiceSpiffs+");'>"
+										+				"<option ng-repeat='spiff in ivm.spiffs' value='{{spiff.name}}'>{{spiff.name}}</option>"
+										+			"</select>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Amount</p>"
+										+			"<input type='number' step='.01' class='form-control spiffamount' id='spiff"+vm.invoiceSpiffs+"-amount' name='spiff"+vm.invoiceSpiffs+"-amount' ng-model='ivm.newinvoice.spiffs["+vm.invoiceSpiffs+"].amount'>" 
+										+		"</div>"
+										+	"</div>"
+										+ "</div>";
+			var el = angular.element(appendString);
+			$("#spiff-group").append(el);
+			compiled = $compile(el);
+			compiled($scope);
+			vm.invoiceSpiffs++;
+		}
+		vm.deleteSpiff = function(itemnumber){
+			console.log(itemnumber);
+			console.log(vm.newinvoice.spiffs);
+			$("#spiff"+itemnumber).remove();
+			vm.newinvoice.spifftotal -= vm.newinvoice.spiffs[itemnumber].amount;
+			vm.newinvoice.spiffs[itemnumber] = null;
+			var found = 0;
+			for(var i=0;i<vm.newinvoice.spiffs.length;i++){
+				if(vm.newinvoice.spiffs[i] != null){
+					found = 1;
+				}
+			}
+			if(found == 0){
+				vm.newinvoice.spiffs = [];
+			}
+			vm.invoiceSpiffs--;
+			if(vm.invoiceSpiffs == 0){
+				$("#spiff-group").empty();
+				var appendString = "<span>Spiffs</span><br>";
+				var el = angular.element(appendString);
+				$("#spiff-group").append(el);
+				compiled = $compile(el);
+				compiled($scope);
+			}
+			console.log(vm.newinvoice.spifftotal);
+		}
+		vm.totalSpiffs = function(itemnumber){
+			console.log(vm.newinvoice.spiffs);
+			console.log(vm.newinvoice.spifftotal);
+			for(var i=0;i<vm.spiffs.length;i++){
+				console.log(vm.spiffs[i]);
+				if(vm.spiffs[i].name === vm.newinvoice.spiffs[itemnumber].name){
+					vm.newinvoice.spiffs[itemnumber].amount = vm.spiffs[i].amount;
+				}
+			}
+			vm.newinvoice.spifftotal += vm.newinvoice.spiffs[itemnumber].amount;
+			console.log(vm.newinvoice.spifftotal);
+		}
 		vm.addOther = function(){
 			var appendString = "";
-			if(vm.invoiceOthers===0){
-				appendString = appendString + "<div class='top-margin10' style='font-size:.8em'>"
-											+ 	"<div class='row row-border' style='text-align:center;'>"
-											+		"<div class='col-xs-1'></div>"
-											+		"<div class='col-xs-9'>"
-											+			"<p>Description</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Total Charge</p>"
-											+		"</div>"
-											+	"</div>"
-											+ "</div>"
-			}
-			vm.newinvoice.others[vm.invoiceOthers] = {};
-			appendString 	 +=	"<div class='row row-border productrow' id='other"+vm.invoiceOthers+"'>"
-								 +	"<div class='col-xs-12'  style='font-size:.6em'>"
-								 +		"<div class='col-xs-1'>"
-								 +			"<button class='btn btn-danger' ng-click='ivm.deleteOther("+vm.invoiceOthers+");'>X</button>"
-								 +		"</div>"
-								 +		"<div class='col-xs-9'>"
-								 +			"<input type='text' class='form-control otherdescription' id='other"+vm.invoiceOthers+"-description' name='other"+vm.invoiceOthers+"-description' ng-model='ivm.newinvoice.others["+vm.invoiceOthers+"].description'>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input type='number' step='.01' class='form-control labortotalcharge' id='other"+vm.invoiceLabors+"-totalcharge' name='other"+vm.invoiceOthers+"-totalcharge' ng-model='ivm.newinvoice.others["+vm.invoiceOthers+"].totalcharge' ng-change='ivm.determineTotalOtherCharge("+vm.invoiceOthers+");'>"
-								 +		"</div>"
-								 +	"</div>"
-							 +	"</div>";
+			vm.newinvoice.others[vm.invoiceOthers] = {
+				description : "",
+				totalcharge : 0
+			};
+			appendString = appendString + "<div class='top-margin10 col-xs-12' style='font-size:.8em' id='other"+vm.invoiceOthers+"'>"
+										+ 	"<div class='row' style='text-align:center;'>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Delete</p>"
+							 			+			"<button class='btn btn-danger' ng-click='ivm.deleteOther("+vm.invoiceOthers+");'>X</button>"
+							 			+		"</div>"
+										+		"<div class='col-xs-12 col-md-9'>"
+										+			"<p>Description</p>"
+							 			+			"<input type='text' class='form-control othername' id='other"+vm.invoiceOthers+"-description' name='other"+vm.invoiceOthers+"-description' ng-model='ivm.newinvoice.others["+vm.invoiceOthers+"].description'>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Total Charge</p>"
+							 			+			"<input type='number' step='.01' class='form-control othertotalcharge' id='other"+vm.invoiceOthers+"-totalcharge' name='other"+vm.invoiceOthers+"-totalcharge' ng-model='ivm.newinvoice.others["+vm.invoiceOthers+"].totalcharge' ng-change='ivm.determineTotalOtherCharge("+vm.invoiceOthers+");'>"
+										+		"</div>"
+										+	"</div>"
+										+ "</div>";
 			var el = angular.element(appendString);
 			$("#other-group").append(el);
 			compiled = $compile(el);
@@ -153,15 +222,28 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		vm.deleteOther = function(itemnumber){
 			console.log(itemnumber);
 			console.log(vm.newinvoice.others);
-			vm.newinvoice.others[itemnumber] = null;
 			$("#other"+itemnumber).remove();
-			var totalOtherCharge = 0;
+			vm.newinvoice.othercharges -= vm.newinvoice.others[itemnumber].totalcharge;
+			vm.newinvoice.others[itemnumber] = null;
+			var found = 0;
 			for(var i=0;i<vm.newinvoice.others.length;i++){
-				if(vm.newinvoice.others[i]){
-					totalOtherCharge += vm.newinvoice.others[i].totalcharge;
+				if(vm.newinvoice.others[i] != null){
+					found = 1;
 				}
 			}
-			vm.newinvoice.othercharges = totalOtherCharge;
+			if(found == 0){
+				vm.newinvoice.others = [];
+			}
+			vm.invoiceOthers--;
+			console.log(vm.invoiceOthers);
+			if(vm.invoiceOthers == 0){
+				$("#other-group").empty();
+				var appendString = "<span>Other Charges</span><br>";
+				var el = angular.element(appendString);
+				$("#other-group").append(el);
+				compiled = $compile(el);
+				compiled($scope);
+			}
 			vm.calcTotalPrice();
 		}
 		vm.determineTotalOtherCharge = function(othernumber){
@@ -178,45 +260,36 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		}
 		vm.addLabor = function(){
 			var appendString = "";
-			if(vm.invoiceLabors===0){
-				appendString = appendString + "<div class='top-margin10' style='font-size:.8em'>"
-											+ 	"<div class='row row-border' style='text-align:center;'>"
-											+		"<div class='col-xs-1'></div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Time (hrs)</p>"
-											+		"</div>"
-											+		"<div class='col-xs-5'>"
-											+			"<p>Description</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Hourly Charge</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Total Charge</p>"
-											+		"</div>"
-											+	"</div>"
-											+ "</div>"
-			}
-			vm.newinvoice.labors[vm.invoiceLabors] = {};
-			appendString 	 +=	"<div class='row row-border productrow' id='labor"+vm.invoiceLabors+"'>"
-								 +	"<div class='col-xs-12'  style='font-size:.6em'>"
-								 +		"<div class='col-xs-1'>"
-								 +			"<button class='btn btn-danger' ng-click='ivm.deleteLabor("+vm.invoiceLabors+");'>X</button>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input type='number' step='.25' class='form-control labortime' id='labor"+vm.invoiceLabors+"-time' name='labor"+vm.invoiceLabors+"-time' min='0' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].time' ng-change='ivm.determineTotalLaborCharge("+vm.invoiceLabors+");'>"
-								 +		"</div>"
-								 +		"<div class='col-xs-5'>"
-								 +			"<input type='text' class='form-control labordescription' id='labor"+vm.invoiceLabors+"-description' name='labor"+vm.invoiceLabors+"-description' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].description'>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input type='number' step='.01' class='form-control laborhourlycharge' id='labor"+vm.invoiceLabors+"-hourlycharge' name='labor"+vm.invoiceLabors+"-hourlycharge' min='0' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].hourlycharge' ng-change='ivm.determineTotalLaborCharge("+vm.invoiceLabors+");'>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input disabled type='number' step='.01' class='form-control labortotalcharge' id='labor"+vm.invoiceLabors+"-totalcharge' name='labor"+vm.invoiceLabors+"-totalcharge' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].totalcharge'>"
-								 +		"</div>"
-								 +	"</div>"
-							 +	"</div>";
+			vm.newinvoice.labors[vm.invoiceLabors] = {
+				time : 0,
+				description : "",
+				hourlycharge : 0,
+				totalcharge : 0
+			};
+			appendString = appendString + "<div class='top-margin10 col-xs-12' style='font-size:.8em' id='labor"+vm.invoiceLabors+"'>"
+										+ 	"<div class='row' style='text-align:center;'>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Delete</p>"
+							 			+			"<button class='btn btn-danger' ng-click='ivm.deleteLabor("+vm.invoiceLabors+");'>X</button>"
+							 			+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Time (hrs)</p>"
+							 			+			"<input type='number' step='.25' class='form-control labortime' id='labor"+vm.invoiceLabors+"-time' name='labor"+vm.invoiceLabors+"-time' min='0' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].time' ng-change='ivm.determineTotalLaborCharge("+vm.invoiceLabors+");'>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-5'>"
+										+			"<p>Description</p>"
+							 			+			"<input type='text' class='form-control labordescription' id='labor"+vm.invoiceLabors+"-description' name='labor"+vm.invoiceLabors+"-description' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].description'>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Hourly Charge</p>"
+							 			+			"<input type='number' step='.01' class='form-control laborhourlycharge' id='labor"+vm.invoiceLabors+"-hourlycharge' name='labor"+vm.invoiceLabors+"-hourlycharge' min='0' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].hourlycharge' ng-change='ivm.determineTotalLaborCharge("+vm.invoiceLabors+");'>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Total Charge</p>"
+							 			+			"<input disabled type='number' step='.01' class='form-control labortotalcharge' id='labor"+vm.invoiceLabors+"-totalcharge' name='labor"+vm.invoiceLabors+"-totalcharge' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].totalcharge'>"
+										+		"</div>"
+										+	"</div>"
+										+ "</div>"
 			var el = angular.element(appendString);
 			$("#labor-group").append(el);
 			compiled = $compile(el);
@@ -224,17 +297,27 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			vm.invoiceLabors++;
 		}
 		vm.deleteLabor = function(itemnumber){
-			console.log(itemnumber);
-			console.log(vm.newinvoice.items);
-			vm.newinvoice.labors[itemnumber] = null;
 			$("#labor"+itemnumber).remove();
-			var totalLaborCharges = 0;
+			vm.newinvoice.laborcharges -= vm.newinvoice.labors[itemnumber].totalcharge;
+			vm.newinvoice.labors[itemnumber] = null;
+			var found = 0;
 			for(var i=0;i<vm.newinvoice.labors.length;i++){
-				if(vm.newinvoice.labors[i]){
-					totalLaborCharges += vm.newinvoice.labors[i].totalcharge;
+				if(vm.newinvoice.labors[i] != null){
+					found = 1;
 				}
 			}
-			vm.newinvoice.laborcharges = Number(totalLaborCharges.toFixed(2));
+			if(found == 0){
+				vm.newinvoice.labors = [];
+			}
+			vm.invoiceLabors--;
+			if(vm.invoiceLabors === 0){
+				$("#labor-group").empty();
+				var appendString = "<span>Labor Charges</span><br>";
+				var el = angular.element(appendString);
+				$("#labor-group").append(el);
+				compiled = $compile(el);
+				compiled($scope);
+			}
 			vm.calcTotalPrice();
 		}
 		vm.determineTotalLaborCharge = function(labornumber){
@@ -256,67 +339,55 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		}
 		vm.addItem = function(){
 			var appendString = "";
-			if(vm.invoiceItems===0){
-				appendString = appendString + "<div class='top-margin10' style='font-size:.8em'>"
-											+ 	"<div class='row row-border' style='text-align:center;'>"
-											+		"<div class='col-xs-1'></div>"
-											+		"<div class='col-xs-1'>"
-											+			"<p>Quantity</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Model</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Brand</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Category</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Unit Price</p>"
-											+		"</div>"
-											+		"<div class='col-xs-2'>"
-											+			"<p>Total Price</p>"
-											+		"</div>"
-											+	"</div>"
-											+ "</div>"
-			}
 			vm.newinvoice.items[vm.invoiceItems] = {
 				quantity : 0,
 				unitprice : 0,
-				totalcharge : 0
+				totalcharge : 0,
+				spiffamount : 0
 			};
+			// if(vm.invoiceItems===0){
+			appendString = appendString + "<div class='top-margin10 col-xs-12' style='font-size:.8em' id='item"+vm.invoiceItems+"'>"
+										+ 	"<div class='row' style='text-align:center;'>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Delete</p>"
+							 			+			"<button class='btn btn-danger' ng-click='ivm.deleteItem("+vm.invoiceItems+");'>X</button>"
+							 			+ 		"</div>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Quantity</p>"
+							 			+			"<input type='number' class='form-control itemquantity' id='item"+vm.invoiceItems+"-quantity' name='item"+vm.invoiceItems+"-quantity' min='0' max='ivm.newinvoice.items["+vm.invoiceItems+"].quantitymax' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].quantity' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Model</p>"
+										+			"<select class='form-control itemmodel' id='item"+vm.invoiceItems+"-model' name='item"+vm.invoiceItems+"-model' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].model' ng-change='ivm.determineQuanPrice("+vm.invoiceItems+");'>"
+										+				"<option ng-repeat='model in ivm.models' value='{{model}}'>{{model}}</option>"
+										+			"</select>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Brand</p>"
+										+			"<input class='form-control itembrand' id='item"+vm.invoiceItems+"-brand' name='item"+vm.invoiceItems+"-brand' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].brand' ng-change='ivm.determineCategories("+vm.invoiceItems+");'>"
+										+			"</input>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Category</p>"
+										+			"<input class='form-control itemcategory' id='item"+vm.invoiceItems+"-category' name='item"+vm.invoiceItems+"-category' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].category' ng-change='ivm.determineModels("+vm.invoiceItems+");'>"
+										+			"</input>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Unit Price</p>"
+							 			+			"<input type='number' step='.01' class='form-control itemunitprice' id='item"+vm.invoiceItems+"-unitprice' name='item"+vm.invoiceItems+"-unitprice' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].unitprice' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'></input>"
+							 			+		"</div>"
+										+		"<div class='col-xs-12 col-md-1'>"
+										+			"<p>Spiff Amount</p>"
+							 			+			"<input type='number' step='.01' class='form-control itemspiffamount' id='item"+vm.invoiceItems+"-spiffamount' name='item"+vm.invoiceItems+"-spiffamount' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].spiffamount'></input>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Total Price</p>"
+							 			+			"<input type='number' step='.01' class='form-control itemtotalcharge' id='item"+vm.invoiceItems+"-totalcharge' name='item"+vm.invoiceItems+"-totalcharge' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].totalcharge' disabled></input>"
+										+		"</div>"
+										+	"</div>"
+										+ "</div>"
+			// }
 			console.log(vm.newinvoice.items);
-			// console.log(vm.newinvoice.items[1].quantity);
-			appendString 	 +=	"<div class='row row-border productrow' id='item"+vm.invoiceItems+"'>"
-								 +	"<div class='col-xs-12'  style='font-size:.6em'>"
-								 +		"<div class='col-xs-1'>"
-								 +			"<button class='btn btn-danger' ng-click='ivm.deleteItem("+vm.invoiceItems+");'>X</button>"
-								 +		"</div>"
-								 +		"<div class='col-xs-1'>"
-								 +			"<input type='number' class='form-control itemquantity' id='item"+vm.invoiceItems+"-quantity' name='item"+vm.invoiceItems+"-quantity' min='0' max='ivm.newinvoice.items["+vm.invoiceItems+"].quantitymax' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].quantity' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<select class='form-control itemmodel' id='item"+vm.invoiceItems+"-model' name='item"+vm.invoiceItems+"-model' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].model' ng-change='ivm.determineQuanPrice("+vm.invoiceItems+");'>"
-								 +				"<option ng-repeat='model in ivm.models' value='{{model}}'>{{model}}</option>"
-								 +			"</select>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input class='form-control itembrand' id='item"+vm.invoiceItems+"-brand' name='item"+vm.invoiceItems+"-brand' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].brand' ng-change='ivm.determineCategories("+vm.invoiceItems+");'>"
-								 +			"</input>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input class='form-control itemcategory' id='item"+vm.invoiceItems+"-category' name='item"+vm.invoiceItems+"-category' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].category' ng-change='ivm.determineModels("+vm.invoiceItems+");'>"
-								 +			"</input>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input type='number' step='.01' class='form-control itemunitprice' id='item"+vm.invoiceItems+"-unitprice' name='item"+vm.invoiceItems+"-unitprice' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].unitprice' ng-change='ivm.determineTotalPrice("+vm.invoiceItems+");'>"
-								 +		"</div>"
-								 +		"<div class='col-xs-2'>"
-								 +			"<input type='number' step='.01' class='form-control itemtotalcharge' id='item"+vm.invoiceItems+"-totalcharge' name='item"+vm.invoiceItems+"-totalcharge' ng-model='ivm.newinvoice.items["+vm.invoiceItems+"].totalcharge' disabled>"
-								 +		"</div>"
-								 +	"</div>"
-							 +	"</div>";
 			var el = angular.element(appendString);
 			$("#item-group").append(el);
 			compiled = $compile(el);
@@ -333,7 +404,11 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 					vm.newinvoice.items[itemnumber].category = vm.products[i].category;
 					vm.newinvoice.items[itemnumber].quantitymax = vm.products[i].quantity;
 					vm.newinvoice.items[itemnumber].unitprice = vm.products[i].price;
+					vm.newinvoice.items[itemnumber].spiffamount = vm.products[i].spiff;
 				}
+			}
+			if(vm.newinvoice.items[itemnumber].spiffamount > 0){
+				vm.addProductSpiffToTotal(vm.newinvoice.items[itemnumber].spiffamount);
 			}
 			console.log(vm.newinvoice.items[itemnumber]);
 			vm.determineTotalPrice(itemnumber);
@@ -342,6 +417,13 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			console.log(vm['quantity'+itemnumber]);
 			vm.newinvoice.items[itemnumber].totalcharge = vm.newinvoice.items[itemnumber].quantity * vm.newinvoice.items[itemnumber].unitprice;
 			vm.calculateItemTotals(itemnumber);
+		}
+		vm.addProductSpiffToTotal = function(spiffamount){
+			totalSpiffAmount = vm.newinvoice.spifftotal + spiffamount;
+			vm.newinvoice.spifftotal = totalSpiffAmount;
+		}
+		vm.minusProductSpiffToTotal = function(spiffamount){
+			vm.newinvoice.spifftotal -= spiffamount;
 		}
 		vm.calculateItemTotals = function(itemnumber){
 			console.log(vm.newinvoice.items);
@@ -363,17 +445,33 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		vm.deleteItem = function(itemnumber){
 			console.log(itemnumber);
 			console.log(vm.newinvoice.items);
-			vm.newinvoice.items[itemnumber] = null;
 			$("#item"+itemnumber).remove();
-			var totalPrice = 0;
-			console.log(vm.newinvoice.items);
+			if(vm.newinvoice.items[itemnumber].spiffamount > 0){
+				vm.minusProductSpiffToTotal(vm.newinvoice.items[itemnumber].spiffamount);
+			}
+			vm.newinvoice.itemcharges -= vm.newinvoice.items[itemnumber].totalcharge;
+			vm.newinvoice.items[itemnumber] = null;
+			vm.invoiceItems--;
+			var found = 0;
 			for(var i=0;i<vm.newinvoice.items.length;i++){
-				console.log(i);
-				if(vm.newinvoice.items[i]){
-					totalPrice += vm.newinvoice.items[i].totalcharge;
+				if(vm.newinvoice.items[i] != null){
+					console.log("not null");
+					found = 1;
 				}
 			}
-			vm.newinvoice.itemcharges = Number(totalPrice.toFixed(2));
+			if(found === 0){
+				vm.newinvoice.items = [];
+				console.log(vm.newinvoice.items);
+				console.log(vm.invoiceItems);
+			}
+			if(vm.invoiceItems == 0){
+				$("#item-group").empty();
+				var appendString = "<span>Items</span><br>";
+				var el = angular.element(appendString);
+				$("#item-group").append(el);
+				compiled = $compile(el);
+				compiled($scope);
+			}
 			if(vm.newaccount.taxexempt != true){
 				vm.calculateTax();
 			}

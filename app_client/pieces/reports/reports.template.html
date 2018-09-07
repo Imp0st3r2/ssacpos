@@ -1,23 +1,18 @@
 <div class="container-fluid">
 	<div class="products-container">
-        <h1>Current Reports</h1>
-		<button type="button" ng-click="rvm.addReport();" class="btn btn-success">Create Report</button>
-		<div class="row">
+        <h1>Recent Reports</h1>
+		<div class="row" id="sppreports">
+			<h2>Salesperson Reports</h2>
 			<div class="col-xs-12">
-				<div id="reports">
-					<div class="list-group" ng-repeat="report in rvm.reports">
-						<div class="col-xs-8">
-							<a href="#" data-poll-id="{{report._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(report._id);">
-							{{report.startdate}} - {{report.enddate}} 
-							</a>
-						</div>
-						<div class="col-xs-4">
-							<button class="btn btn-danger" type="button" ng-click="rvm.deleteReport(report._id);">Delete</button>
-						</div>
+				<div class="list-group" ng-repeat="report in rvm.reports">
+					<div class="col-xs-12">
+						<a href="#" data-poll-id="{{report._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(report._id);">
+						{{report.startdate}} - {{report.enddate}} 
+						</a>
 					</div>
 				</div>
 			</div>
-		</div>	
+		</div>
 		<div class="dialogbox">
 		</div>
 	</div>

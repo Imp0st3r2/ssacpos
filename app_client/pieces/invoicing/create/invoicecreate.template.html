@@ -1,91 +1,85 @@
 <div class="container-fluid">
 	<div class="invoice-container" style="padding-bottom:25px;">
-		<h1>Create Invoice</h1>
+		<div class="col-xs-12">
+			<h1>Create Invoice</h1>
+		</div>
 		<div class="col-xs-12">
 			<form class="form" id="invoice-form">
 				<div role="alert" ng-show="ivm.formError" class="alert alert-danger">{{ ivm.formError }}</div>
-				<div class="row">
-					<div class="col-xs-6">
+				<div class="row shadow">
+					<div class="col-xs-12 col-md-6">
 						<div class="form-group">
 							<label for="invoice-firstname">First Name: </label>
 							<input class="form-control" type="text" id="invoice-firstname" name="invoice-firstname" placeholder="Customer First Name." ng-model="ivm.newaccount.firstname">
 						</div>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<div class="form-group">
 							<label for="invoice-lastname">Last Name: </label>
 							<input class="form-control" type="text" id="invoice-lastname" name="invoice-lastname" placeholder="Customer Last Name." ng-model="ivm.newaccount.lastname">
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-address">Address: </label>
 							<input class="form-control" type="text" id="invoice-address" name="invoice-address" placeholder="Customer Address" ng-model="ivm.newaccount.address">
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-city">City: </label>
 							<input class="form-control" type="text" id="invoice-city" name="invoice-city" placeholder="Customer City" ng-model="ivm.newaccount.city">
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-state">State: </label>
 							<input class="form-control" type="text" id="invoice-state" name="invoice-state" placeholder="Customer State" ng-model="ivm.newaccount.state">
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-zip">Zip: </label>
 							<input class="form-control" type="text" id="invoice-zip" name="invoice-zip" placeholder="Customer Zip" ng-model="ivm.newaccount.zip">
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-email">Email: </label>
 							<input class="form-control" type="text" id="invoice-email" name="invoice-email" placeholder="Customer Email" ng-model="ivm.newaccount.email">
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-phone">Phone: </label>
 							<input class="form-control" type="text" id="invoice-phone" name="invoice-phone" placeholder="Customer Phone" ng-model="ivm.newaccount.phone">
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-vehiclemake">Vehicle Make: </label>
 							<input class="form-control" type="text" id="invoice-vehiclemake" name="invoice-vehiclemake" placeholder="Vehicle Make" ng-model="ivm.newinvoice.vehiclemake">
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-vehiclemodel">Vehicle Model: </label>
 							<input class="form-control" type="text" id="invoice-vehiclemodel" name="invoice-vehiclemodel" placeholder="Vehicle Model" ng-model="ivm.newinvoice.vehiclemodel">
 						</div>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-xs-12 col-md-4">
 						<div class="form-group">
 							<label for="invoice-vehicleyear">Vehicle Year: </label>
 							<input class="form-control" type="text" id="invoice-vehicleyear" name="invoice-vehicleyear" placeholder="Vehicle Year" ng-model="ivm.newinvoice.vehicleyear">
 						</div>
 					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<div class="form-group">
 							<label for="invoice-vehiclelicense">Vehicle License Plate: </label>
 							<input class="form-control" type="text" id="invoice-vehiclelicense" name="invoice-vehiclelicense" placeholder="License Plate" ng-model="ivm.newinvoice.vehiclelicense">
 						</div>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-xs-12 col-md-6">
 						<div class="form-group">
 							<label for="invoice-vehiclevin">Vehicle VIN: </label>
 							<input class="form-control" type="text" id="invoice-vehiclevin" name="invoice-vehiclevin" placeholder="License Plate" ng-model="ivm.newinvoice.vehiclevin">
@@ -95,20 +89,22 @@
 						<label for="invoice-taxexempt"><input type="checkbox" style="display:inline-block;height:20px;width:20px;" id="invoice-taxexempt" name="invoice-taxexempt" ng-model="ivm.newaccount.taxexempt"><b> Tax Exempt</b></label>
 					</div>
 				</div>
-				<div id="button-group" class="row top-margin10">
-					<button type="button" class="btn btn-primary" ng-click="ivm.addItem();">Add Item</button>
-					<button type="button" class="btn btn-primary" ng-click="ivm.addLabor();">Add Labor</button>
-					<button type="button" class="btn btn-primary" ng-click="ivm.addOther();">Add Other</button>
+				<div class="row indented">
+					<button type="button" class="btn btn-primary col-xs-12 col-md-3" ng-click="ivm.addItem();">Add Item</button>
+					<button type="button" class="btn btn-primary col-xs-12 col-md-3" ng-click="ivm.addLabor();">Add Labor</button>
+					<button type="button" class="btn btn-primary col-xs-12 col-md-3" ng-click="ivm.addOther();">Add Other</button>
+					<button type="button" class="btn btn-primary col-xs-12 col-md-3" ng-click="ivm.addSpiff();">Add Spiff</button>
 				</div>
-				<div id="item-group" class="row"></div>
-				<div id="labor-group" class="row"></div>
-				<div id="other-group" class="row"></div>
-				<div id="invoicetotal-group" class="row top-margin10">
-					<div class="col-xs-4"></div>
-					<div class="col-xs-4"></div>
-					<div class="col-xs-4">
+				<div id="item-group" class="row shadow" ng-show="ivm.invoiceItems > 0"><span>Items</span><br></div>
+				<div id="labor-group" class="row shadow" ng-show="ivm.invoiceLabors > 0"><span>Labor Charges</span><br></div>
+				<div id="other-group" class="row shadow" ng-show="ivm.invoiceOthers > 0"><span>Other Charges</span><br></div>
+				<div id="spiff-group" class="row shadow" ng-show="ivm.invoiceSpiffs > 0"><span>Spiffs</span><br></div>
+				<div class="row shadow">
+					<div class="col-xs-12 col-md-4"></div>
+					<div class="col-xs-12 col-md-4"></div>
+					<div class="col-xs-12 col-md-4">
 						<p><b>Totals</b></p>
-						<table class="table">
+						<table class="table" style="margin-right:5px;">
 							<tbody>
 								<tr>
 									<td>Total Item Charges</td>
@@ -123,18 +119,27 @@
 									<td>${{ivm.newinvoice.othercharges | number: 2}}</td>
 								</tr>
 								<tr>
-									<td>Tax</td>
+									<td>Tax ({{ivm.newinvoice.taxrate * 100}}%)</td>
 									<td>${{ivm.newinvoice.taxdue | number: 2}}</td>
 								</tr>
 								<tr>
 									<td style="background-color:#efaaaa;">Total Due</td>
 									<td style="background-color:#efaaaa;">${{ivm.newinvoice.totalprice | number: 2}}</td>
 								</tr>
+								<tr>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td style="background-color:#aaaaef;">Total Spiffs</td>
+									<td style="background-color:#aaaaef;">${{ivm.newinvoice.spifftotal | number: 2}}</td>
+								</tr>
 							</tbody>
 						</table>
+						<div class="clearfix"></div>
 					</div>
 				</div>
-				<div id="button-group" class="row top-margin10">
+				<div id="button-group" class="row top-margin10 indented">
 					<button type="button" class="btn btn-success" ng-click="ivm.submitInvoice();">Create</button>
 					<button type="button" class="btn btn-danger" ng-click="ivm.showList();">Cancel</button>
 				</div>

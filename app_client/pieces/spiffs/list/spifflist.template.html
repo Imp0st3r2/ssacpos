@@ -1,0 +1,41 @@
+<div class="container-fluid">
+	<div class="spiffs-container">
+		<h1>List of Spiffs</h1>
+		<form>
+			<div class="input-group add-on">
+				<input type="text" class="form-control" placeholder="Search..." id="spiff-search" ng-model="svm.searchterm">
+			</div>
+		</form><br>
+		<button type="button" ng-click="svm.addSpiff();" class="btn btn-success">Add Spiff</button>
+		<div class="top-margin10">
+			<div class="row row-border">
+				<div class="col-xs-3">
+					<p>Name</p>
+				</div>
+				<div class="col-xs-3">
+					<p>Amount</p>
+				</div>
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-3">
+				</div>
+			</div>
+			<div class="row row-border productrow" ng-repeat="spiff in svm.spiffs | filter : svm.searchterm">
+				<div class="col-xs-3">
+					<p>{{spiff.name}}</p>
+				</div>
+				<div class="col-xs-3">
+					<p>${{spiff.amount}}</p>
+				</div>
+				<div class="col-xs-3">
+				</div>
+				<div class="col-xs-3">
+					<button class="btn btn-primary" type="button" ng-click="svm.editSpiff(spiff._id, spiff.name);">Edit</button>
+					<button class="btn btn-danger" type="button" ng-click="svm.deleteSpiff(spiff._id, spiff.name);">Delete</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialogbox">
+		</div>
+	</div>
+</div>

@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 
 var productSchema = new mongoose.Schema({
+	upc : {
+		type : String
+	},
 	brand: {
 		type: String,
 		required: true
@@ -17,6 +20,7 @@ var productSchema = new mongoose.Schema({
 		type: Number,
 		required : true
 	},
+	spiff : Number,
 	channels:Number,
 	distortion : Number,
 	snratio : Number,

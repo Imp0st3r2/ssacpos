@@ -4,9 +4,11 @@ var paymentSchema = new mongoose.Schema({amountpaid : Number,dateofpayment : Str
 
 var otherSchema = new mongoose.Schema({description : String,totalcharge : Number});
 
-var itemSchema = new mongoose.Schema({brand : String,category : String,model : String,quantity : Number,unitprice : Number,totalcharge : Number});
+var itemSchema = new mongoose.Schema({brand : String,category : String,model : String,quantity : Number,unitprice : Number,spiffamount: Number,totalcharge : Number});
 
 var laborSchema = new mongoose.Schema({time : Number,description : String,hourlycharge : Number,totalcharge : Number});
+
+var spiffSchema = new mongoose.Schema({name: String,amount: Number});
 
 var accountSchema = new mongoose.Schema({
 	address: {type:String,required:true},
@@ -34,6 +36,8 @@ var invoiceSchema = new mongoose.Schema({
 	paid: Boolean,
 	payments : [paymentSchema],
 	salesrep : String,
+	spiffs : [spiffSchema],
+	spifftotal : Number,
 	state: String,
 	taxrate : Number,
 	taxdue : Number,

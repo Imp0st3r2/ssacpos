@@ -1,5 +1,6 @@
 var mongoose = require('mongoose').set('debug', true);
 var Report = mongoose.model('Report');
+var SppReport = mongoose.model('SppReport');
 var moment = require('moment');
 
 var sendJsonResponse = function(res, status, content) {
@@ -10,6 +11,24 @@ var sendJsonResponse = function(res, status, content) {
 module.exports.reportsList = function(req, res) {
 	if (req.params){
 		Report
+			.find()
+			.exec(function(err, reports){
+				if(!reports){
+					sendJsonResponse(res, 200, { "message" : "no reports found"});
+					return;
+				} else if (err) {
+					sendJsonResponse(res, 404, err);
+					return;
+				}
+				sendJsonResponse(res, 200, reports);
+			});
+	} else {
+		sendJsonResponse(res, 404, { "message" : "No userid in reports."});
+	}
+};
+module.exports.sppreportsList = function(req, res) {
+	if (req.params){
+		SppReport
 			.find()
 			.exec(function(err, reports){
 				if(!reports){

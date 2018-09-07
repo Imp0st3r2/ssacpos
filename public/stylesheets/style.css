@@ -169,7 +169,25 @@ footer {
 }
 .productrow:hover {
 	background-color:#fff;
+}
+.productrow {
 	cursor:pointer;
+}
+.shadow {
+	box-shadow: 2px 2px 10px black;
+	background-color:lightgrey;
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-right:5px;
+	margin-left:5px;
+	padding:5px;
+}
+.indented{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-right:5px;
+	margin-left:5px;
+	padding:5px;
 }
 .productrow > div > div > p {
 	padding:5px;
@@ -187,6 +205,13 @@ footer {
 	background:#777;
 }
 .active:hover{
+	color:#000;
+}
+.miniactive {
+	color:#000;
+	background:#777;
+}
+.miniactive:hover{
 	color:#000;
 }
 .top-margin10 {
@@ -220,12 +245,25 @@ footer {
 .modal-dialog {
 	width:800px;
 }
+
+#report-minibtns {
+	display:none;
+}
+
+
 /* For smartphones */
-@media (max-width: 480px) {
+@media (max-width: 770px) {
 	.banner-logo{
 		width:100%;
 	}
 	.navbar-brand{
+		width:80%;
+	}
+	.ctrl-container{
+		height:auto;
+	}
+	.modal-dialog {
+		left:10%;
 		width:80%;
 	}
 }

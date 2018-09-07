@@ -9,9 +9,10 @@ function dashboardCtrl ($location, $scope, $compile, authentication) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	vm.currentSection = "";
+	var currentpiece = "";
 	if(vm.isLoggedIn){
 		vm.insertPiece = function(piece){
-			console.log(piece);
+			currentpiece = piece;
 			$(".data-container").empty();
 			var stringToAppend = "<div class='col-xs-12 piece'><"+piece+"></"+piece+"></div>";
 			var el = angular.element(stringToAppend)
@@ -20,8 +21,18 @@ function dashboardCtrl ($location, $scope, $compile, authentication) {
 	     	compiled($scope);
 		}
 		$(".posbtn").click(function(){
+	     	if($(this).data("button") === "reports"){
+	     		$("#report-minibtns").slideDown();
+	     	}else{
+	     		$(".miniactive").removeClass("miniactive");
+	     		$("#report-minibtns").slideUp();
+	     	}
 			$(".active").removeClass("active");
 			$(this).addClass("active");
+		})
+		$(".posbtn-mini").click(function(){
+			$(".miniactive").removeClass("miniactive");
+			$(this).addClass("miniactive");
 		})
 	}else{
 		$location.path('/home');
