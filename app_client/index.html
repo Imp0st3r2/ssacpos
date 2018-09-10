@@ -6,7 +6,7 @@
 	<!--ADD STYLE SHEETS AND SCRIPTS HERE-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
 	<link rel='stylesheet' href='/stylesheets/font-awesome.min.css'>
 	<link rel="shortcut icon" href="/favicon.ico">
 	<script src='/angular/angular.js'></script>
@@ -19,7 +19,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<link rel='stylesheet' href='/stylesheets/style.css'>
 	<script src="/javascripts/moment.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script>
 	<base href="/">
 	<title>Point of Sale</title>
 </head>
@@ -37,7 +37,12 @@
 	<script src='/common/services/product.service.js'></script>
 	<script src='/common/services/invoice.service.js'></script>
 	<script src='/common/services/tax.service.js'></script>
-	<script src='/common/services/report.service.js'></script>
+	<script src='/common/services/sppreport.service.js'></script>
+	<script src='/common/services/ipreport.service.js'></script>
+	<script src='/common/services/bsreport.service.js'></script>
+	<script src='/common/services/dsreport.service.js'></script>
+	<script src='/common/services/tpreport.service.js'></script>
+	<script src='/common/services/streport.service.js'></script>
 	<script src='/common/services/account.service.js'></script>
 	<script src='/common/services/spiff.service.js'></script>
 	<script src='/dashboard/dashboard.controller.js'></script>
@@ -64,8 +69,20 @@
 	<script src='/pieces/invoicing/edit/invoiceedit.controller.js'></script>
 	<script src='/pieces/reports/reports.directive.js'></script>
 	<script src='/pieces/reports/reports.controller.js'></script>
-	<script src='/pieces/reports/create/reportcreate.directive.js'></script>
-	<script src='/pieces/reports/create/reportcreate.controller.js'></script>
+	<script src='/pieces/reports/sppreports/sppreports.directive.js'></script>
+	<script src='/pieces/reports/sppreports/sppreports.controller.js'></script>
+	<script src='/pieces/reports/sppreports/create/sppreportscreate.directive.js'></script>
+	<script src='/pieces/reports/sppreports/create/sppreportscreate.controller.js'></script>
+	<script src='/pieces/reports/ipreports/ipreports.directive.js'></script>
+	<script src='/pieces/reports/ipreports/ipreports.controller.js'></script>
+	<script src='/pieces/reports/bsreports/bsreports.directive.js'></script>
+	<script src='/pieces/reports/bsreports/bsreports.controller.js'></script>
+	<script src='/pieces/reports/dsreports/dsreports.directive.js'></script>
+	<script src='/pieces/reports/dsreports/dsreports.controller.js'></script>
+	<script src='/pieces/reports/tpreports/tpreports.directive.js'></script>
+	<script src='/pieces/reports/tpreports/tpreports.controller.js'></script>
+	<script src='/pieces/reports/streports/streports.directive.js'></script>
+	<script src='/pieces/reports/streports/streports.controller.js'></script>
 	<script src='/pieces/accounts/accounts.directive.js'></script>
 	<script src='/pieces/accounts/accounts.controller.js'></script>
 	<script src='/pieces/accounts/create/accountcreate.directive.js'></script>

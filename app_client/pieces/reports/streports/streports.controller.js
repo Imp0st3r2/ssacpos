@@ -1,36 +1,16 @@
 (function(){
 angular
 	.module('ssacpos')
-	.controller('reportsCtrl', reportsCtrl);
+	.controller('streportsCtrl', streportsCtrl);
 
-reportsCtrl.$inject = ['$window','$location','$scope','$compile','sppreport','ipreport','bsreport','dsreport','tpreport','streport'];
+streportsCtrl.$inject = ['$window','$location','$scope','$compile','streport'];
 
-function reportsCtrl($window,$location,$scope,$compile,sppreport,ipreport,bsreport,dsreport,tpreport,streport) {
+function streportsCtrl($window,$location,$scope,$compile,streport) {
 	var vm = this;
-	sppreport.getListofSppReports().then(function(response){
-		vm.sppreports = response.data;
-		console.log(vm.sppreports);
-	});
-	ipreport.getListofIpReports().then(function(response){
-		vm.ipreports = response.data;
-		console.log(vm.ipreports);
-	})
-	bsreport.getListofBsReports().then(function(response){
-		vm.bsreports = response.data;
-		console.log(vm.bsreports);
-	})
-	dsreport.getListofDsReports().then(function(response){
-		vm.dsreports = response.data;
-		console.log(vm.dsreports);
-	})
-	tpreport.getListofTpReports().then(function(response){
-		vm.tpreports = response.data;
-		console.log(vm.tpreports);
-	})
 	streport.getListofStReports().then(function(response){
 		vm.streports = response.data;
 		console.log(vm.streports);
-	})
+	});
 	vm.addReport = function() {
 		$(".data-container").empty();
 		var stringToAppend = "<div class='col-xs-12 piece'><reportcreate></reportcreate></div>";

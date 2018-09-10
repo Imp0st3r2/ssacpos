@@ -1,5 +1,5 @@
 var mongoose = require('mongoose').set('debug', true);
-var IpReport = mongoose.model('BsReport');
+var BsReport = mongoose.model('BsReport');
 var moment = require('moment');
 
 var sendJsonResponse = function(res, status, content) {
