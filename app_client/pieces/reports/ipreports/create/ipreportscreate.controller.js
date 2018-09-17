@@ -1,11 +1,11 @@
 (function(){
 angular
 	.module('ssacpos')
-	.controller('sppreportsCreateCtrl', sppreportsCreateCtrl);
+	.controller('ipreportsCreateCtrl', ipreportsCreateCtrl);
 
-sppreportsCreateCtrl.$inject = ['$window','$location','$scope','$compile','sppreport','authentication','user','invoice'];
+ipreportsCreateCtrl.$inject = ['$window','$location','$scope','$compile','ipreport','authentication','user','invoice'];
 
-function sppreportsCreateCtrl($window,$location,$scope,$compile,sppreport,authentication,user,invoice) {
+function ipreportsCreateCtrl($window,$location,$scope,$compile,ipreport,authentication,user,invoice) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	if(vm.isLoggedIn){

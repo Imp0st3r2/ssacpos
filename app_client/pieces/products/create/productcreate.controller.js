@@ -16,6 +16,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 			brand : true,
 			category : true,
 			model : true,
+			cost : true,
 			price : true,
 			quantity : true,
 			channels : false,
@@ -63,6 +64,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 			amperehours : 0,
 			voltage : 0,
 			description: "",
+			cost : 0,
 			price : 0,
 			bluetooth : false,
 			usb : false,
@@ -116,7 +118,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 		})
 		$("#product-newcategory").on('change',function(){
 			for(attr in vm.attr){
-				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
+				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "cost" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
 					vm.attr[attr] = false;
 				}
 			}
@@ -128,7 +130,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 		})
 		$("#product-category").on('change',function(){
 			for(attr in vm.attr){
-				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
+				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "cost" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
 					vm.attr[attr] = false;
 				}
 			}
@@ -251,6 +253,7 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 					vm.attr.brand = true;
 					vm.attr.category = true;
 					vm.attr.model = true;
+					vm.attr.cost = true;
 					vm.attr.price = true;
 					vm.attr.spiff = true;
 					vm.attr.quantity = true;
@@ -291,43 +294,47 @@ function productcreateCtrl($location, $scope, $compile, authentication, product)
 					}
 					if(vm.newproduct.model != ""){
 						if(vm.newproduct.price != ""){
-							console.log(vm.newproduct);
-							product.createProduct(vm.newproduct).then(function(response){
-								$(".dialogbox").empty();
-								var appendString = "<div class='row'>"
-												 +  "<div class='col-xs-12'>"
-												 + 	 "<p>"+response.data+"</p>"
-												 +	"</div>"
-												 + "</div>"
-												 + "<div class='row'>"
-												 +	"<div class='col-xs-3'></div>"
-												 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='pvm.showList();'>OK</button></div>"
-												 +	"<div class='col-xs-3'></div>"; 
-								var el = angular.element(appendString)
-								$(".dialogbox").append(el);
-								compiled = $compile(el);
-								compiled($scope);
-								console.log(response);
-								$(".dialogbox").show();
-							},function(err){
-								message = "There was an error creating the product.";
-								vm.formError = message;
-							})
+							if(vm.newproduct.cost != ""){
+								console.log(vm.newproduct);
+								product.createProduct(vm.newproduct).then(function(response){
+									$(".dialogbox").empty();
+									var appendString = "<div class='row'>"
+													 +  "<div class='col-xs-12'>"
+													 + 	 "<p>"+response.data+"</p>"
+													 +	"</div>"
+													 + "</div>"
+													 + "<div class='row'>"
+													 +	"<div class='col-xs-3'></div>"
+													 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='pvm.showList();'>OK</button></div>"
+													 +	"<div class='col-xs-3'></div>"; 
+									var el = angular.element(appendString)
+									$(".dialogbox").append(el);
+									compiled = $compile(el);
+									compiled($scope);
+									console.log(response);
+									$(".dialogbox").show();
+								},function(err){
+									message = "There was an error creating the product.";
+									vm.formError = message;
+								})
+							}else{
+								vm.formError = "Please enter a cost for the current product";
+							}
 						}else{
 							vm.formError = "Please enter a price for the current product.";
-							console.log(vm.newUser);
+							console.log(vm.formError);
 						}
 					}else{
 						vm.formError = "Please enter a model for the current product.";
-						console.log(vm.newUser);
+						console.log(vm.formError);
 					}
 				}else{
 					vm.formError = "Please enter a category for the current product."
-					console.log(vm.newUser);
+					console.log(vm.formError);
 				}
 			}else{
 				vm.formError = "Please enter a brand for the current product.";
-				console.log(vm.newUser);
+				console.log(vm.formError);
 			}
 		}
 		vm.showList = function(){

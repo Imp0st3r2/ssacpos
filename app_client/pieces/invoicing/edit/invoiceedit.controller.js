@@ -36,6 +36,7 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 			taxdue : 0,
 			othercharges : 0,
 			totalprice : 0,
+			totalcost : 0,
 			totalafterpayments : 0,
 			paid: false,
 			datepaid : null
@@ -288,25 +289,6 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 			}
 			vm.newinvoice.spifftotal += vm.newinvoice.spiffs[itemnumber].amount;
 			console.log(vm.newinvoice.spifftotal);
-		}
-		vm.calculateTax = function(){
-			vm.newinvoice.taxdue = vm.newinvoice.itemcharges * vm.newinvoice.taxrate;
-			console.log(vm.newinvoice.taxdue);
-			vm.newinvoice.taxdue = Number(vm.newinvoice.taxdue.toFixed(2));
-			vm.newinvoice.itemtotalwtax = vm.newinvoice.itemcharges + vm.newinvoice.taxdue;
-			console.log(vm.newinvoice.itemtotalwtax);
-			vm.newinvoice.itemtotalwtax = Number(vm.newinvoice.itemtotalwtax.toFixed(2));
-		}
-		vm.calcTotalPrice = function(){
-			vm.newinvoice.totalprice = vm.newinvoice.itemcharges + vm.newinvoice.laborcharges + vm.newinvoice.othercharges + vm.newinvoice.taxdue;
-			vm.newinvoice.totalprice = Number(vm.newinvoice.totalprice.toFixed(2));
-			var paymenttotal = 0;
-			if(vm.newinvoice.payments){
-				for(var i=0;i<vm.newinvoice.payments;i++){
-					paymenttotal += vm.newinvoice.payments[i].amountpaid;
-				}
-			}
-			vm.newinvoice.totalafterpayments = vm.newinvoice.totalprice - paymenttotal;
 		}
 		vm.submitInvoice = function(){
 			console.log(vm.newinvoice);
@@ -584,6 +566,7 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 			vm.newinvoice.items[itemnumber].quantity = 0;
 			vm.newinvoice.items[itemnumber].quantitymax = 0;
 			vm.newinvoice.items[itemnumber].unitprice = 0;
+			vm.newinvoice.items[itemnumber].unitcost = 0;
 			for(var i=0;i<vm.products.length;i++){
 				console.log(vm.products[i]);
 				if(vm.products[i].model === vm.newinvoice.items[itemnumber].model){
@@ -592,6 +575,7 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 					vm.newinvoice.items[itemnumber].quantitymax = vm.products[i].quantity;
 					vm.newinvoice.items[itemnumber].unitprice = vm.products[i].price;
 					vm.newinvoice.items[itemnumber].spiffamount = vm.products[i].spiff;
+					vm.newinvoice.items[itemnumber].unitcost = vm.products[i].cost;
 				}
 			}
 			if(vm.newinvoice.items[itemnumber].spiffamount > 0){
@@ -615,6 +599,7 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 			console.log("unit price");
 			console.log(vm.newinvoice.items[itemnumber].unitprice);
 			vm.newinvoice.items[itemnumber].totalcharge = vm.newinvoice.items[itemnumber].quantity * vm.newinvoice.items[itemnumber].unitprice;
+			vm.newinvoice.items[itemnumber].totalcost = vm.newinvoice.items[itemnumber].quantity * vm.newinvoice.items[itemnumber].unitcost;
 			console.log("total charge");
 			console.log(vm.newinvoice.items[itemnumber].totalcharge);
 			vm.calculateItemTotals(itemnumber);
@@ -622,13 +607,16 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 		vm.calculateItemTotals = function(itemnumber){
 			console.log(vm.newinvoice.items);
 			var totalPrice = 0;
+			var totalCost = 0;
 			for(var i=0;i<vm.newinvoice.items.length;i++){
 				console.log(i);
 				if(vm.newinvoice.items[i]){
 					totalPrice += vm.newinvoice.items[i].totalcharge;
+					totalCost += vm.newinvoice.items[i].totalcost;
 				}
 			}
 			vm.newinvoice.itemcharges = Number(totalPrice.toFixed(2));
+			vm.newinvoice.totalcost = Number(totalCost.toFixed(2));
 			vm.calculateTax();
 			vm.calcTotalPrice();
 		}
@@ -640,6 +628,7 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 				vm.minusProductSpiffToTotal(vm.newinvoice.items[itemnumber].spiffamount);
 			}
 			vm.newinvoice.itemcharges -= vm.newinvoice.items[itemnumber].totalcharge;
+			vm.newinvoice.totalcost -= vm.newinvoice.items[itemnumber].totalcost;
 			vm.newinvoice.items[itemnumber] = null;
 			vm.itemCount--;
 			var found = 0;

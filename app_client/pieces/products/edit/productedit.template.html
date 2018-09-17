@@ -4,7 +4,7 @@
 		<div class="col-xs-12">
 			<form class="form" id="product-form">
 				<div class="row shadow">
-					<div role="alert" ng-show="uvm.formError" class="alert alert-danger">{{ uvm.formError }}</div>
+					<div role="alert" ng-show="pevm.formError" class="alert alert-danger">{{ pevm.formError }}</div>
 					<div class="form-group" ng-show="pevm.attr.upc">
 						<label for="product-upc">Enter UPC: </label>
 						<input class="form-control" type="text" id="product-upc" name="product-upc" placeholder="Enter the product upc." ng-model="pevm.newproduct.upc">
@@ -38,6 +38,10 @@
 					<div  class="form-group" ng-show="pevm.attr.quantity">
 						<label for="product-quantity">Enter Quantity: </label>
 						<input class="form-control" type="number" id="product-quantity" name="product-quantity" placeholder="Enter product quantity." ng-model="pevm.newproduct.quantity">
+					</div>
+					<div  class="form-group" ng-show="pevm.attr.cost">
+						<label for="product-cost">Enter Cost: </label>
+						<input class="form-control" type="number" id="product-cost" name="product-cost" placeholder="Enter new product cost." ng-model="pevm.newproduct.cost">
 					</div>
 					<div  class="form-group" ng-show="pevm.attr.price">
 						<label for="product-price">Enter Price: </label>

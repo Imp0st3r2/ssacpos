@@ -16,6 +16,7 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 			category : true,
 			model : true,
 			price : true,
+			cost : true,
 			spiff : true,
 			quantity : true,
 			channels : false,
@@ -63,6 +64,7 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 			voltage : 0,
 			description: "",
 			price : 0,
+			cost: 0,
 			spiff : 0,
 			bluetooth : false,
 			usb : false,
@@ -116,7 +118,7 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 		});
 		$("#product-newcategory").on('change',function(){
 			for(attr in vm.attr){
-				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
+				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "cost" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
 					vm.attr[attr] = false;
 				}
 			};
@@ -127,7 +129,7 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 		});
 		$("#product-category").on('change',function(){
 			for(attr in vm.attr){
-				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
+				if(attr != "upc" && attr != "brand" && attr != "category" && attr != "model" && attr != "price" && attr != "cost" && attr != "spiff" && attr != "size" && attr != "configuration" && attr != "description"){
 					vm.attr[attr] = false;
 				}
 			};
@@ -234,6 +236,7 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 					vm.attr.category = true;
 					vm.attr.model = true;
 					vm.attr.price = true;
+					vm.attr.cost = true;
 					vm.attr.spiff = true;
 					vm.attr.quantity = true;
 					vm.attr.channels = true;
@@ -292,29 +295,33 @@ function producteditCtrl($location, $scope, $compile, authentication, product) {
 					}
 					if(vm.newproduct.model != ""){
 						if(vm.newproduct.price != ""){
-							console.log(vm.newproduct);
-							product.editProduct(vm.newproduct).then(function(response){
-								$(".dialogbox").empty();
-								var updatedproduct = response.data;
-								var appendString = "<div class='row'>"
-												 +  "<div class='col-xs-12'>"
-												 + 	 "<p>"+updatedproduct.brand + " " + updatedproduct.model+" has been updated!</p>"
-												 +	"</div>"
-												 + "</div>"
-												 + "<div class='row'>"
-												 +	"<div class='col-xs-3'></div>"
-												 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='pevm.showList();'>OK</button></div>"
-												 +	"<div class='col-xs-3'></div>"; 
-								var el = angular.element(appendString)
-								$(".dialogbox").append(el);
-								compiled = $compile(el);
-								compiled($scope);
-								console.log(response);
-								$(".dialogbox").show();
-							},function(err){
-								message = "There was an error updating the product.";
-								vm.formError = message;
-							});
+							if(vm.newproduct.cost != ""){
+								console.log(vm.newproduct);
+								product.editProduct(vm.newproduct).then(function(response){
+									$(".dialogbox").empty();
+									var updatedproduct = response.data;
+									var appendString = "<div class='row'>"
+													 +  "<div class='col-xs-12'>"
+													 + 	 "<p>"+updatedproduct.brand + " " + updatedproduct.model+" has been updated!</p>"
+													 +	"</div>"
+													 + "</div>"
+													 + "<div class='row'>"
+													 +	"<div class='col-xs-3'></div>"
+													 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='pevm.showList();'>OK</button></div>"
+													 +	"<div class='col-xs-3'></div>"; 
+									var el = angular.element(appendString)
+									$(".dialogbox").append(el);
+									compiled = $compile(el);
+									compiled($scope);
+									console.log(response);
+									$(".dialogbox").show();
+								},function(err){
+									message = "There was an error updating the product.";
+									vm.formError = message;
+								});
+							}else{
+								vm.formError = "Please enter a cost for the current product.";
+							}
 						}else{
 							vm.formError = "Please enter a price for the current product.";
 							console.log(vm.newUser);

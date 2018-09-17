@@ -5,6 +5,7 @@
 
 	sppreport.$inject = ['$window','$http'];
 	function sppreport ($window,$http) {
+		var currentSppReport = {};
 		var getListofSppReports = function(){
 			return $http.get('/api/sppreports');
 		};
@@ -20,12 +21,20 @@
 		var deleteSppReport = function(reportid){
 			return $http.delete('/api/sppreports/'+reportid);
 		};
+		var setSppReport = function(sppreport){
+			currentSppReport = sppreport;
+		};
+		var getSppReport = function(){
+			return currentSppReport;
+		};
 		return {
 			getListofSppReports : getListofSppReports,
 			getSppReportById : getSppReportById,
 			createSppReport : createSppReport,
 			editSppReport : editSppReport,
-			deleteSppReport : deleteSppReport
+			deleteSppReport : deleteSppReport,
+			setSppReport : setSppReport,
+			getSppReport : getSppReport
 		};
 	}
 }) ();

@@ -70,7 +70,7 @@ module.exports.UpdateSppReport = function(req, res) {
 					sendJsonResponse(res, 400, err);
 					return;
 				}
-				sendJsonResponse(res, 200, sppreport);
+				sendJsonResponse(res, 200, "Report successfully updated");
 		});
 	}
 };
@@ -85,7 +85,7 @@ module.exports.DeleteSppReport = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}else{
-						sendJsonResponse(res, 204, {"message" : "SppReport deleted successfully."});
+						sendJsonResponse(res, 200, "Report successfully deleted");
 					}
 				}
 			);

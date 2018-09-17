@@ -1,25 +1,31 @@
 (function(){
 angular
 	.module('ssacpos')
-	.controller('sppreportsCreateCtrl', sppreportsCreateCtrl);
+	.controller('sppreportsEditCtrl', sppreportsEditCtrl);
 
-sppreportsCreateCtrl.$inject = ['$window','$location','$scope','$compile','sppreport','authentication','user','invoice'];
+sppreportsEditCtrl.$inject = ['$window','$location','$scope','$compile','sppreport','authentication','user','invoice'];
 
-function sppreportsCreateCtrl($window,$location,$scope,$compile,sppreport,authentication,user,invoice) {
+function sppreportsEditCtrl($window,$location,$scope,$compile,sppreport,authentication,user,invoice) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	if(vm.isLoggedIn){
-		vm.employees = [];
+		vm.currentSppReport = sppreport.getSppReport();
 		user.getUsers().then(function(response){
 			vm.employees = response.data;
-			console.log(vm.employees);
-		})
-		invoice.getInvoiceList().then(function(response){
-			console.log(response.data);
-			vm.invoices = response.data;
+			invoice.getInvoiceList().then(function(response){
+				vm.invoices = response.data;
+			})
+			sppreport.getSppReportById(vm.currentSppReport.id).then(function(response){
+				vm.currentSppReport = response.data;
+				console.log(vm.currentSppReport);
+				$("#report-startdate").val(moment(vm.currentSppReport.startdate).format("MM/DD/YYYY"));
+				$("#report-enddate").val(moment(vm.currentSppReport.enddate).format("MM/DD/YYYY"));
+				$("#report-employee").val(vm.currentSppReport.employee);
+			})
 		})
 		vm.submitSppReport = function(){
 			vm.sppreport = {
+				_id : vm.currentSppReport._id,
 				creationdate : new Date(),
 				startdate : "",
 				enddate : "",
@@ -70,7 +76,7 @@ function sppreportsCreateCtrl($window,$location,$scope,$compile,sppreport,authen
 			vm.sppreport.percgp = (vm.sppreport.totalprofit / vm.sppreport.totalitemprice) * 100;
 
 			console.log(vm.sppreport);
-			sppreport.createSppReport(vm.sppreport).then(function(response){
+			sppreport.editSppReport(vm.sppreport).then(function(response){
 				console.log(response);
 				$(".dialogbox").empty();
 				var appendString = "<div class='row'>"

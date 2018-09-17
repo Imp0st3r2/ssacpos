@@ -84,6 +84,7 @@ module.exports.productsUpdateOne = function(req, res) {
 		brand : req.body.brand,
 		category : req.body.category,
 		model : req.body.model,
+		cost : req.body.cost,
 		price : req.body.price,
 		spiff : req.body.spiff,
 		quantity : req.body.quantity,
