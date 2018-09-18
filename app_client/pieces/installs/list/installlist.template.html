@@ -1,0 +1,49 @@
+<div class="container-fluid">
+	<div class="installs-container">
+		<h1>List of Installs</h1>
+		<form>
+			<div class="input-group add-on">
+				<input type="text" class="form-control" placeholder="Search..." id="install-search" ng-model="ivm.searchterm">
+			</div>
+		</form><br>
+		<button type="button" ng-click="ivm.addInstall();" class="btn btn-success">Add Install</button>
+		<div class="top-margin10">
+			<div class="row row-border">
+				<div class="col-xs-2">
+					<p>Time</p>
+				</div>
+				<div class="col-xs-3">
+					<p>Description</p>
+				</div>
+				<div class="col-xs-2">
+					<p>Cost</p>
+				</div>
+				<div class="col-xs-2">
+					<p>Hourly Charge</p>
+				</div>
+				<div class="col-xs-3">
+				</div>
+			</div>
+			<div class="row row-border productrow" ng-repeat="install in ivm.installs | filter : ivm.searchterm">
+				<div class="col-xs-2">
+					<p>{{install.time}}</p>
+				</div>
+				<div class="col-xs-3">
+					<p>{{install.description}}</p>
+				</div>
+				<div class="col-xs-2">
+					<p>${{install.cost}}</p>
+				</div>
+				<div class="col-xs-2">
+					<p>${{install.hourlycharge}}</p>
+				</div>
+				<div class="col-xs-3">
+					<button class="btn btn-primary" type="button" ng-click="svm.editInstall(install._id);">Edit</button>
+					<button class="btn btn-danger" type="button" ng-click="svm.deleteInstall(install._id);">Delete</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialogbox">
+		</div>
+	</div>
+</div>

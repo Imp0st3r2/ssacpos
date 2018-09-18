@@ -6,7 +6,7 @@ var otherSchema = new mongoose.Schema({description : String,totalcharge : Number
 
 var itemSchema = new mongoose.Schema({brand : String,category : String,model : String,quantity : Number,unitprice : Number,spiffamount: Number,totalcharge : Number,unitcost : Number});
 
-var laborSchema = new mongoose.Schema({time : Number,description : String,hourlycharge : Number,totalcharge : Number,installer:String});
+var laborSchema = new mongoose.Schema({time : Number,description : String,hourlycharge : Number,totalcharge : Number,installer:String,cost: Number});
 
 var spiffSchema = new mongoose.Schema({name: String,amount: Number});
 

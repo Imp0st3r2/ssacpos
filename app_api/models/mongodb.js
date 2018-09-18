@@ -52,3 +52,4 @@ require('./streports');
 require('./accounts');
 require('./counters');
 require('./spiffs');
+require('./labors');

@@ -25,7 +25,9 @@ function sppreportsCtrl($window,$location,$scope,$compile,sppreport,authenticati
 				vm.sppreports[i].startdate = startdate[0];
 				vm.sppreports[i].enddate = enddate[0];
 				vm.sppreports[i].creationdate = creationdate;
-				vm.sppreports[i].percgp = Number(vm.sppreports[i].percgp.toFixed(2));
+				if(vm.sppreports[i].percgp){
+					vm.sppreports[i].percgp = Number(vm.sppreports[i].percgp.toFixed(2));
+				}
 				vm.sppreports[i].totalitemcost = formatter.format(vm.sppreports[i].totalitemcost);
 				vm.sppreports[i].totalitemprice = formatter.format(vm.sppreports[i].totalitemprice);
 				vm.sppreports[i].totalprofit = formatter.format(vm.sppreports[i].totalprofit);

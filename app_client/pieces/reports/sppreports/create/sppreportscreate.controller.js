@@ -20,7 +20,7 @@ function sppreportsCreateCtrl($window,$location,$scope,$compile,sppreport,authen
 		})
 		vm.submitSppReport = function(){
 			vm.sppreport = {
-				creationdate : new Date(),
+				creationdate : new Date().toISOString(),
 				startdate : "",
 				enddate : "",
 				employee : "",

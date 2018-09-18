@@ -23,6 +23,7 @@ var ctrlTpReports = require('../controllers/tpreports');
 var ctrlStReports = require('../controllers/streports');
 var ctrlAccounts = require('../controllers/accounts');
 var ctrlSpiffs = require('../controllers/spiffs');
+var ctrlLabors = require('../controllers/labors');
 
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
@@ -113,6 +114,13 @@ router.get('/spiffs/:spiffid', ctrlSpiffs.spiffsReadOne);
 router.post('/spiffs', ctrlSpiffs.spiffsCreate);
 router.put('/spiffs/:spiffid', ctrlSpiffs.spiffsUpdateOne);
 router.delete('/spiffs/:spiffid', ctrlSpiffs.spiffsDeleteOne);
+
+//Labors
+router.get('/labors',ctrlLabors.laborsList);
+router.get('/labors/:laborid', ctrlLabors.laborsReadOne);
+router.post('/labors', ctrlLabors.laborsCreate);
+router.put('/labors/:laborid', ctrlLabors.laborsUpdateOne);
+router.delete('/labors/:laborid', ctrlLabors.laborsDeleteOne);
 
 //Tax
 router.get('/taxrate', ctrlTaxes.getTaxRate);
