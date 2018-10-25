@@ -15,11 +15,12 @@
 		var createInstall = function(install){
 			return $http.post('/api/labors',install);
 		}
-		var deleteInstall = function(installid){
-			return $http.delete('/api/labors/'+installid);
+		var deleteInstall = function(install){
+			console.log(install);
+			return $http.delete('/api/labors/'+install.id);
 		}
 		var updateInstall = function(install){
-			return $http.put('/api/labors/'+install.id,install)
+			return $http.put('/api/labors/'+install._id,install)
 		}
 		var setInstall = function(install){
 			currentInstall = install;

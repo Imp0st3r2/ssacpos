@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var installSchema = new mongoose.Schema({installer : String,installdate : Date,invoice : Number,hours : Number,cost: Number,rate: Number,recieved: Number,profit : Number,description: String});
+var installSchema = new mongoose.Schema({installer : String,installdate : Date,invoicenumber : Number,time : Number,cost: Number,hourlycharge: Number,totalcharge: Number,profit : Number,description: String});
 
 var ipreportSchema = new mongoose.Schema({
 	creationdate : Date,

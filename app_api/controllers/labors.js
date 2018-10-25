@@ -94,7 +94,7 @@ module.exports.laborsDeleteOne = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}
-					sendJsonResponse(res, 204, labor);
+					sendJsonResponse(res, 200, "Install successfully deleted!");
 				}
 			);
 	} else {

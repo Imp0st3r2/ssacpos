@@ -1,14 +1,14 @@
 (function () {
 	angular
 		.module('ssacpos')
-		.directive('spiffedit', spiffedit);
+		.directive('installedit', installedit);
 
-	function spiffedit() {
+	function installedit() {
 		return {
 			restrict: 'EA',
 			scope: {},
-			templateUrl: '/pieces/spiffs/edit/spiffedit.template.html',
-			controller: 'spiffeditCtrl as svm'
+			templateUrl: '/pieces/installs/edit/installedit.template.html',
+			controller: 'installeditCtrl as ivm'
 		};
 	}
 }) ();

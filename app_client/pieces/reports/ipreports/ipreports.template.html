@@ -8,18 +8,21 @@
 		</form><br>
 		<button type="button" ng-click="rvm.createIpReport();" class="btn btn-success">Create Report</button>
 		<div class="top-margin10">
-			<div class="row shadow productrow" ng-repeat="ipreport in rvm.ipreports | filter : rvm.searchterm" ng-click="rvm.readOne(ipreport._id);" data-toggle="modal" data-target="#ipreportModal">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="margin-bottom:10px;">
-					<div class="col-xs-6">
-						<span>Date Range</span><br><span style="font-weight:normal;">{{ipreport.upc}}</span>
+			<div class="row shadow productrow" ng-repeat="ipreport in rvm.ipreports | filter : rvm.searchterm" ng-click="rvm.readOne(ipreport._id);">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="margin-bottom:10px;" data-toggle="modal" data-target="#ipreportModal">
+					<div class="col-xs-12 col-lg-4">
+						<span>Creation Date</span><br><span style="font-weight:normal;"><strong>{{ipreport.creationdate}}</strong></span>
 					</div>
-					<div class="col-xs-6">
-						<span>Employee</span><br><span style="font-weight:normal;">{{ipreport.brand}}</span>
+					<div class="col-xs-12 col-lg-4">
+						<span>Date Range</span><br><span style="font-weight:normal;"><strong>{{ipreport.startdate}} TO {{ipreport.enddate}}</strong></span>
+					</div>
+					<div class="col-xs-12 col-lg-4">
+						<span>Employee</span><br><span style="font-weight:normal;"><strong>{{ipreport.employee}}</strong></span>
 					</div>
 				</div>
-				<div class="col-xs-12">
+				<div class="col-xs-12 col-lg-2">
 					<button class="btn btn-primary col-xs-12 col-md-6" type="button" ng-click="rvm.editIpReport(ipreport._id);" style="margin-bottom:5px;">Edit</button>
-					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="pvm.deleteIpReport(ipreport._id,sppreport.model);">Delete</button>
+					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="rvm.deleteIpReport(ipreport._id);">Delete</button>
 				</div>
 			</div>
 		</div>
@@ -28,252 +31,57 @@
 	</div>
 </div>
 
-<div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="invoiceModal">
+<div class="modal fade" id="ipreportModal" tabindex="-1" role="dialog" aria-labelledby="ipreportModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="invoiceModal">Invoice for {{ivm.clickedInvoice.firstname}} {{ivm.clickedInvoice.lastname}}, {{ivm.clickedInvoice.datecreated}} <span ng-if="ivm.clickedInvoice.paid" style="color:#F00;"> PAID </span></h4>
+        <h4 class="modal-title" id="ipreportModal">Installer Profitability Report for {{rvm.clickedIpReport.employee}}</h4>
       </div>
       <div class="modal-body">
-      	<form class="form" id="invoice-form">
-				<div role="alert" ng-show="ivm.formError" class="alert alert-danger">{{ ivm.formError }}</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="form-group">
-							<label for="invoice-firstname">First Name: </label>
-							<input class="form-control" type="text" id="invoice-firstname" name="invoice-firstname" placeholder="Customer First Name." ng-model="ivm.clickedInvoice.firstname">
-						</div>
-					</div>
-					<div class="col-xs-12">
-						<div class="form-group">
-							<label for="invoice-lastname">Last Name: </label>
-							<input class="form-control" type="text" id="invoice-lastname" name="invoice-lastname" placeholder="Customer Last Name." ng-model="ivm.clickedInvoice.lastname">
-						</div>
-					</div>
+      	<div class="col-xs-12">
+      		<div class="col-xs-6">From: {{rvm.clickedIpReport.startdate}}</div>
+      		<div class="col-xs-6">To: {{rvm.clickedIpReport.enddate}}</div>
+      	</div>
+      	<div class="col-xs-12">
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Cost of Items:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedIpReport.totalcost}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Rate of Items:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedIpReport.totalrate}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Recieved for Items:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedIpReport.totalrecieved}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Profit:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedIpReport.totalprofit}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<h2>List of Items:</h2>
+			<div class="productattr" ng-repeat="install in rvm.clickedIpReport.installs">
+				<div class="col-xs-12"><p>Date: {{install.installdate}} - Invoice: {{install.invoicenumber}}</p></div>
+				<div class="col-xs-12">
+					<p>Install Time: {{install.time}}</p>
+					<p>Install Cost: {{install.cost}}</p>
+					<p>Amount Recieved: {{install.totalcharge}}</p>
+					<p>Hourly Rate: {{install.hourlycharge}}</p>
+					<p>Install Profit: {{install.profit}}</p>
 				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="form-group">
-							<label for="invoice-address">Address: </label>
-							<input class="form-control" type="text" id="invoice-address" name="invoice-address" placeholder="Customer Address" ng-model="ivm.clickedInvoice.address">
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="invoice-state">State: </label>
-							<input class="form-control" type="text" id="invoice-state" name="invoice-state" placeholder="Customer State" ng-model="ivm.clickedInvoice.state">
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="invoice-city">City: </label>
-							<input class="form-control" type="text" id="invoice-city" name="invoice-city" placeholder="Customer City" ng-model="ivm.clickedInvoice.city">
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="invoice-zip">Zip: </label>
-							<input class="form-control" type="text" id="invoice-zip" name="invoice-zip" placeholder="Customer Zip" ng-model="ivm.clickedInvoice.zip">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label for="invoice-email">Email: </label>
-							<input class="form-control" type="text" id="invoice-email" name="invoice-email" placeholder="Customer Email" ng-model="ivm.clickedInvoice.email">
-						</div>
-					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label for="invoice-phone">Phone: </label>
-							<input class="form-control" type="text" id="invoice-phone" name="invoice-phone" placeholder="Customer Phone" ng-model="ivm.clickedInvoice.phone">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="invoice-vehiclemake">Vehicle Make: </label>
-							<input class="form-control" type="text" id="invoice-vehiclemake" name="invoice-vehiclemake" placeholder="Vehicle Make" ng-model="ivm.clickedInvoice.vehiclemake">
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="invoice-vehiclemodel">Vehicle Model: </label>
-							<input class="form-control" type="text" id="invoice-vehiclemodel" name="invoice-vehiclemodel" placeholder="Vehicle Model" ng-model="ivm.clickedInvoice.vehiclemodel">
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="invoice-vehicleyear">Vehicle Year: </label>
-							<input class="form-control" type="text" id="invoice-vehicleyear" name="invoice-vehicleyear" placeholder="Vehicle Year" ng-model="ivm.clickedInvoice.vehicleyear">
-						</div>
-					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label for="invoice-vehiclelicense">Vehicle License Plate: </label>
-							<input class="form-control" type="text" id="invoice-vehiclelicense" name="invoice-vehiclelicense" placeholder="License Plate" ng-model="ivm.clickedInvoice.vehiclelicense">
-						</div>
-					</div>
-					<div class="col-xs-6">
-						<div class="form-group">
-							<label for="invoice-vehiclevin">Vehicle Vin: </label>
-							<input class="form-control" type="text" id="invoice-vehiclevin" name="invoice-vehiclevin" placeholder="Vin Number" ng-model="ivm.clickedInvoice.vehiclevin">
-						</div>
-					</div>
-				</div>
-				<div id="item-group" class="row" style="padding:10px;" ng-if="ivm.clickedInvoice.items.length > 0">
-					<p><b>Item Charges</b></p>
-					<div>
-						<table class='table'>
-							<thead>
-								<th>Brand</th>
-								<th>Category</th>
-								<th>Model</th>
-								<th>Quantity</th>
-								<th>Unit Price</th>
-								<th>Total Charge</th>
-							</thead>
-							<tbody>
-								<tr ng-repeat="item in ivm.clickedInvoice.items">
-									<td>{{item.brand}}</td>
-									<td>{{item.category}}</td>
-									<td>{{item.model}}</td>
-									<td>{{item.quantity}}</td>
-									<td>${{item.unitprice | number : 2}}</td>
-									<td>${{item.totalcharge | number : 2}}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div id="labor-group" class="row" style="padding:10px;" ng-if="ivm.clickedInvoice.labors.length > 0">
-					<p><b>Labor Charges</b></p>
-					<div>
-						<table class='table'>
-							<thead>
-								<th>Time</th>
-								<th>Description</th>
-								<th>Hourly Charge</th>
-								<th>Total Charge</th>
-							</thead>
-							<tbody>
-								<tr ng-repeat="labor in ivm.clickedInvoice.labors">
-									<td>{{labor.time}}</td>
-									<td>{{labor.description}}</td>
-									<td>${{labor.hourlycharge | number : 2}}</td>
-									<td>${{labor.totalcharge | number : 2}}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div id="other-group" class="row" style="padding:10px;" ng-if="ivm.clickedInvoice.others.length > 0">
-					<p><b>Other Charges</b></p>
-					<div>
-						<table class='table'>
-							<thead>
-								<th>Description</th>
-								<th>Total Charge</th>
-							</thead>
-							<tbody>
-								<tr ng-repeat="other in ivm.clickedInvoice.others">
-									<td>{{other.description}}</td>
-									<td>${{other.totalcharge | number : 2}}</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div id="invoicetotal-group" class="row top-margin10">
-					<div class="col-xs-6">
-						<p><b>Payments</b></p>
-						<div>
-							<table class='table'>
-								<thead>
-									<th>Date</th>
-									<th>Amount Paid</th>
-								</thead>
-								<tbody>
-									<tr ng-repeat="payment in ivm.clickedInvoice.payments">
-										<td>{{payment.dateofpayment}}</td>
-										<td>${{payment.amountpaid | number : 2}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					<div class="col-xs-6">	
-						<p><b>Totals</b></p>
-						<div>
-							<table class='table'>
-								<tbody>
-									<tr>
-										<td>Item Charges: </td>
-										<td>${{ivm.clickedInvoice.itemcharges | number : 2}}</td>
-									</tr>
-									<tr>
-										<td>Labor Charges: </td>
-										<td>${{ivm.clickedInvoice.laborcharges | number : 2}}</td>
-									</tr>
-									<tr>
-										<td>Other Charges: </td>
-										<td>${{ivm.clickedInvoice.othercharges | number : 2}}</td>
-									</tr>
-									<tr>
-										<td>Tax Rate: </td>
-										<td>{{ivm.clickedInvoice.taxrate}}</td>
-									</tr>
-									<tr>
-										<td>Tax Due: </td>
-										<td>${{ivm.clickedInvoice.taxdue | number : 2}}</td>
-									</tr>
-									<tr>
-										<td>Total Price w/Tax: </td>
-										<td>${{ivm.clickedInvoice.totalprice | number : 2}}</td>
-									</tr>
-									<tr class="redbg">
-										<td>Remaining Balance: </td>
-										<td>${{ivm.clickedInvoice.totalafterpayments | number : 2}}</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-				<div id="button-group" class="row top-margin10" style="padding:10px;">
-					<button ng-if="!ivm.clickedInvoice.paid" type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#paymentModal">Make Payment</button>
-					<button type="button" class="btn btn-primary pull-right" ng-click="ivm.printInvoice();">Print Invoice</button>
-				</div>
-			</form>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="paymentModal">Invoice for {{ivm.clickedInvoice.firstname}} {{ivm.clickedInvoice.lastname}}, {{ivm.clickedInvoice.datecreated}} (Remaining Balance: {{ivm.clickedInvoice.totalafterpayments}})</h4>
-      </div>
-      <div class="modal-body">
-      	<form class="form" id="payment-form">
-				<div role="alert" ng-show="ivm.formError" class="alert alert-danger">{{ ivm.formError }}</div>
-				<div class="form-group">
-					<label for="payment-amount">Payment Amount: </label>
-					<input type="number" class="form-control" id="payment-amount" name="payment-amount" ng-model="ivm.payment">
-				</div>
-			</form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#invoiceModal" ng-click="ivm.makePayment();">Make Payment</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>

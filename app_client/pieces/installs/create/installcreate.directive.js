@@ -1,14 +1,14 @@
 (function () {
 	angular
 		.module('ssacpos')
-		.directive('spiffcreate', spiffcreate);
+		.directive('installcreate', installcreate);
 
-	function spiffcreate() {
+	function installcreate() {
 		return {
 			restrict: 'EA',
 			scope: {},
-			templateUrl: '/pieces/spiffs/create/spiffcreate.template.html',
-			controller: 'spiffcreateCtrl as svm'
+			templateUrl: '/pieces/installs/create/installcreate.template.html',
+			controller: 'installcreateCtrl as ivm'
 		};
 	}
 }) ();

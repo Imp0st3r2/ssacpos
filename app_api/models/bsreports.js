@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var bsreportSchema = new mongoose.Schema({
+	creationdate : Date,
 	startdate : Date,
 	enddate : Date,
 	merchandisesales : Number,

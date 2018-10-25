@@ -55,6 +55,7 @@ module.exports.CreateIpReport = function(req, res) {
 };
 
 module.exports.UpdateIpReport = function(req, res) {
+	console.log(req.params);
 	if(!req.params.reportid){
 		sendJsonResponse(res, 404, {
 			"message": "Not found, reportid is required"
@@ -63,14 +64,14 @@ module.exports.UpdateIpReport = function(req, res) {
 	}else{
 		var report = req.body;
 		IpReport.findOneAndUpdate({'_id':report._id}, report, {new:true}, function(err, ipreport){
-				if(!sppreport){
+				if(!ipreport){
 					sendJsonResponse(res, 404, { "message" : "report not found"});
 					return;
 				} else if (err) {
 					sendJsonResponse(res, 400, err);
 					return;
 				}
-				sendJsonResponse(res, 200, ipreport);
+				sendJsonResponse(res, 200, "IpReport updated successfully.");
 		});
 	}
 };
@@ -82,10 +83,10 @@ module.exports.DeleteIpReport = function(req, res) {
 			.exec(
 				function(err){
 					if(err){
-						sendJsonResponse(res, 404, err);
+						sendJsonResponse(res, 400, err);
 						return;
 					}else{
-						sendJsonResponse(res, 204, {"message" : "IpReport deleted successfully."});
+						sendJsonResponse(res, 200, "IpReport deleted successfully.");
 					}
 				}
 			);

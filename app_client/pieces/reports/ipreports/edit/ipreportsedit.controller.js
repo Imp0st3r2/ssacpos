@@ -1,25 +1,32 @@
 (function(){
 angular
 	.module('ssacpos')
-	.controller('ipreportsCreateCtrl', ipreportsCreateCtrl);
+	.controller('ipreportsEditCtrl', ipreportsEditCtrl);
 
-ipreportsCreateCtrl.$inject = ['$window','$location','$scope','$compile','ipreport','authentication','user','invoice'];
+ipreportsEditCtrl.$inject = ['$window','$location','$scope','$compile','ipreport','authentication','user','invoice'];
 
-function ipreportsCreateCtrl($window,$location,$scope,$compile,ipreport,authentication,user,invoice) {
+function ipreportsEditCtrl($window,$location,$scope,$compile,ipreport,authentication,user,invoice) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	if(vm.isLoggedIn){
-		vm.employees = [];
+		vm.currentIpReport = ipreport.getIpReport();
+		console.log(vm.currentIpReport);
 		user.getUsers().then(function(response){
 			vm.employees = response.data;
-			console.log(vm.employees);
-		})
-		invoice.getInvoiceList().then(function(response){
-			console.log(response.data);
-			vm.invoices = response.data;
+			invoice.getInvoiceList().then(function(response){
+				vm.invoices = response.data;
+			})
+			ipreport.getIpReportById(vm.currentIpReport.id).then(function(response){
+				vm.currentIpReport = response.data;
+				console.log(vm.currentIpReport);
+				$("#report-startdate").val(moment(vm.currentIpReport.startdate).format("MM/DD/YYYY"));
+				$("#report-enddate").val(moment(vm.currentIpReport.enddate).format("MM/DD/YYYY"));
+				$("#report-employee").val(vm.currentIpReport.employee);
+			})
 		})
 		vm.submitIpReport = function(){
 			vm.ipreport = {
+				_id : vm.currentIpReport._id,
 				creationdate : new Date().toISOString(),
 				startdate : "",
 				enddate : "",
@@ -69,7 +76,7 @@ function ipreportsCreateCtrl($window,$location,$scope,$compile,ipreport,authenti
 			vm.ipreport.installs = validLabors;
 			vm.ipreport.totalprofit = vm.ipreport.totalrecieved - vm.ipreport.totalcost;
 			console.log(vm.ipreport);
-			ipreport.createIpReport(vm.ipreport).then(function(response){
+			ipreport.editIpReport(vm.ipreport).then(function(response){
 				console.log(response);
 				$(".dialogbox").empty();
 				var appendString = "<div class='row'>"

@@ -1,0 +1,37 @@
+<div class="container-fluid">
+	<div class="products-container" style="padding-bottom:25px;">
+        <div class="col-xs-12">
+			<h1>Create Business Summary Report</h1>
+		</div>
+		<div class="col-xs-12">
+			<form class="form" id="ipreport-form">
+				<div class="row shadow">
+					<div role="alert" ng-show="rvm.formError" class="alert alert-danger">{{ rvm.formError }}</div>
+					<div class="form-group">
+						<label for="report-startdate">Enter Starting Date: </label>
+						<div class="input-group date">
+							<input class="form-control" type="text" id="report-startdate" name="report-startdate" placeholder="Enter a start date." data-provide="datepicker" data-date-orientation="bottom" data-date-autoclose="true" value="">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-th"></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="report-enddate">Enter Ending Date: </label>
+						<div class="input-group date">
+							<input class="form-control" type="text" id="report-enddate" name="report-enddate" placeholder="Enter an end date." data-provide="datepicker" data-date-orientation="bottom" data-date-autoclose="true" value="">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-th"></span>
+							</div>
+						</div>
+					</div>
+			</form>
+			<div class="row indented">
+				<button type="button" class="btn btn-success" ng-click="rvm.submitBsReport();">Create</button>
+				<button type="button" class="btn btn-danger" ng-click="rvm.showList();">Cancel</button>
+			</div>
+		</div>
+	</div>
+	<div class="dialogbox">
+	</div>
+</div>

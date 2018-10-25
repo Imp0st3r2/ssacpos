@@ -3,9 +3,9 @@ angular
 	.module('ssacpos')
 	.controller('invoiceeditCtrl', invoiceeditCtrl);
 
-invoiceeditCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'spiff', 'tax'];
+invoiceeditCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'spiff', 'tax', 'install','user'];
 
-function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, product, spiff, tax) {
+function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, product, spiff, tax, install,user) {
 	$(document).on('keydown', function(e) {
 		// console.log("key pressed");
 		if (e.which == 13) {
@@ -62,6 +62,14 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 			spiff.getSpiffs().then(function(response){
 				vm.spiffs = response.data;
 				console.log(vm.spiffs);
+			})
+			install.getInstalls().then(function(response){
+				vm.installs = response.data;
+				console.log(vm.installs);
+			})
+			user.getUsers().then(function(response){
+				vm.employees = response.data;
+				console.log(vm.employees);
 			})
 			invoice.getInvoiceById(vm.currentInvoice.id).then(function(response2){
 				console.log(response2);
@@ -153,9 +161,17 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 														+			"<p>Time (hrs)</p>"
 								 						+			"<input type='number' step='.25' class='form-control labortime' id='labor"+vm.laborCount+"-time' name='labor"+vm.laborCount+"-time' min='0' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].time' ng-change='ivm.determineTotalLaborCharge("+vm.laborCount+");'>"
 														+		"</div>"
-														+		"<div class='col-xs-12 col-md-5'>"
+														+		"<div class='col-xs-12 col-md-3'>"
 														+			"<p>Description</p>"
-								 						+			"<input type='text' class='form-control labordescription' id='labor"+vm.laborCount+"-description' name='labor"+vm.laborCount+"-description' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].description'>"
+														+			"<select class='form-control labordescription' id='labor"+vm.laborCount+"-description' name='labor"+vm.laborCount+"-description' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].description' ng-change='ivm.determineInstall("+vm.laborCount+");'>"
+														+			"<option ng-repeat='install in ivm.installs' value='{{install.description}}'>{{install.description}}</option>"
+														+			"</select>"
+														+		"</div>"
+														+		"<div class='col-xs-12 col-md-2'>"
+														+			"<p>Employee</p>"
+														+			"<select class='form-control' id='newinvoice-labor-employees"+vm.laborCount+"' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].installer'>"
+														+			"<option ng-repeat='employee in ivm.employees' value='{{employee.name}}'>{{employee.name}}</option>"
+														+			"</select>"
 														+		"</div>"
 														+		"<div class='col-xs-12 col-md-2'>"
 														+			"<p>Hourly Charge</p>"
@@ -236,11 +252,11 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 					vm.newinvoice.spiffs = vm.invoiceSpiffs;
 				});
 			});
-		})
-		
 		console.log(vm.invoiceItems);
 		console.log(vm.invoiceLabors);
 		console.log(vm.invoiceOthers);
+		})
+		
 		$("input[type=checkbox]").on('click',function(){
 			if($(this).prop("checked")){
 				vm.newinvoice.taxdue = 0;
@@ -426,9 +442,17 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 										+			"<p>Time (hrs)</p>"
 							 			+			"<input type='number' step='.25' class='form-control labortime' id='labor"+vm.laborCount+"-time' name='labor"+vm.laborCount+"-time' min='0' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].time' ng-change='ivm.determineTotalLaborCharge("+vm.laborCount+");'>"
 										+		"</div>"
-										+		"<div class='col-xs-12 col-md-5'>"
+										+		"<div class='col-xs-12 col-md-3'>"
 										+			"<p>Description</p>"
-							 			+			"<input type='text' class='form-control labordescription' id='labor"+vm.laborCount+"-description' name='labor"+vm.laborCount+"-description' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].description'>"
+										+			"<select class='form-control labordescription' id='labor"+vm.laborCount+"-description' name='labor"+vm.laborCount+"-description' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].description' ng-change='ivm.determineInstall("+vm.laborCount+");'>"
+										+			"<option ng-repeat='install in ivm.installs' value='{{install.description}}'>{{install.description}}</option>"
+										+			"</select>"
+										+		"</div>"
+										+		"<div class='col-xs-12 col-md-2'>"
+										+			"<p>Employee</p>"
+										+			"<select class='form-control' id='newinvoice-labor-employees"+vm.laborCount+"' ng-model='ivm.newinvoice.labors["+vm.laborCount+"].installer'>"
+										+			"<option ng-repeat='employee in ivm.employees' value='{{employee.name}}'>{{employee.name}}</option>"
+										+			"</select>"
 										+		"</div>"
 										+		"<div class='col-xs-12 col-md-2'>"
 										+			"<p>Hourly Charge</p>"
@@ -445,6 +469,19 @@ function invoiceeditCtrl($location, $scope, $compile, authentication, invoice, p
 			compiled = $compile(el);
 			compiled($scope);
 			vm.laborCount++;
+		}
+		vm.determineInstall = function(itemnumber){
+			for(var i=0;i<vm.installs.length;i++){
+				if(vm.installs[i].description === $("#labor"+itemnumber+"-description").val()){
+					vm.newinvoice.labors[itemnumber].time = vm.installs[i].time;
+					vm.newinvoice.labors[itemnumber].hourlycharge = vm.installs[i].hourlycharge;
+					vm.newinvoice.labors[itemnumber].cost = vm.installs[i].cost;
+					vm.newinvoice.labors[itemnumber].totalcharge = vm.installs[i].totalcharge;
+					vm.newinvoice.labors[itemnumber].description = vm.installs[i].description;
+				}
+			}
+			console.log(vm.newinvoice.labors[itemnumber]);
+			vm.determineTotalLaborCharge(itemnumber);
 		}
 		vm.deleteLabor = function(itemnumber){
 			$("#labor"+itemnumber).remove();

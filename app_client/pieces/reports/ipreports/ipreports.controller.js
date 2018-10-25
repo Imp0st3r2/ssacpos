@@ -7,9 +7,36 @@ ipreportsCtrl.$inject = ['$window','$location','$scope','$compile','ipreport'];
 
 function ipreportsCtrl($window,$location,$scope,$compile,ipreport) {
 	var vm = this;
+	const formatter = new Intl.NumberFormat('en-US', {
+	  style: 'currency',
+	  currency: 'USD',
+	  minimumFractionDigits: 2
+	})
 	ipreport.getListofIpReports().then(function(response){
 		vm.ipreports = response.data;
 		console.log(vm.ipreports);
+		for(var i=0;i<vm.ipreports.length;i++){
+			var creationdate = moment(vm.ipreports[i].creationdate).format("MM-DD-YYYY hh:mm A");
+			console.log(creationdate);
+			var startdate = vm.ipreports[i].startdate.split("T");
+			var enddate = vm.ipreports[i].enddate.split("T");
+			vm.ipreports[i].startdate = startdate[0];
+			vm.ipreports[i].enddate = enddate[0];
+			vm.ipreports[i].creationdate = creationdate;
+			vm.ipreports[i].totalcost = formatter.format(vm.ipreports[i].totalcost);
+			vm.ipreports[i].totalrate = formatter.format(vm.ipreports[i].totalrate);
+			vm.ipreports[i].totalrecieved = formatter.format(vm.ipreports[i].totalrecieved);
+			vm.ipreports[i].totalprofit = formatter.format(vm.ipreports[i].totalprofit);
+			for(var j=0;j<vm.ipreports[i].installs.length;j++){
+				console.log(vm.ipreports[i].installs[j]);
+				var installdate = vm.ipreports[i].installs[j].installdate.split("T");
+				vm.ipreports[i].installs[j].installdate = installdate[0];
+				vm.ipreports[i].installs[j].cost = formatter.format(vm.ipreports[i].installs[j].cost);
+				vm.ipreports[i].installs[j].totalcharge = formatter.format(vm.ipreports[i].installs[j].totalcharge);
+				vm.ipreports[i].installs[j].hourlycharge = formatter.format(vm.ipreports[i].installs[j].hourlycharge);
+				vm.ipreports[i].installs[j].profit = formatter.format(vm.ipreports[i].installs[j].profit);
+			}
+		}
 	});
 	vm.createIpReport = function() {
 		$(".data-container").empty();
@@ -38,7 +65,6 @@ function ipreportsCtrl($window,$location,$scope,$compile,ipreport) {
 		compiled = $compile(el);
 		compiled($scope);
 		$(".dialogbox").show();
-		$("#invoiceModal").modal('hide');
 	}
 	vm.readOne = function(ipreportid){
 		console.log(vm.ipreports);
@@ -54,7 +80,7 @@ function ipreportsCtrl($window,$location,$scope,$compile,ipreport) {
 		}
 		ipreport.setIpReport(vm.ipreport);
 		$(".data-container").empty();
-		var stringToAppend = "<div class='col-xs-12 piece'><ipreportedit></ipreportedit></div>";
+		var stringToAppend = "<div class='col-xs-12 piece'><ipreportsedit></ipreportsedit></div>";
 		var el = angular.element(stringToAppend)
 		$(".data-container").append(el);
 		compiled = $compile(el);
@@ -80,6 +106,15 @@ function ipreportsCtrl($window,$location,$scope,$compile,ipreport) {
 			compiled($scope);
 			$(".dialogbox").show();
 		})
+	}
+	vm.showList = function(){
+		$(".dialogbox").hide();
+		$(".data-container").empty();
+		var stringToAppend = "<div class='col-xs-12 piece'><ipreports></ipreports></div>";
+		var el = angular.element(stringToAppend)
+		$(".data-container").append(el);
+		compiled = $compile(el);
+		compiled($scope);
 	}
 	vm.cancel = function(){
 		$(".dialogbox").hide();

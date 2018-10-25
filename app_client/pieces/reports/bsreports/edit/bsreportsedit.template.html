@@ -1,7 +1,7 @@
 <div class="container-fluid">
 	<div class="products-container" style="padding-bottom:25px;">
         <div class="col-xs-12">
-			<h1>Edit Salesperson Profitability Report</h1>
+			<h1>Edit Business Summary Report</h1>
 		</div>
 		<div class="col-xs-12">
 			<form class="form" id="product-form">
@@ -25,15 +25,9 @@
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<label for="report-employee">Enter Employee: </label>
-						<select class="form-control" id="report-employee" name="report-employee">
-							<option ng-repeat="employee in rvm.employees" value="{{employee.name}}">{{employee.name}}</option>
-						</select>
-					</div>
 			</form>
 			<div class="row indented">
-				<button type="button" class="btn btn-success" ng-click="rvm.submitSppReport();">Update</button>
+				<button type="button" class="btn btn-success" ng-click="rvm.submitBsReport();">Update</button>
 				<button type="button" class="btn btn-danger" ng-click="rvm.showList();">Cancel</button>
 			</div>
 		</div>

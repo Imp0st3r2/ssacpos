@@ -3,9 +3,9 @@ angular
 	.module('ssacpos')
 	.controller('invoicecreateCtrl', invoicecreateCtrl);
 
-invoicecreateCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'tax', 'account', 'spiff', 'user'];
+invoicecreateCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'invoice', 'product', 'tax', 'account', 'spiff', 'user','install'];
 
-function invoicecreateCtrl($location, $scope, $compile, authentication, invoice, product, tax, account, spiff, user) {
+function invoicecreateCtrl($location, $scope, $compile, authentication, invoice, product, tax, account, spiff, user, install) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	vm.currentUser = authentication.currentUser();
@@ -82,6 +82,10 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		spiff.getSpiffs().then(function(response){
 			vm.spiffs = response.data;
 			console.log(vm.spiffs);
+		})
+		install.getInstalls().then(function(response){
+			vm.installs = response.data;
+			console.log(vm.installs);
 		})
 		var clickcount = 0;
 		$("#invoice-phone").keypress(function(){
@@ -283,11 +287,14 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 										+		"</div>"
 										+		"<div class='col-xs-12 col-md-3'>"
 										+			"<p>Description</p>"
-							 			+			"<input type='text' class='form-control labordescription' id='labor"+vm.invoiceLabors+"-description' name='labor"+vm.invoiceLabors+"-description' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].description'>"
+										+			"<select class='form-control labordescription' id='labor"+vm.invoiceLabors+"-description' name='labor"+vm.invoiceLabors+"-description' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].description' ng-change='ivm.determineInstall("+vm.invoiceLabors+");'>"
+										+			"<option ng-repeat='install in ivm.installs' value='{{install.description}}'>{{install.description}}</option>"
+										+			"</select>"
 										+		"</div>"
 										+		"<div class='col-xs-12 col-md-2'>"
 										+			"<p>Employee</p>"
-										+			"<select class='form-control' id='newinvoice-labor-employees"+vm.invoiceLabors+"' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].employee'>"
+										+			"<select class='form-control' id='newinvoice-labor-employees"+vm.invoiceLabors+"' ng-model='ivm.newinvoice.labors["+vm.invoiceLabors+"].installer'>"
+										+			"<option ng-repeat='employee in ivm.employees' value='{{employee.name}}'>{{employee.name}}</option>"
 										+			"</select>"
 										+		"</div>"
 										+		"<div class='col-xs-12 col-md-2'>"
@@ -304,10 +311,20 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			$("#labor-group").append(el);
 			compiled = $compile(el);
 			compiled($scope);
-			for(var i=0;i<vm.employees.length;i++){
-				$("#newinvoice-labor-employees"+vm.invoiceLabors).append("<option value='"+vm.employees[i].name+"'>"+vm.employees[i].name+"</option>");
-			}
 			vm.invoiceLabors++;
+		}
+		vm.determineInstall = function(itemnumber){
+			for(var i=0;i<vm.installs.length;i++){
+				if(vm.installs[i].description === $("#labor"+itemnumber+"-description").val()){
+					vm.newinvoice.labors[itemnumber].time = vm.installs[i].time;
+					vm.newinvoice.labors[itemnumber].hourlycharge = vm.installs[i].hourlycharge;
+					vm.newinvoice.labors[itemnumber].cost = vm.installs[i].cost;
+					vm.newinvoice.labors[itemnumber].totalcharge = vm.installs[i].totalcharge;
+					vm.newinvoice.labors[itemnumber].description = vm.installs[i].description;
+				}
+			}
+			console.log(vm.newinvoice.labors[itemnumber]);
+			vm.determineTotalLaborCharge(itemnumber);
 		}
 		vm.deleteLabor = function(itemnumber){
 			$("#labor"+itemnumber).remove();
@@ -336,18 +353,13 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		vm.determineTotalLaborCharge = function(labornumber){
 			var totalLaborCharges = 0;
 			console.log(labornumber);
-			console.log(vm.newinvoice.labors[labornumber].time);
-			console.log(vm.newinvoice.labors[labornumber].hourlycharge);
-			if(vm.newinvoice.labors[labornumber].time > 0 && vm.newinvoice.labors[labornumber].hourlycharge > 0){
-				vm.newinvoice.labors[labornumber].totalcharge = vm.newinvoice.labors[labornumber].time * vm.newinvoice.labors[labornumber].hourlycharge;
-				console.log(vm.newinvoice.labors);
-				for(var i=0;i<vm.newinvoice.labors.length;i++){
-					if(vm.newinvoice.labors[i]){
-						totalLaborCharges += vm.newinvoice.labors[i].totalcharge;
-					}
+			vm.newinvoice.labors[labornumber].totalcharge = vm.newinvoice.labors[labornumber].time * vm.newinvoice.labors[labornumber].hourlycharge;
+			for(var i=0;i<vm.newinvoice.labors.length;i++){
+				if(vm.newinvoice.labors[i]){
+					totalLaborCharges += vm.newinvoice.labors[i].totalcharge;
 				}
-				vm.newinvoice.laborcharges = Number(totalLaborCharges.toFixed(2));
 			}
+			vm.newinvoice.laborcharges = Number(totalLaborCharges.toFixed(2));
 			vm.calcTotalPrice();
 		}
 		vm.addItem = function(){
@@ -521,6 +533,7 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		}
 		vm.submitInvoice = function(){
 			console.log(vm.newinvoice);
+			console.log(vm.newaccount);
 			if(!vm.newaccount._id){
 				account.createAccount(vm.newaccount).then(function(response){
 					console.log(response);
@@ -534,41 +547,67 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 			
 		}
 		vm.finishSubmission = function(){
+			console.log("***finishing submission***");
+			console.log(vm.newinvoice);
 			var itemcount = vm.newinvoice.items.length;
-			for(item in vm.newinvoice.items){
-				console.log(vm.newinvoice.items[item].quantity)
-				product.getProductByModel(vm.newinvoice.items[item].model).then(function(response){
-					console.log(response.data);
-					var requestedproduct = response.data[0];
-					requestedproduct.quantity = requestedproduct.quantity - vm.newinvoice.items[item].quantity;
+			console.log(itemcount);
+			if(itemcount >0){
+				for(item in vm.newinvoice.items){
+					console.log(vm.newinvoice.items[item].quantity)
+					product.getProductByModel(vm.newinvoice.items[item].model).then(function(response){
+						console.log(response.data);
+						var requestedproduct = response.data[0];
+						requestedproduct.quantity = requestedproduct.quantity - vm.newinvoice.items[item].quantity;
 
-					product.editProduct(requestedproduct).then(function(response){
-						console.log(response);
-						itemcount--;
-						if(itemcount<=0){
-							console.log(vm.newinvoice)
-							invoice.createInvoice(vm.newinvoice).then(function(response){
-								console.log(response);
-								$(".dialogbox").empty();
-								var appendString = "<div class='row'>"
-												 +  "<div class='col-xs-12'>"
-												 + 	 "<p>"+response.data+"</p>"
-												 +	"</div>"
-												 + "</div>"
-												 + "<div class='row'>"
-												 +	"<div class='col-xs-3'></div>"
-												 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
-												 +	"<div class='col-xs-3'></div>"; 
-								var el = angular.element(appendString)
-								$(".dialogbox").append(el);
-								compiled = $compile(el);
-								compiled($scope);
-								$(".dialogbox").show();
-							},function(err){
-								console.log(err);
-							})
-						}
+						product.editProduct(requestedproduct).then(function(response){
+							console.log(response);
+							itemcount--;
+							if(itemcount<=0){
+								console.log(vm.newinvoice)
+								invoice.createInvoice(vm.newinvoice).then(function(response){
+									console.log(response);
+									$(".dialogbox").empty();
+									var appendString = "<div class='row'>"
+													 +  "<div class='col-xs-12'>"
+													 + 	 "<p>"+response.data+"</p>"
+													 +	"</div>"
+													 + "</div>"
+													 + "<div class='row'>"
+													 +	"<div class='col-xs-3'></div>"
+													 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
+													 +	"<div class='col-xs-3'></div>"; 
+									var el = angular.element(appendString)
+									$(".dialogbox").append(el);
+									compiled = $compile(el);
+									compiled($scope);
+									$(".dialogbox").show();
+								},function(err){
+									console.log(err);
+								})
+							}
+						})
 					})
+				}
+			}else{
+				invoice.createInvoice(vm.newinvoice).then(function(response){
+					console.log(response);
+					$(".dialogbox").empty();
+					var appendString = "<div class='row'>"
+									 +  "<div class='col-xs-12'>"
+									 + 	 "<p>"+response.data+"</p>"
+									 +	"</div>"
+									 + "</div>"
+									 + "<div class='row'>"
+									 +	"<div class='col-xs-3'></div>"
+									 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
+									 +	"<div class='col-xs-3'></div>"; 
+					var el = angular.element(appendString)
+					$(".dialogbox").append(el);
+					compiled = $compile(el);
+					compiled($scope);
+					$(".dialogbox").show();
+				},function(err){
+					console.log(err);
 				})
 			}
 		}

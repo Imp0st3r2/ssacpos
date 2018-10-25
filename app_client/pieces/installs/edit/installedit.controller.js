@@ -1,70 +1,63 @@
 (function(){
 angular
 	.module('ssacpos')
-	.controller('spiffeditCtrl', spiffeditCtrl);
+	.controller('installeditCtrl', installeditCtrl);
 
-spiffeditCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'spiff'];
+installeditCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'install'];
 
-function spiffeditCtrl($location, $scope, $compile, authentication, spiff) {
+function installeditCtrl($location, $scope, $compile, authentication, install) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
 	if(vm.isLoggedIn){
-		vm.currentSpiff = spiff.recallSpiff();
-		console.log(vm.currentSpiff);
+		vm.currentInstall = install.recallInstall();
+		console.log(vm.currentInstall);
 
-		spiff.getSpiff(vm.currentSpiff).then(function(response){
-			vm.currentSpiff = response.data;
-			console.log(vm.currentSpiff);
+		install.getInstallById(vm.currentInstall.id).then(function(response){
+			vm.currentInstall = response.data;
+			console.log(vm.currentInstall);
 		});
 
-		vm.submitSpiff = function(){
-			console.log($("#spiff-name").val());
-			console.log(vm.currentSpiff);
-			if(vm.currentSpiff.name != ""){
-				if(vm.currentSpiff.amount != 0){
-					vm.formError = "";
-					if(!vm.formError){
-						spiff.updateSpiff(vm.currentSpiff).then(function(response){
-							console.log(response);
-							vm.updatedSpiff = response.data;
-							$(".dialogbox").empty();
-							var appendString = "<div class='row'>"
-											 +  "<div class='col-xs-12'>"
-											 + 	 "<p>"
-											 +		vm.updatedSpiff.name + "<br>"
-											 +		vm.updatedSpiff.amount + "<br>"
-											 +		"Has been successfully updated!"
-											 +   "</p>"
-											 +	"</div>"
-											 + "</div>"
-											 + "<div class='row'>"
-											 +	"<div class='col-xs-3'></div>"
-											 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='svm.showList();'>OK</button></div>"
-											 +	"<div class='col-xs-3'></div>"; 
-							var el = angular.element(appendString)
-							$(".dialogbox").append(el);
-							compiled = $compile(el);
-							compiled($scope);
-							console.log(response);
-							$(".dialogbox").show();
-						},function(err){
-							console.log(err.data.errmsg);
-							var message = "";
-							if(err.data.errmsg.substring(0,6) === "E11000"){
-								message = "Duplicate Email, Please try a different Email.";
-							}else{
-								message = "There was an error creating the user.";
-							}
-							vm.formError = message;
-						})
+		vm.submitInstall = function(){
+			console.log(vm.currentInstall);
+			if(vm.currentInstall.time != ""){
+				if(vm.currentInstall.description != 0){
+					if(vm.currentInstall.hourlycharge != 0){
+						vm.formError = "";
+						if(!vm.formError){
+							install.updateInstall(vm.currentInstall).then(function(response){
+								console.log(response);
+								vm.updatedInstall = response.data;
+								$(".dialogbox").empty();
+								var appendString = "<div class='row'>"
+												 +  "<div class='col-xs-12'>"
+												 + 	 "<p>"
+												 +		vm.updatedInstall.description + "<br>"
+												 +		"Has been successfully updated!"
+												 +   "</p>"
+												 +	"</div>"
+												 + "</div>"
+												 + "<div class='row'>"
+												 +	"<div class='col-xs-3'></div>"
+												 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
+												 +	"<div class='col-xs-3'></div>"; 
+								var el = angular.element(appendString)
+								$(".dialogbox").append(el);
+								compiled = $compile(el);
+								compiled($scope);
+								console.log(response);
+								$(".dialogbox").show();
+							},function(err){
+								console.log(err);
+							})
+						}
+					}else{
+						vm.formError = "You must supply an hourly charge for the install.";
 					}
 				}else{
-					vm.formError = "You must supply a spiff amount."
-					console.log(vm.newUser);
+					vm.formError = "You must supply an install description.";
 				}
 			}else{
-				vm.formError = "You must supply a spiff name.";
-				console.log(vm.newUser);
+				vm.formError = "You must supply the amount of time the install takes.";
 			}
 		}
 
@@ -74,7 +67,7 @@ function spiffeditCtrl($location, $scope, $compile, authentication, spiff) {
 		vm.showList = function(){
 			$(".dialogbox").hide();
 			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><spifflist></spifflist></div>";
+			var stringToAppend = "<div class='col-xs-12 piece'><installlist></installlist></div>";
 			var el = angular.element(stringToAppend)
 			$(".data-container").append(el);
 			compiled = $compile(el);
