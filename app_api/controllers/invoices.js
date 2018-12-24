@@ -124,7 +124,8 @@ module.exports.invoicesMakePayment = function(req,res){
 					console.log(req.body);
 					var payment = {
 						amountpaid : req.body.amountpaid,
-						dateofpayment : moment().format('YYYY-MM-DD').toString()
+						dateofpayment : moment().format('YYYY-MM-DD').toString(),
+						paymenttype : req.body.paymenttype
 					}
 					invoice.payments.push(payment);
 					var paymenttotal = 0;

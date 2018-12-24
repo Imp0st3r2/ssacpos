@@ -5,6 +5,7 @@
 
 	tpreport.$inject = ['$window','$http'];
 	function tpreport ($window,$http) {
+		var currentTpReport = {};
 		var getListofTpReports = function(){
 			return $http.get('/api/tpreports');
 		};
@@ -20,12 +21,21 @@
 		var deleteTpReport = function(reportid){
 			return $http.delete('/api/tpreports/'+reportid);
 		};
+		var setTpReport = function(tpreport){
+			currentTpReport = tpreport;
+			console.log(currentTpReport);
+		};
+		var getTpReport = function(){
+			return currentTpReport;
+		};
 		return {
 			getListofTpReports : getListofTpReports,
 			getTpReportById : getTpReportById,
 			createTpReport : createTpReport,
 			editTpReport : editTpReport,
-			deleteTpReport : deleteTpReport
+			deleteTpReport : deleteTpReport,
+			setTpReport : setTpReport,
+			getTpReport : getTpReport
 		};
 	}
 }) ();

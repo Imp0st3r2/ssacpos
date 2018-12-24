@@ -7,6 +7,19 @@ reportsCtrl.$inject = ['$window','$location','$scope','$compile','sppreport','ip
 
 function reportsCtrl($window,$location,$scope,$compile,sppreport,ipreport,bsreport,dsreport,tpreport,streport) {
 	var vm = this;
+	const formatter = new Intl.NumberFormat('en-US', {
+	  style: 'currency',
+	  currency: 'USD',
+	  minimumFractionDigits: 2
+	})
+
+	vm.formatDate = function(date,type){
+		if(type === "date"){
+			return moment(date).format("MM-DD-YYYY");
+		}else{
+			return moment(date).format("MM-DD-YYYY hh:mm A");
+		}
+	}
 	sppreport.getListofSppReports().then(function(response){
 		vm.sppreports = response.data;
 		console.log(vm.sppreports);

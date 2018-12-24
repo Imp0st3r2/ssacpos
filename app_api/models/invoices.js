@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var paymentSchema = new mongoose.Schema({amountpaid : Number,dateofpayment : String});
+var paymentSchema = new mongoose.Schema({amountpaid : Number,dateofpayment : String,paymenttype : String});
 
 var otherSchema = new mongoose.Schema({description : String,totalcharge : Number});
 

@@ -7,137 +7,121 @@ dsreportsCtrl.$inject = ['$window','$location','$scope','$compile','dsreport'];
 
 function dsreportsCtrl($window,$location,$scope,$compile,dsreport) {
 	var vm = this;
+	const formatter = new Intl.NumberFormat('en-US', {
+	  style: 'currency',
+	  currency: 'USD',
+	  minimumFractionDigits: 2
+	})
 	dsreport.getListofDsReports().then(function(response){
 		vm.dsreports = response.data;
 		console.log(vm.dsreports);
+		for(var i=0;i<vm.dsreports.length;i++){
+			var creationdate = moment(vm.dsreports[i].creationdate).format("MM-DD-YYYY hh:mm A");
+			console.log(creationdate);
+			var startdate = vm.dsreports[i].startdate.split("T");
+			var enddate = vm.dsreports[i].enddate.split("T");
+			vm.dsreports[i].startdate = moment(startdate[0]).format("MM-DD-YYYY");
+			vm.dsreports[i].enddate = moment(enddate[0]).format("MM-DD-YYYY");
+			vm.dsreports[i].creationdate = creationdate;
+			vm.dsreports[i].totalcash = formatter.format(vm.dsreports[i].totalcash);
+			vm.dsreports[i].totalchecks = formatter.format(vm.dsreports[i].totalchecks);
+			vm.dsreports[i].totalvisa = formatter.format(vm.dsreports[i].totalvisa);
+			vm.dsreports[i].totalamex = formatter.format(vm.dsreports[i].totalamex);
+			vm.dsreports[i].totaldiscover = formatter.format(vm.dsreports[i].totaldiscover);
+			vm.dsreports[i].totalmastercard = formatter.format(vm.dsreports[i].totalmastercard);
+			vm.dsreports[i].totalother = formatter.format(vm.dsreports[i].totalother);
+			vm.dsreports[i].grandtotal = formatter.format(vm.dsreports[i].grandtotal);
+			for(var j=0;j<vm.dsreports[i].invoices.length;j++){
+				for(var k=0;k<vm.dsreports[i].invoices[j].payments.length;k++){
+					vm.dsreports[i].invoices[j].payments[k].amountpaid = formatter.format(vm.dsreports[i].invoices[j].payments[k].amountpaid);
+				}
+				vm.dsreports[i].invoices[j].totalpayments = formatter.format(vm.dsreports[i].invoices[j].totalpayments);
+				var invoicedate = vm.dsreports[i].invoices[j].datepaid.split("T");
+				vm.dsreports[i].invoices[j].datepaid = moment(invoicedate[0]).format("MM-DD-YYYY");
+			}
+		}
 	});
-	vm.addReport = function() {
+	vm.createDsReport = function() {
 		$(".data-container").empty();
-		var stringToAppend = "<div class='col-xs-12 piece'><reportcreate></reportcreate></div>";
+		var stringToAppend = "<div class='col-xs-12 piece'><dsreportcreate></dsreportcreate></div>";
 		var el = angular.element(stringToAppend)	
 		$(".data-container").append(el);
 		compiled = $compile(el);
 		compiled($scope);
 	}
-	vm.deleteInvoice = function(invoiceid) {
-		vm.invoice = {
-			id : invoiceid
+	vm.deleteDsReport = function(dsreportid) {
+		vm.dsreport = {
+			id : dsreportid
 		}
 		$(".dialogbox").empty();
 		var appendString = "<div class='row'>"
 						 +  "<div class='col-xs-12'>"
-						 + 	 "<p>Are you sure you would like to delete this invoice?</p>"
+						 + 	 "<p>Are you sure you would like to delete this Report?</p>"
 						 +	"</div>"
 						 + "</div>"
 						 + "<div class='row'>"
-						 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.confirmDelete();'>Yes</button></div>"
-						 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.cancel();'>No</button></div>"
+						 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='rvm.confirmDelete();'>Yes</button></div>"
+						 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='rvm.cancel();'>No</button></div>"
 						 + "</div>"; 
 		var el = angular.element(appendString)
 		$(".dialogbox").append(el);
 		compiled = $compile(el);
 		compiled($scope);
 		$(".dialogbox").show();
-		$("#invoiceModal").modal('hide');
 	}
-	vm.readOne = function(invoiceid){
-		console.log(vm.invoices);
-		for (var i = 0; i < vm.invoices.length; i++) {
-			if(vm.invoices[i]._id === invoiceid){
-				vm.clickedInvoice = vm.invoices[i];
-				var items = [];
-				var labors =  [];
-				var others = [];
-				for(item in vm.clickedInvoice.items){
-					if(vm.clickedInvoice.items[item] != null){
-						items.push(vm.clickedInvoice.items[item]);
-					}
-					console.log(vm.clickedInvoice.items[item]);
-				}
-				vm.clickedInvoice.items = items;
-				for(labor in vm.clickedInvoice.labors){
-					if(vm.clickedInvoice.labors[labor] != null){
-						labors.push(vm.clickedInvoice.labors[labor]);
-					}
-					console.log(vm.clickedInvoice.labors[labor]);
-				}
-				vm.clickedInvoice.labors = labors;
-				for(other in vm.clickedInvoice.others){
-					if(vm.clickedInvoice.others[other] != null){
-						others.push(vm.clickedInvoice.others[other]);
-					}
-					console.log(vm.clickedInvoice.others[other]);
-				}
-				vm.clickedInvoice.others = others;
-				console.log(vm.clickedInvoice);
+	vm.readOne = function(dsreportid){
+		console.log(vm.dsreports);
+		for (var i = 0; i < vm.dsreports.length; i++) {
+			if(vm.dsreports[i]._id === dsreportid){
+				vm.clickedDsReport = vm.dsreports[i];
+				console.log(vm.clickedDsReport);
 			}
 		}
 	}
-	vm.editInvoice = function(invoiceid){
-		vm.invoice = {
-			id : invoiceid
+	vm.editDsReport = function(dsreportid){
+		vm.dsreport = {
+			id : dsreportid
 		}
-		invoice.setInvoice(vm.invoice);
+		dsreport.setDsReport(vm.dsreport);
 		$(".data-container").empty();
-		var stringToAppend = "<div class='col-xs-12 piece'><invoiceedit></invoiceedit></div>";
+		var stringToAppend = "<div class='col-xs-12 piece'><dsreportsedit></dsreportsedit></div>";
 		var el = angular.element(stringToAppend)
 		$(".data-container").append(el);
 		compiled = $compile(el);
 		compiled($scope);
 	}
 	vm.confirmDelete = function(){
-		invoice.deleteInvoice(vm.invoice.id).then(function(response){
+		dsreport.deleteDsReport(vm.dsreport.id).then(function(response){
 			console.log(response);
 			$(".dialogbox").hide();
-			vm.closedinvoices = [];
-			vm.openinvoices = [];
-			invoice.getInvoiceList().then(function(response){
-				vm.invoices = response.data;
-				for(var i = 0;i<vm.invoices.length;i++){
-					if(vm.invoices[i].paid === true){
-						vm.closedinvoices.push(vm.invoices[i]);
-					}else{
-						vm.openinvoices.push(vm.invoices[i]);
-					}
-				}
-				console.log(response);
-			})
+			$(".dialogbox").empty();
+			var appendString = "<div class='row'>"
+							 +  "<div class='col-xs-12'>"
+							 + 	 "<p>"+response.data+"</p>"
+							 +	"</div>"
+							 + "</div>"
+							 + "<div class='row'>"
+							 +	"<div class='col-xs-3'></div>"
+							 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='rvm.showList();'>OK</button></div>"
+							 +	"<div class='col-xs-3'></div>"; 
+			var el = angular.element(appendString)
+			$(".dialogbox").append(el);
+			compiled = $compile(el);
+			compiled($scope);
+			$(".dialogbox").show();
 		})
+	}
+	vm.showList = function(){
+		$(".dialogbox").hide();
+		$(".data-container").empty();
+		var stringToAppend = "<div class='col-xs-12 piece'><dsreports></dsreports></div>";
+		var el = angular.element(stringToAppend)
+		$(".data-container").append(el);
+		compiled = $compile(el);
+		compiled($scope);
 	}
 	vm.cancel = function(){
 		$(".dialogbox").hide();
-	}
-	vm.makePayment = function(){
-		$(document).ready(function() {
-		    $('#paymentModal').on('hidden.bs.modal', function(){
-		        $(this).find('form')[0].reset();
-		     });
-		});
-		// $("#paymentModal").modal('hide');
-		console.log(vm.payment);
-		var payment = {
-			amountpaid : vm.payment
-		}
-		invoice.makePayment(vm.clickedInvoice._id,payment).then(function(response){
-			vm.clickedInvoice = response.data;
-			if(vm.clickedInvoice.totalafterpayments <= 0){
-				console.log("marking paid");
-				invoice.markedPaid(vm.clickedInvoice._id).then(function(response){
-					vm.clickedInvoice = response.data;
-					var index = vm.openinvoices.findIndex(function(x){return x._id === vm.clickedInvoice._id});
-					vm.closedinvoices.push(vm.openinvoices[index]);
-					vm.openinvoices.splice(index,1);
-				})
-			}
-		})
-		// $("#paymentModal").on('hidden', function(){
-		// 	$("#invoiceModal").modal('show');
-		// })
-		console.log(vm.clickedInvoice);
-	}
-
-	vm.printInvoice = function(){
-		$window.open("/invoices/"+vm.clickedInvoice._id,"_blank");
 	}
 };
 })();

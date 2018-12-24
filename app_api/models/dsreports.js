@@ -1,8 +1,11 @@
 var mongoose = require('mongoose');
 
-var invoiceSchema = new mongoose.Schema({date:Date,employee:String,customer:String,invoice:Number,paymenttype:String,paymentamount:Number})
+var paymentSchema = new mongoose.Schema({amountpaid:Number,dateofpayment:Date,paymenttype:String})
+
+var invoiceSchema = new mongoose.Schema({datepaid:Date,employee:String,customer:String,invoice:Number,payments:[paymentSchema],totalpayments:Number})
 
 var dsreportSchema = new mongoose.Schema({
+	creationdate : Date,
 	startdate : Date,
 	enddate : Date,
 	invoices : [invoiceSchema],
@@ -13,7 +16,7 @@ var dsreportSchema = new mongoose.Schema({
 	totalmastercard : Number,
 	totaldiscover : Number,
 	totalother : Number,
-	totalrecieved : Number
+	grandtotal : Number
 })
 
 mongoose.model('DsReport', dsreportSchema, 'dsreports');

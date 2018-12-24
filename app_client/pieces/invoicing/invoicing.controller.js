@@ -7,6 +7,12 @@ invoicingCtrl.$inject = ['$window','$location','$scope','$compile','invoice'];
 
 function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 	var vm = this;
+	const formatter = new Intl.NumberFormat('en-US', {
+	  style: 'currency',
+	  currency: 'USD',
+	  minimumFractionDigits: 2
+	})
+	vm.paymenttype = "Cash";
 	vm.getInvoices = function(){
 		invoice.getInvoiceList().then(function(response){
 			vm.invoices = response.data;
@@ -22,6 +28,7 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 				idate = idate[1] + "-" + idate[2] + "-" + idate[0];
 				tempinvoice.datecreated = idate;
 				// vm.invoices[i].datecreated = tempinvoice.datecreated;
+				vm.invoices[i].totalprice = formatter.format(vm.invoices[i].totalprice)
 			}
 		});
 	}
@@ -87,6 +94,7 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 				console.log(vm.clickedInvoice);
 			}
 		}
+		vm.payment = vm.clickedInvoice.totalafterpayments;
 	}
 	vm.editInvoice = function(invoiceid){
 		vm.invoice = {
@@ -121,7 +129,8 @@ function invoicingCtrl ($window,$location,$scope,$compile,invoice) {
 		// $("#paymentModal").modal('hide');
 		console.log(vm.payment);
 		var payment = {
-			amountpaid : vm.payment
+			amountpaid : vm.payment,
+			paymenttype : vm.paymenttype
 		}
 		invoice.makePayment(vm.clickedInvoice._id,payment).then(function(response){
 			vm.clickedInvoice = response.data;

@@ -1,16 +1,18 @@
 var mongoose = require('mongoose');
 
-var itemSchema = new mongoose.Schema({date:Date,employee:String,invoice:Number,customer:String,category:String,brand:String,model:String,quantity:Number,totalcost:Number,totalrecieved:Number,totalprofit:Number,percentagegp:Number,spiff:Number})
+var transactionSchema = new mongoose.Schema({brand:String,category:String,model:String,quantity:Number,spiffamount:Number,totalcharge:Number,unitcost:Number,unitprice:Number,date:Date,salesrep:String,invoicenumber:Number,customer:String,profit:Number,percgrossprofit:Number,totalcost:Number,totalrecieved:Number})
 
 var tpreportSchema = new mongoose.Schema({
+	creationdate : Date,
 	startdate : Date,
 	enddate : Date,
-	items : [itemSchema],
+	transactions : [transactionSchema],
+	numberoftransactions : Number,
 	totalitems : Number,
 	totalcost : Number,
 	totalrecieved : Number,
 	totalprofit : Number,
-	totalpercentagegp : Number,
+	percgrossprofit : Number,
 	totalspiffs : Number
 })
 

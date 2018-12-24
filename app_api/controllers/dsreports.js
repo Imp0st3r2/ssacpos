@@ -70,7 +70,7 @@ module.exports.UpdateDsReport = function(req, res) {
 					sendJsonResponse(res, 400, err);
 					return;
 				}
-				sendJsonResponse(res, 200, dsreport);
+				sendJsonResponse(res, 200, "Report successfully updated.");
 		});
 	}
 };
@@ -85,7 +85,7 @@ module.exports.DeleteDsReport = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}else{
-						sendJsonResponse(res, 204, {"message" : "DsReport deleted successfully."});
+						sendJsonResponse(res, 200, "Report successfully deleted.");
 					}
 				}
 			);

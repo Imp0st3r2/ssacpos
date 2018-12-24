@@ -88,6 +88,17 @@ function installlistCtrl($location, $scope, $compile, authentication, install) {
 			compiled = $compile(el);
 			compiled($scope);
 		}
+
+		vm.exportInstalls = function(){
+			
+		}
+
+
+
+
+
+
+
 		vm.logout = function() {
 			authentication.logout();
 			$location.path('/home');

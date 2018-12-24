@@ -1,74 +1,98 @@
 <div class="container-fluid">
 	<div class="products-container">
         <h1>Recent Reports</h1>
-		<div class="row" id="sppreports" ng-if="rvm.sppreports.length > 0">
+		<div class="col-xs-12" id="sppreports" ng-if="rvm.sppreports.length > 0">
 			<h2>Salesperson Profitability Reports</h2>
-			<div class="col-xs-12">
-				<div class="list-group" ng-repeat="sppreport in rvm.sppreports">
-					<div class="col-xs-12">
-						<a href="#" data-poll-id="{{sppreport._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(sppreport._id);">
-						{{sppreport.startdate}} - {{sppreport.enddate}} 
-						</a>
+			<div class="top-margin10">
+				<div class="row shadow productrow" ng-repeat="sppreport in rvm.sppreports | filter : rvm.searchterm" ng-click="rvm.readOne(sppreport._id);">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:10px;" data-toggle="modal" data-target="#sppreportModal">
+						<div class="col-xs-12 col-lg-4">
+							<span>Creation Date</span><br><span style="font-weight:normal;"><strong>{{rvm.formatDate(sppreport.creationdate,"datetime");}}</strong></span>
+						</div>
+						<div class="col-xs-12 col-lg-4">
+							<span>Date Range</span><br><span style="font-weight:normal;"><strong>{{rvm.formatDate(sppreport.startdate,"date");}} TO {{rvm.formatDate(sppreport.enddate,"date");}}</strong></span>
+						</div>
+						<div class="col-xs-12 col-lg-4">
+							<span>Salesperson</span><br><span style="font-weight:normal;"><strong>{{sppreport.employee}}</strong></span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" id="ipreports" ng-if="rvm.ipreports.length > 0">
+		<div class="col-xs-12" id="ipreports" ng-if="rvm.ipreports.length > 0">
 			<h2>Installer Profitability Reports</h2>
-			<div class="col-xs-12">
-				<div class="list-group" ng-repeat="ipreport in rvm.ipreports">
-					<div class="col-xs-12">
-						<a href="#" data-poll-id="{{ipreport._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(ipreport._id);">
-						{{ipreport.startdate}} - {{ipreport.enddate}} 
-						</a>
+			<div class="top-margin10">
+				<div class="row shadow productrow" ng-repeat="ipreport in rvm.ipreports | filter : rvm.searchterm" ng-click="rvm.readOne(ipreport._id);">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:10px;" data-toggle="modal" data-target="#ipreportModal">
+						<div class="col-xs-12 col-lg-4">
+							<span>Creation Date</span><br><span style="font-weight:normal;"><strong>{{rvm.formatDate(ipreport.creationdate,"datetime");}}</strong></span>
+						</div>
+						<div class="col-xs-12 col-lg-4">
+							<span>Date Range</span><br><span style="font-weight:normal;"><strong>{{rvm.formatDate(ipreport.startdate,"date");}} TO {{rvm.formatDate(ipreport.enddate,"date");}}</strong></span>
+						</div>
+						<div class="col-xs-12 col-lg-4">
+							<span>Installer</span><br><span style="font-weight:normal;"><strong>{{ipreport.employee}}</strong></span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" id="bsreports" ng-if="rvm.bsreports.length > 0">
+		<div class="col-xs-12" id="bsreports" ng-if="rvm.bsreports.length > 0">
 			<h2>Business Summary Reports</h2>
-			<div class="col-xs-12">
-				<div class="list-group" ng-repeat="bsreport in rvm.bsreports">
-					<div class="col-xs-12">
-						<a href="#" data-poll-id="{{bsreport._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(bsreport._id);">
-						{{bsreport.startdate}} - {{bsreport.enddate}} 
-						</a>
+			<div class="top-margin10">
+				<div class="row shadow productrow" ng-repeat="bsreport in rvm.bsreports | filter : rvm.searchterm" ng-click="rvm.readOne(bsreport._id);">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:10px;" data-toggle="modal" data-target="#bsreportModal">
+						<div class="col-xs-6">
+							<span>Creation Date</span><br><span style="font-weight:normal;">{{rvm.formatDate(bsreport.creationdate,"datetime");}}</span>
+						</div>
+						<div class="col-xs-6">
+							<span>Date Range</span><br><span style="font-weight:normal;">{{rvm.formatDate(bsreport.startdate, "date");}} TO {{rvm.formatDate(bsreport.enddate,"date");}}</span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" id="dsreports" ng-if="rvm.dsreports.length > 0">
+		<div class="col-xs-12" id="dsreports" ng-if="rvm.dsreports.length > 0">
 			<h2>Drawer Summary Reports</h2>
-			<div class="col-xs-12">
-				<div class="list-group" ng-repeat="dsreport in rvm.dsreports">
-					<div class="col-xs-12">
-						<a href="#" data-poll-id="{{dsreport._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(dsreport._id);">
-						{{dsreport.startdate}} - {{dsreport.enddate}} 
-						</a>
+			<div class="top-margin10">
+				<div class="row shadow productrow" ng-repeat="dsreport in rvm.dsreports | filter : rvm.searchterm" ng-click="rvm.readOne(dsreport._id);">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:10px;" data-toggle="modal" data-target="#dsreportModal">
+						<div class="col-xs-6">
+							<span>Creation Date</span><br><span style="font-weight:normal;">{{rvm.formatDate(dsreport.creationdate,"datetime");}}</span>
+						</div>
+						<div class="col-xs-6">
+							<span>Date Range</span><br><span style="font-weight:normal;">{{rvm.formatDate(dsreport.startdate,"date");}} TO {{rvm.formatDate(dsreport.enddate,"date");}}</span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" id="tpreports" ng-if="rvm.tpreports.length > 0">
+		<div class="col-xs-12" id="tpreports" ng-if="rvm.tpreports.length > 0">
 			<h2>Transaction Profitability Reports</h2>
-			<div class="col-xs-12">
-				<div class="list-group" ng-repeat="tpreport in rvm.tpreports">
-					<div class="col-xs-12">
-						<a href="#" data-poll-id="{{tpreport._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(tpreport._id);">
-						{{tpreport.startdate}} - {{tpreport.enddate}} 
-						</a>
+			<div class="top-margin10">
+				<div class="row shadow productrow" ng-repeat="tpreport in rvm.tpreports | filter : rvm.searchterm" ng-click="rvm.readOne(tpreport._id);">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:10px;" data-toggle="modal" data-target="#tpreportModal">
+						<div class="col-xs-6">
+							<span>Creation Date</span><br><span style="font-weight:normal;">{{rvm.formatDate(tpreport.creationdate,"datetime");}}</span>
+						</div>
+						<div class="col-xs-6">
+							<span>Date Range</span><br><span style="font-weight:normal;">{{rvm.formatDate(tpreport.startdate,"date");}} TO {{rvm.formatDate(tpreport.enddate,"date");}}</span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row" id="streports" ng-if="rvm.streports.length > 0">
+		<div class="col-xs-12" id="streports" ng-if="rvm.streports.length > 0">
 			<h2>Sales Tax Reports</h2>
-			<div class="col-xs-12">
-				<div class="list-group" ng-repeat="streport in rvm.streports">
-					<div class="col-xs-12">
-						<a href="#" data-poll-id="{{streport._id}}" class="list-group-item" data-toggle="modal" data-target="#reportModal" ng-click="rvm.readOne(streport._id);">
-						{{streport.startdate}} - {{streport.enddate}} 
-						</a>
+			<div class="top-margin10">
+				<div class="row shadow productrow" ng-repeat="streport in rvm.streports | filter : rvm.searchterm" ng-click="rvm.readOne(streport._id);">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom:10px;" data-toggle="modal" data-target="#streportModal">
+						<div class="col-xs-6">
+							<span>Creation Date</span><br><span style="font-weight:normal;">{{rvm.formatDate(streport.creationdate,"datetime");}}</span>
+						</div>
+						<div class="col-xs-6">
+							<span>Date Range</span><br><span style="font-weight:normal;">{{rvm.formatDate(streport.startdate,"date");}} TO {{rvm.formatDate(streport.enddate,"date");}}</span>
+						</div>
 					</div>
 				</div>
 			</div>

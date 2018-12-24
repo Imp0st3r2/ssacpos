@@ -5,6 +5,7 @@
 
 	streport.$inject = ['$window','$http'];
 	function streport ($window,$http) {
+		var currentStReport = {};
 		var getListofStReports = function(){
 			return $http.get('/api/streports');
 		};
@@ -20,12 +21,21 @@
 		var deleteStReport = function(reportid){
 			return $http.delete('/api/streports/'+reportid);
 		};
+		var setStReport = function(streport){
+			currentStReport = streport;
+			console.log(currentStReport);
+		};
+		var getStReport = function(){
+			return currentStReport;
+		};
 		return {
 			getListofStReports : getListofStReports,
 			getStReportById : getStReportById,
 			createStReport : createStReport,
 			editStReport : editStReport,
-			deleteStReport : deleteStReport
+			deleteStReport : deleteStReport,
+			setStReport : setStReport,
+			getStReport : getStReport
 		};
 	}
 }) ();

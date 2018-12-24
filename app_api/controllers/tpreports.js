@@ -70,7 +70,7 @@ module.exports.UpdateTpReport = function(req, res) {
 					sendJsonResponse(res, 400, err);
 					return;
 				}
-				sendJsonResponse(res, 200, tpreport);
+				sendJsonResponse(res, 200, "Report updated successfully.");
 		});
 	}
 };
@@ -85,7 +85,7 @@ module.exports.DeleteTpReport = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}else{
-						sendJsonResponse(res, 204, {"message" : "TpReport deleted successfully."});
+						sendJsonResponse(res, 200, "TpReport deleted successfully.");
 					}
 				}
 			);

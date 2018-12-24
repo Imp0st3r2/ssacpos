@@ -70,7 +70,7 @@ module.exports.UpdateStReport = function(req, res) {
 					sendJsonResponse(res, 400, err);
 					return;
 				}
-				sendJsonResponse(res, 200, streport);
+				sendJsonResponse(res, 200, "Report updated successfully.");
 		});
 	}
 };
@@ -85,7 +85,7 @@ module.exports.DeleteStReport = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}else{
-						sendJsonResponse(res, 204, {"message" : "StReport deleted successfully."});
+						sendJsonResponse(res, 200, "Report deleted successfully.");
 					}
 				}
 			);
