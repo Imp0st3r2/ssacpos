@@ -1,39 +1,42 @@
 <div class="container-fluid">
-	<div class="users-container">
+	<div class="data-container">
 		<h1>List of Users</h1>
-		<form>
-			<div class="input-group add-on">
-				<input type="text" class="form-control" placeholder="Search..." id="user-search" ng-model="uvm.searchterm">
-			</div>
-		</form><br>
-		<button type="button" ng-click="uvm.addUser();" class="btn btn-success">Add User</button>
 		<div class="top-margin10">
-			<div class="row row-border">
-				<div class="col-xs-3">
-					<p>Name</p>
-				</div>
-				<div class="col-xs-3">
-					<p>Email</p>
-				</div>
-				<div class="col-xs-3">
-					<p>Status</p>
-				</div>
-				<div class="col-xs-3">
+			<div class="row brow">
+				<div class="col-xs-12">
+					<form>
+						<div class="input-group add-on">
+							<input type="text" class="form-control" placeholder="Search..." id="user-search" ng-model="uvm.searchterm">
+						</div>
+					</form>
 				</div>
 			</div>
-			<div class="row row-border productrow" ng-repeat="user in uvm.users | filter : uvm.searchterm">
-				<div class="col-xs-3">
-					<p>{{user.name}}</p>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="uvm.addUser();" class="btn btn-success">Add User</button>
 				</div>
-				<div class="col-xs-3">
-					<p>{{user.email}}</p>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="uvm.importUsers();" class="btn btn-primary">Import Users</button>
+					<button type="button" ng-click="uvm.exportUsers();" class="btn btn-primary">Export Users</button>
 				</div>
-				<div class="col-xs-3">
-					<p>{{user.status}}</p>
+			</div>
+			<div class="row shadow productrow" ng-repeat="user in uvm.users | filter : uvm.searchterm">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="padding-top:5px;">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Name</span><br><span style="font-weight:normal;">{{user.name}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Email</span><br><span style="font-weight:normal;">{{user.email}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Status</span><br><span style="font-weight:normal;">{{user.status}}</span>
+					</div>
 				</div>
-				<div class="col-xs-3">
-					<button class="btn btn-primary" type="button" ng-click="uvm.editUser(user._id);">Edit</button>
-					<button class="btn btn-danger" type="button" ng-click="uvm.deleteUser(user._id,user.name);">Delete</button>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="padding-top:5px;">
+					<button class="btn btn-primary col-xs-12 col-md-6" type="button" ng-click="uvm.editUser(user._id);" style="margin-bottom:5px;">Edit</button>
+					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="uvm.deleteUser(user._id,user.name);">Delete</button>
 				</div>
 			</div>
 		</div>

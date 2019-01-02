@@ -81,10 +81,10 @@ function streportsCreateCtrl($window,$location,$scope,$compile,streport,authenti
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><streports></streports></div>";
+			$(".streports-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><streportslist></streportslist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".streports-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

@@ -1,51 +1,50 @@
 <div class="container-fluid">
-	<div class="installs-container">
+	<div class="data-container">
 		<h1>List of Installs</h1>
-		<form>
-			<div class="input-group add-on">
-				<input type="text" class="form-control" placeholder="Search..." id="install-search" ng-model="ivm.searchterm">
-			</div>
-		</form><br>
-		<button type="button" ng-click="ivm.addInstall();" class="btn btn-success">Add Install</button>
-		<button type="button" ng-click="ivm.importInstalls();" class="btn btn-primary">Import Installs</button>
-		<button type="button" ng-click="ivm.exportInstalls();" class="btn btn-primary">Export Installs</button>
 		<div class="top-margin10">
-			<div class="row row-border">
-				<div class="col-xs-2">
-					<p>Time</p>
-				</div>
-				<div class="col-xs-3">
-					<p>Description</p>
-				</div>
-				<div class="col-xs-2">
-					<p>Cost</p>
-				</div>
-				<div class="col-xs-2">
-					<p>Hourly Charge</p>
-				</div>
-				<div class="col-xs-3">
+			<div class="row brow">
+				<div class="col-xs-12">
+					<form>
+						<div class="input-group add-on">
+							<input type="text" class="form-control" placeholder="Search..." id="install-search" ng-model="ivm.searchterm">
+						</div>
+					</form>
 				</div>
 			</div>
-			<div class="row row-border productrow" ng-repeat="install in ivm.installs | filter : ivm.searchterm">
-				<div class="col-xs-2">
-					<p>{{install.time}}</p>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="ivm.addInstall();" class="btn btn-success">Add Install</button>
 				</div>
-				<div class="col-xs-3">
-					<p>{{install.description}}</p>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="ivm.importInstalls();" class="btn btn-primary">Import Installs</button>
+					<button type="button" ng-click="ivm.exportInstalls();" class="btn btn-primary">Export Installs</button>
 				</div>
-				<div class="col-xs-2">
-					<p>${{install.cost}}</p>
+			</div>
+			<div class="row shadow productrow" ng-repeat="install in ivm.installs | filter : ivm.searchterm">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="padding-top:5px;">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+						<span>Time</span><br><span style="font-weight:normal;">{{install.time}} hr(s)</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+						<span>Description</span><br><span style="font-weight:normal;">{{install.description}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+						<span>Cost</span><br><span style="font-weight:normal;">{{install.cost}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-3">
+						<span>Hourly Charge</span><br><span style="font-weight:normal;">{{install.hourlycharge}}</span>
+					</div>
 				</div>
-				<div class="col-xs-2">
-					<p>${{install.hourlycharge}}</p>
-				</div>
-				<div class="col-xs-3">
-					<button class="btn btn-primary" type="button" ng-click="ivm.editInstall(install._id);">Edit</button>
-					<button class="btn btn-danger" type="button" ng-click="ivm.deleteInstall(install._id);">Delete</button>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="padding-top:5px;">
+					<button class="btn btn-primary col-xs-12 col-md-6" type="button" ng-click="ivm.editInstall(install._id);" style="margin-bottom:5px;">Edit</button>
+					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="ivm.deleteInstall(install._id);">Delete</button>
 				</div>
 			</div>
 		</div>
 		<div class="dialogbox">
 		</div>
 	</div>
+		<div style="clear:both;"></div>
 </div>

@@ -152,7 +152,7 @@ module.exports.usersDeleteOne = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}
-					sendJsonResponse(res, 204, user);
+					sendJsonResponse(res, 200, "User successfully deleted!");
 				}
 			);
 	} else {

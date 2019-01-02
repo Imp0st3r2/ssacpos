@@ -112,7 +112,7 @@ module.exports.spiffsDeleteOne = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}
-					sendJsonResponse(res, 204, spiff);
+					sendJsonResponse(res, 200, "Spiff successfully deleted!");
 				}
 			);
 	} else {

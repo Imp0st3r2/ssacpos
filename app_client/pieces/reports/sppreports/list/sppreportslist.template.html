@@ -1,0 +1,114 @@
+<div class="container-fluid">
+	<div class="data-container">
+        <h1>Salesperson Profitability Reports</h1>
+		<div class="top-margin10">
+			<div class="row brow">
+				<div class="col-xs-12">
+					<form>
+						<div class="input-group add-on">
+							<input type="text" class="form-control" placeholder="Search..." id="sppreport-search" ng-model="rvm.searchterm">
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="rvm.createSppReport();" class="btn btn-success">Create Report</button>
+				</div>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="rvm.importSppReports();" class="btn btn-primary">Import Salesperson Profitability Reports</button>
+					<button type="button" ng-click="rvm.exportSppReports();" class="btn btn-primary">Export Salesperson Profitability Reports</button>
+				</div>
+			</div>
+			<div class="row shadow productrow" ng-repeat="sppreport in rvm.sppreports | filter : rvm.searchterm" ng-click="rvm.readOne(sppreport._id);">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="padding-top:5px;" data-toggle="modal" data-target="#sppreportModal">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Creation Date</span><br><span style="font-weight:normal;">{{sppreport.creationdate}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Date Range</span><br><span style="font-weight:normal;">{{sppreport.startdate}} - {{sppreport.enddate}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Employee</span><br><span style="font-weight:normal;">{{sppreport.employee}}</span>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="padding-top:5px;">
+					<button class="btn btn-primary col-xs-12 col-md-6" type="button" ng-click="rvm.editSppReport(sppreport._id);" style="margin-bottom:5px;">Edit</button>
+					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="rvm.deleteSppReport(sppreport._id);">Delete</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialogbox">
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="sppreportModal" tabindex="-1" role="dialog" aria-labelledby="sppreportModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="sppreportModal">Salesperson Profitability Report for {{rvm.clickedSppReport.employee}}</h4>
+      </div>
+      <div class="modal-body">
+      	<div class="col-xs-12">
+      		<div class="col-xs-6">From: {{rvm.clickedSppReport.startdate}}</div>
+      		<div class="col-xs-6">To: {{rvm.clickedSppReport.enddate}}</div>
+      	</div>
+      	<div class="col-xs-12">
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Number of Items:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedSppReport.totalitems}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Item Cost:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedSppReport.totalitemcost}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Retail Price:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedSppReport.totalitemprice}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Profit:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedSppReport.totalprofit}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Percent of Gross Profit:</p></div>
+				<div class="col-xs-12"><p>%{{rvm.clickedSppReport.percgp}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+	      	<div class="productattr">
+				<div class="col-xs-12"><p>Total Spiffs from Products:</p></div>
+				<div class="col-xs-12"><p>{{rvm.clickedSppReport.totalspiffs}}</p></div>
+				<div style="clear:both;"></div>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<h2>List of Items:</h2>
+			<div class="productattr" ng-repeat="item in rvm.clickedSppReport.items">
+				<div class="col-xs-12"><p>{{item.brand}} {{item.model}} {{item.category}}</p></div>
+				<div class="col-xs-12">
+					<p>Quantity : {{item.quantity}}</p>
+					<p>Unit Cost: {{item.unitcost}}</p>
+					<p>Unit Price: {{item.unitprice}}</p>
+					<p>Total Charge: {{item.totalcharge}}</p>
+					<p>Total Profit: {{item.profit}}</p>
+					<p>Spiff: {{item.spiffamount}}</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="clearfix"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

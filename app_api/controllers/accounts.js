@@ -91,7 +91,7 @@ module.exports.accountsDeleteOne = function(req, res) {
 							}else if(err){
 								sendJsonResponse(res,400,err);
 							}else{
-								sendJsonResponse(res,200,accounts);
+								sendJsonResponse(res,200,"Account successfully deleted!");
 							}
 						})
 					}

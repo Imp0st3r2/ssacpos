@@ -61,10 +61,10 @@ function installcreateCtrl($location, $scope, $compile, authentication, install)
 		}
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><installlist></installlist></div>";
+			$(".installs-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><installlist></installlist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".installs-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

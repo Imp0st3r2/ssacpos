@@ -106,10 +106,10 @@ function tpreportsCreateCtrl($window,$location,$scope,$compile,tpreport,authenti
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><tpreports></tpreports></div>";
+			$(".tpreports-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><tpreportslist></tpreportslist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".tpreports-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

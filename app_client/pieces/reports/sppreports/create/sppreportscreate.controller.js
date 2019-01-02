@@ -92,10 +92,10 @@ function sppreportsCreateCtrl($window,$location,$scope,$compile,sppreport,authen
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><sppreports></sppreports></div>";
+			$(".sppreports-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><sppreportslist></sppreportslist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".sppreports-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

@@ -1,37 +1,39 @@
 <div class="container-fluid">
-	<div class="spiffs-container">
+	<div class="data-container">
 		<h1>List of Spiffs</h1>
-		<form>
-			<div class="input-group add-on">
-				<input type="text" class="form-control" placeholder="Search..." id="spiff-search" ng-model="svm.searchterm">
-			</div>
-		</form><br>
-		<button type="button" ng-click="svm.addSpiff();" class="btn btn-success">Add Spiff</button>
 		<div class="top-margin10">
-			<div class="row row-border">
-				<div class="col-xs-3">
-					<p>Name</p>
-				</div>
-				<div class="col-xs-3">
-					<p>Amount</p>
-				</div>
-				<div class="col-xs-3">
-				</div>
-				<div class="col-xs-3">
+			<div class="row brow">
+				<div class="col-xs-12">
+					<form>
+						<div class="input-group add-on">
+							<input type="text" class="form-control" placeholder="Search..." id="spiff-search" ng-model="svm.searchterm">
+						</div>
+					</form>
 				</div>
 			</div>
-			<div class="row row-border productrow" ng-repeat="spiff in svm.spiffs | filter : svm.searchterm">
-				<div class="col-xs-3">
-					<p>{{spiff.name}}</p>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="svm.addSpiff();" class="btn btn-success">Add Spiff</button>
 				</div>
-				<div class="col-xs-3">
-					<p>${{spiff.amount}}</p>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="svm.importSpiffs();" class="btn btn-primary">Import Spiffs</button>
+					<button type="button" ng-click="svm.exportSpiffs();" class="btn btn-primary">Export Spiffs</button>
 				</div>
-				<div class="col-xs-3">
+			</div>
+			<div class="row shadow productrow" ng-repeat="spiff in svm.spiffs | filter : svm.searchterm">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="padding-top:5px;">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Name</span><br><span style="font-weight:normal;">{{spiff.name}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-4">
+						<span>Amount</span><br><span style="font-weight:normal;">${{spiff.amount}}</span>
+					</div>
 				</div>
-				<div class="col-xs-3">
-					<button class="btn btn-primary" type="button" ng-click="svm.editSpiff(spiff._id, spiff.name);">Edit</button>
-					<button class="btn btn-danger" type="button" ng-click="svm.deleteSpiff(spiff._id, spiff.name);">Delete</button>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="padding-top:5px;">
+					<button class="btn btn-primary col-xs-12 col-md-6" type="button" ng-click="svm.editSpiff(spiff._id, spiff.name);" style="margin-bottom:5px;">Edit</button>
+					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="svm.deleteSpiff(spiff._id, spiff.name);">Delete</button>
 				</div>
 			</div>
 		</div>

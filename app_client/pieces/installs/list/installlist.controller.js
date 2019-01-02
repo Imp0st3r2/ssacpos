@@ -3,15 +3,24 @@ angular
 	.module('ssacpos')
 	.controller('installlistCtrl', installlistCtrl);
 
-installlistCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'install'];
+installlistCtrl.$inject = ['$location', '$scope', '$compile', 'authentication', 'install', 'exportservice'];
 
-function installlistCtrl($location, $scope, $compile, authentication, install) {
+function installlistCtrl($location, $scope, $compile, authentication, install, exportservice) {
 	var vm = this;
 	vm.isLoggedIn = authentication.isLoggedIn();
+	const formatter = new Intl.NumberFormat('en-US', {
+	  style: 'currency',
+	  currency: 'USD',
+	  minimumFractionDigits: 2
+	})
 	if(vm.isLoggedIn){
 		install.getInstalls().then(function(response){
 			vm.installs = response.data;
 			console.log(response);
+			for(var i=0;i<vm.installs.length;i++){
+				vm.installs[i].cost = formatter.format(vm.installs[i].cost);
+				vm.installs[i].hourlycharge = formatter.format(vm.installs[i].hourlycharge);
+			}
 		})
 		vm.deleteInstall = function(installid){
 			vm.install = {
@@ -38,10 +47,10 @@ function installlistCtrl($location, $scope, $compile, authentication, install) {
 				id : installid
 			}
 			install.setInstall(vm.install);
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><installedit></installedit></div>";
+			$(".installs-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><installedit></installedit></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".installs-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}
@@ -70,10 +79,10 @@ function installlistCtrl($location, $scope, $compile, authentication, install) {
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><installlist></installlist></div>";
+			$(".installs-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><installlist></installlist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".installs-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}
@@ -81,16 +90,35 @@ function installlistCtrl($location, $scope, $compile, authentication, install) {
 			$(".dialogbox").hide();
 		}
 		vm.addInstall = function() {
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><installcreate></installcreate></div>";
+			$(".installs-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><installcreate></installcreate></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".installs-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}
 
 		vm.exportInstalls = function(){
-			
+			console.log(vm.installs);
+			exportservice.exportCSV(vm.installs,"Installs").then(function(response){
+				console.log(response);
+				$(".dialogbox").empty();
+				var appendString = "<div class='row'>"
+								 +  "<div class='col-xs-12'>"
+								 + 	 "<p>" + response.data
+								 +   "</p>"
+								 +	"</div>"
+								 + "</div>"
+								 + "<div class='row'>"
+								 +	"<div class='col-xs-3'></div>"
+								 +	"<div class='col-xs-6'><button class='btn btn-primary btn-full' type='button' ng-click='ivm.showList();'>OK</button></div>"
+								 +	"<div class='col-xs-3'></div>"; 
+				var el = angular.element(appendString)
+				$(".dialogbox").append(el);
+				compiled = $compile(el);
+				compiled($scope);
+				$(".dialogbox").show();
+			})
 		}
 
 

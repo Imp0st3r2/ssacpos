@@ -106,10 +106,10 @@ function accountcreateCtrl($location, $scope, $compile, authentication, account)
 		}
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><accounts></accounts></div>";
+			$(".accounts-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><accounts></accounts></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".accounts-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

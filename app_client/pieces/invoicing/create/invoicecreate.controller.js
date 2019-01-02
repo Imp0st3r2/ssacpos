@@ -613,10 +613,10 @@ function invoicecreateCtrl($location, $scope, $compile, authentication, invoice,
 		}
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><invoicing></invoicing></div>";
+			$(".invoicing-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><invoicinglist></invoicinglist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".invoicing-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

@@ -91,10 +91,10 @@ function ipreportsCreateCtrl($window,$location,$scope,$compile,ipreport,authenti
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><ipreports></ipreports></div>";
+			$(".ipreports-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><ipreportslist></ipreportslist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".ipreports-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

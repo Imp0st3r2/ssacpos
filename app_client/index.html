@@ -7,25 +7,16 @@
 	<link rel="stylesheet" href="/stylesheets/bootstrap.css">
 	<link rel="stylesheet" href="/stylesheets/bootstrap-theme.css">
 	<link rel="stylesheet" href="/stylesheets/bootstrap-datepicker.css">
-	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
-	<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css"> -->
 	<link rel='stylesheet' href='/stylesheets/font-awesome.min.css'>
 	<link rel="shortcut icon" href="/favicon.ico">
 	<script src='/angular/angular.js'></script>
 	<script src='/angular/angular-route.js'></script>
 	<script src='/angular/angular-sanitize.js'></script>
 	<script src='/javascripts/jquery-3.3.1.js'></script>
-	<!-- <script
-  src="http://code.jquery.com/jquery-3.3.1.js"
-  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-  crossorigin="anonymous"></script> -->
   	<script src="/javascripts/bootstrap.js"></script>
-	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
 	<link rel='stylesheet' href='/stylesheets/style.css'>
 	<script src="/javascripts/moment.js"></script>
 	<script src="/javascripts/bootstrap-datepicker.js"></script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.js"></script> -->
 	<base href="/">
 	<title>Point of Sale</title>
 </head>
@@ -52,8 +43,11 @@
 	<script src='/common/services/account.service.js'></script>
 	<script src='/common/services/spiff.service.js'></script>
 	<script src='/common/services/install.service.js'></script>
+	<script src='/common/services/exportservice.service.js'></script>
 	<script src='/dashboard/dashboard.controller.js'></script>
 	<script src='/printinvoices/printinvoice.controller.js'></script>
+	<script src='/pieces/users/users.directive.js'></script>
+	<script src='/pieces/users/users.controller.js'></script>
 	<script src='/pieces/users/list/userlist.directive.js'></script>
 	<script src='/pieces/users/list/userlist.controller.js'></script>
 	<script src='/pieces/users/create/usercreate.directive.js'></script>
@@ -64,12 +58,16 @@
 	<script src='/pieces/users/resetpass/resetpass.controller.js'></script>
 	<script src='/pieces/products/products.directive.js'></script>
 	<script src='/pieces/products/products.controller.js'></script>
+	<script src='/pieces/products/list/productslist.directive.js'></script>
+	<script src='/pieces/products/list/productslist.controller.js'></script>
 	<script src='/pieces/products/create/productcreate.directive.js'></script>
 	<script src='/pieces/products/create/productcreate.controller.js'></script>
 	<script src='/pieces/products/edit/productedit.directive.js'></script>
 	<script src='/pieces/products/edit/productedit.controller.js'></script>
 	<script src='/pieces/invoicing/invoicing.directive.js'></script>
 	<script src='/pieces/invoicing/invoicing.controller.js'></script>
+	<script src='/pieces/invoicing/list/invoicinglist.directive.js'></script>
+	<script src='/pieces/invoicing/list/invoicinglist.controller.js'></script>
 	<script src='/pieces/invoicing/create/invoicecreate.directive.js'></script>
 	<script src='/pieces/invoicing/create/invoicecreate.controller.js'></script>
 	<script src='/pieces/invoicing/edit/invoiceedit.directive.js'></script>
@@ -78,42 +76,56 @@
 	<script src='/pieces/reports/reports.controller.js'></script>
 	<script src='/pieces/reports/sppreports/sppreports.directive.js'></script>
 	<script src='/pieces/reports/sppreports/sppreports.controller.js'></script>
+	<script src='/pieces/reports/sppreports/list/sppreportslist.directive.js'></script>
+	<script src='/pieces/reports/sppreports/list/sppreportslist.controller.js'></script>
 	<script src='/pieces/reports/sppreports/create/sppreportscreate.directive.js'></script>
 	<script src='/pieces/reports/sppreports/create/sppreportscreate.controller.js'></script>
 	<script src='/pieces/reports/sppreports/edit/sppreportsedit.directive.js'></script>
 	<script src='/pieces/reports/sppreports/edit/sppreportsedit.controller.js'></script>
 	<script src='/pieces/reports/ipreports/ipreports.directive.js'></script>
 	<script src='/pieces/reports/ipreports/ipreports.controller.js'></script>
+	<script src='/pieces/reports/ipreports/list/ipreportslist.directive.js'></script>
+	<script src='/pieces/reports/ipreports/list/ipreportslist.controller.js'></script>
 	<script src='/pieces/reports/ipreports/create/ipreportscreate.directive.js'></script>
 	<script src='/pieces/reports/ipreports/create/ipreportscreate.controller.js'></script>
 	<script src='/pieces/reports/ipreports/edit/ipreportsedit.directive.js'></script>
 	<script src='/pieces/reports/ipreports/edit/ipreportsedit.controller.js'></script>
 	<script src='/pieces/reports/bsreports/bsreports.directive.js'></script>
 	<script src='/pieces/reports/bsreports/bsreports.controller.js'></script>
+	<script src='/pieces/reports/bsreports/list/bsreportslist.directive.js'></script>
+	<script src='/pieces/reports/bsreports/list/bsreportslist.controller.js'></script>
 	<script src='/pieces/reports/bsreports/create/bsreportscreate.directive.js'></script>
 	<script src='/pieces/reports/bsreports/create/bsreportscreate.controller.js'></script>
 	<script src='/pieces/reports/bsreports/edit/bsreportsedit.directive.js'></script>
 	<script src='/pieces/reports/bsreports/edit/bsreportsedit.controller.js'></script>
 	<script src='/pieces/reports/dsreports/dsreports.directive.js'></script>
 	<script src='/pieces/reports/dsreports/dsreports.controller.js'></script>
+	<script src='/pieces/reports/dsreports/list/dsreportslist.directive.js'></script>
+	<script src='/pieces/reports/dsreports/list/dsreportslist.controller.js'></script>
 	<script src='/pieces/reports/dsreports/create/dsreportscreate.directive.js'></script>
 	<script src='/pieces/reports/dsreports/create/dsreportscreate.controller.js'></script>
 	<script src='/pieces/reports/dsreports/edit/dsreportsedit.directive.js'></script>
 	<script src='/pieces/reports/dsreports/edit/dsreportsedit.controller.js'></script>
 	<script src='/pieces/reports/tpreports/tpreports.directive.js'></script>
 	<script src='/pieces/reports/tpreports/tpreports.controller.js'></script>
+	<script src='/pieces/reports/tpreports/list/tpreportslist.directive.js'></script>
+	<script src='/pieces/reports/tpreports/list/tpreportslist.controller.js'></script>
 	<script src='/pieces/reports/tpreports/create/tpreportscreate.directive.js'></script>
 	<script src='/pieces/reports/tpreports/create/tpreportscreate.controller.js'></script>
 	<script src='/pieces/reports/tpreports/edit/tpreportsedit.directive.js'></script>
 	<script src='/pieces/reports/tpreports/edit/tpreportsedit.controller.js'></script>
 	<script src='/pieces/reports/streports/streports.directive.js'></script>
 	<script src='/pieces/reports/streports/streports.controller.js'></script>
+	<script src='/pieces/reports/streports/list/streportslist.directive.js'></script>
+	<script src='/pieces/reports/streports/list/streportslist.controller.js'></script>
 	<script src='/pieces/reports/streports/create/streportscreate.directive.js'></script>
 	<script src='/pieces/reports/streports/create/streportscreate.controller.js'></script>
 	<script src='/pieces/reports/streports/edit/streportsedit.directive.js'></script>
 	<script src='/pieces/reports/streports/edit/streportsedit.controller.js'></script>
 	<script src='/pieces/accounts/accounts.directive.js'></script>
 	<script src='/pieces/accounts/accounts.controller.js'></script>
+	<script src='/pieces/accounts/list/accountslist.directive.js'></script>
+	<script src='/pieces/accounts/list/accountslist.controller.js'></script>
 	<script src='/pieces/accounts/create/accountcreate.directive.js'></script>
 	<script src='/pieces/accounts/create/accountcreate.controller.js'></script>
 	<script src='/pieces/accounts/edit/accountedit.directive.js'></script>

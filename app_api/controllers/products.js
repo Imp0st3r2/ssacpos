@@ -131,7 +131,7 @@ module.exports.productsDeleteOne = function(req, res) {
 						sendJsonResponse(res, 404, err);
 						return;
 					}
-					sendJsonResponse(res, 204, product);
+					sendJsonResponse(res, 204, "Product successfully deleted!");
 				}
 			);
 	} else {

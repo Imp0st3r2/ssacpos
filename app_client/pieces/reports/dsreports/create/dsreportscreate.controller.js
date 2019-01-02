@@ -122,10 +122,10 @@ function dsreportsCreateCtrl($window,$location,$scope,$compile,dsreport,authenti
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><dsreports></dsreports></div>";
+			$(".dsreports-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><dsreportslist></dsreportslist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".dsreports-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

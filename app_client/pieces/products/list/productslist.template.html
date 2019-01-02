@@ -1,0 +1,242 @@
+<div class="container-fluid">
+	<div class="data-container">
+		<h1>List of Products</h1>
+		<div class="top-margin10">
+			<div class="row brow">
+				<div class="col-xs-12">
+					<form>
+						<div class="input-group add-on">
+							<input type="text" class="form-control" placeholder="Search..." id="product-search" ng-model="pvm.searchterm">
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="pvm.addProduct();" class="btn btn-success">Add Product</button>
+				</div>
+			</div>
+			<div class="row brow">
+				<div class="col-xs-12">
+					<button type="button" ng-click="pvm.importProducts();" class="btn btn-primary">Import Products</button>
+					<button type="button" ng-click="pvm.exportProducts();" class="btn btn-primary">Export Products</button>
+				</div>
+			</div>
+			<div class="row shadow productrow" ng-repeat="product in pvm.products | filter : pvm.searchterm" ng-click="pvm.readOne(product._id);" data-toggle="modal" data-target="#productModal">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-10" style="padding-top:5px;">
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+						<span>UPC</span><br><span style="font-weight:normal;">{{product.upc}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+						<span>Brand</span><br><span style="font-weight:normal;">{{product.brand}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+						<span>Category</span><br><span style="font-weight:normal;">{{product.category}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-2">
+						<span>Model</span><br><span style="font-weight:normal;">{{product.model}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-1">
+						<span>Cost</span><br><span style="font-weight:normal;">${{product.cost}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-1">
+						<span>Price</span><br><span style="font-weight:normal;">${{product.price}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-1">
+						<span>Spiff</span><br><span style="font-weight:normal;">${{product.spiff}}</span>
+					</div>
+					<div class="col-xs-6 col-sm-6 col-md-6 col-lg-1">
+						<span>On Hand</span><br><span style="font-weight:normal;">{{product.quantity}}</span>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-2" style="padding-top:5px;">
+					<button class="btn btn-primary col-xs-12 col-md-6" type="button" ng-click="pvm.editProduct(product._id);" style="margin-bottom:5px;">Edit</button>
+					<button class="btn btn-danger col-xs-12 col-md-6" type="button" ng-click="pvm.deleteProduct(product._id,product.model);">Delete</button>
+				</div>
+			</div>
+		</div>
+		<div class="dialogbox">
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModal">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title" id="productModal">{{pvm.clickedProduct.brand}} - {{pvm.clickedProduct.model}}</h4>
+	  </div>
+	  <div class="modal-body">
+		<div class="productattr">
+			<div class="col-xs-12"><p>UPC:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.upc}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Brand:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.brand}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Category:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.category}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Model:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.model}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Quantity:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.quantity}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.channels != 0">
+			<div class="col-xs-12"><p>Channels:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.channels}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.distortion != 0">
+			<div class="col-xs-12"><p>Distortion:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.distortion}}%</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.snratio != 0">
+			<div class="col-xs-12"><p>S/N Ratio:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.snratio}}dB</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.frequencyresponse != 0">
+			<div class="col-xs-12"><p>Frequency Response:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.frequencyresponse}}Hz</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.outputpower != 0">
+			<div class="col-xs-12"><p>Output Power:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.outputpower}}W.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.dimensionsh != 0">
+			<div class="col-xs-12"><p>Height:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.dimensionsh}}in.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.dimensionsw != 0">
+			<div class="col-xs-12"><p>Width:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.dimensionsw}}in.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.dimensionsl != 0">
+			<div class="col-xs-12"><p>Length:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.dimensionsl}}in.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.size != ''">
+			<div class="col-xs-12"><p>Size:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.size}}in.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.sensitivity != 0">
+			<div class="col-xs-12"><p>Sensitivity:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.sensitivity}}dB</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.configuration != ''">
+			<div class="col-xs-12"><p>Configuration:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.configuration}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.peakwatts != 0">
+			<div class="col-xs-12"><p>Peak Watts:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.peakwatts}}W.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.rmswatts != 0">
+			<div class="col-xs-12"><p>RMS Watts:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.rmswatts}}W.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.mountingdepth != 0">
+			<div class="col-xs-12"><p>Mounting Depth:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.mountingdepth}}in.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.preouts != 0">
+			<div class="col-xs-12"><p>Pre-Outs:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.preouts}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.weight != 0">
+			<div class="col-xs-12"><p>Weight:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.weight}}lbs.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.amperehours != 0">
+			<div class="col-xs-12"><p>Amp Hours:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.amperehours}}Hrs.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-if="pvm.clickedProduct.voltage != 0">
+			<div class="col-xs-12"><p>Voltage:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.voltage}}V.</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.bluetooth">
+			<div class="col-xs-12"><p>Bluetooth:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.usb">
+			<div class="col-xs-12"><p>USB:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.cdrrw">
+			<div class="col-xs-12"><p>CD R/RW:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.mp3">
+			<div class="col-xs-12"><p>MP3:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.wma">
+			<div class="col-xs-12"><p>WMA:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.wav">
+			<div class="col-xs-12"><p>WAV:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr" ng-show="pvm.clickedProduct.builtinamp">
+			<div class="col-xs-12"><p>Built-in Amp:</p></div>
+			<div class="col-xs-12"><p>Yes</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Description:</p></div>
+			<div class="col-xs-12"><p>{{pvm.clickedProduct.description}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Price:</p></div>
+			<div class="col-xs-12"><p>${{pvm.clickedProduct.price}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div class="productattr">
+			<div class="col-xs-12"><p>Spiff:</p></div>
+			<div class="col-xs-12"><p>${{pvm.clickedProduct.spiff}}</p></div>
+			<div style="clear:both;"></div>
+		</div>
+		<div style="clear:both;"></div>
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	  </div>
+	</div>
+  </div>
+</div>

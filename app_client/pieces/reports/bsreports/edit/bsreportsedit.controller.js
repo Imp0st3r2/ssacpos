@@ -95,10 +95,10 @@ function bsreportsEditCtrl($window,$location,$scope,$compile,bsreport,authentica
 
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><bsreports></bsreports></div>";
+			$(".bsreports-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><bsreportslist></bsreportslist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".bsreports-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

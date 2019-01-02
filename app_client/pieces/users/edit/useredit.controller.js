@@ -106,10 +106,10 @@ function usereditCtrl($location, $scope, $compile, authentication, user) {
 		}
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><userlist></userlist></div>";
+			$(".users-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><userlist></userlist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".users-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

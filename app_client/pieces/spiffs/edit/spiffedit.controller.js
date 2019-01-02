@@ -73,10 +73,10 @@ function spiffeditCtrl($location, $scope, $compile, authentication, spiff) {
 		}
 		vm.showList = function(){
 			$(".dialogbox").hide();
-			$(".data-container").empty();
-			var stringToAppend = "<div class='col-xs-12 piece'><spifflist></spifflist></div>";
+			$(".spiffs-container").empty();
+			var stringToAppend = "<div class='col-xs-12'><spifflist></spifflist></div>";
 			var el = angular.element(stringToAppend)
-			$(".data-container").append(el);
+			$(".spiffs-container").append(el);
 			compiled = $compile(el);
 			compiled($scope);
 		}

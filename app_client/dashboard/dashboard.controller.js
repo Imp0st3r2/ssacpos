@@ -23,6 +23,7 @@ function dashboardCtrl ($location, $scope, $compile, authentication) {
 		$(".posbtn").click(function(){
 	     	if($(this).data("button") === "reports"){
 	     		$("#report-minibtns").slideDown();
+	     		$(".miniactive").removeClass("miniactive");
 	     	}else{
 	     		$(".miniactive").removeClass("miniactive");
 	     		$("#report-minibtns").slideUp();

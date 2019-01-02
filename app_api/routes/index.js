@@ -24,6 +24,7 @@ var ctrlStReports = require('../controllers/streports');
 var ctrlAccounts = require('../controllers/accounts');
 var ctrlSpiffs = require('../controllers/spiffs');
 var ctrlLabors = require('../controllers/labors');
+var ctrlExport = require('../controllers/export');
 
 /******ADD API ROUTES HERE******/
 // router.get('/route', ctrlName.method)
@@ -124,5 +125,8 @@ router.delete('/labors/:laborid', ctrlLabors.laborsDeleteOne);
 
 //Tax
 router.get('/taxrate', ctrlTaxes.getTaxRate);
+
+//Export
+router.post('/exportCSV/:csvname', ctrlExport.exportCSV);
 
 module.exports = router;
